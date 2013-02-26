@@ -343,7 +343,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.menu_child_line_7, mMoreView);
+                showChildMenu(R.drawable.item_selected_6, mMoreView);
             }
         });
 
@@ -486,7 +486,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.menu_child_line_5, mRotationView);
+                showChildMenu(R.drawable.item_selected_5, mRotationView);
             }
         });
 
@@ -497,7 +497,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.menu_child_line_3, mShowDirectory);
+                showChildMenu(R.drawable.item_selected_3, mShowDirectory);
             }
         });
 
@@ -601,7 +601,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.menu_child_line_1, mTTsView);
+                showChildMenu(R.drawable.item_selected_1, mTTsView);
                 menuHandler.ttsInit();
             }
         });
@@ -674,7 +674,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             public void onClick(View v)
             {
                 mButtonFontFace.setText(mMenuHandler.getFontFace());
-                showChildMenu(R.drawable.menu_child_line_4, mFontSettings);
+                showChildMenu(R.drawable.item_selected_4, mFontSettings);
             }
         });
 
@@ -719,10 +719,10 @@ public class DialogReaderMenu extends OnyxDialogBase
             public void onClick(View v)
             {
                 if (mMenuHandler.showZoomSettings()) {
-                    showChildMenu(R.drawable.menu_child_line_2, mZoomSettings);
+                    showChildMenu(R.drawable.item_selected_2, mZoomSettings);
                 }
                 else {
-                    showChildMenu(R.drawable.menu_child_line_2, mLineSpacingSettings);
+                    showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
                 }
             }
         });
@@ -920,7 +920,7 @@ public class DialogReaderMenu extends OnyxDialogBase
     public void onWindowFocusChanged(boolean hasFocus)
     {
         if (mIsInitReaderMenu) {
-            showChildMenu(R.drawable.menu_child_line_7, mMoreView);
+            showChildMenu(R.drawable.item_selected_6, mMoreView);
             mIsInitReaderMenu = false;
         }
     }
