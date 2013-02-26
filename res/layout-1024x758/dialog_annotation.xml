@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+
+    <EditText
+        android:id="@+id/edittext_annotation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:hint="@string/tabwidget_annotation"
+        android:lines="3"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/edittext_annotation"
+        android:text="@string/add_annotation"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/button_update"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/edittext_annotation"
+        android:text="@string/update"
+        android:textColor="#000000"
+        android:layout_alignParentRight="true"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/button_remove"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/edittext_annotation"
+        android:layout_toLeftOf="@id/button_update"
+        android:text="@string/delete"
+        android:visibility="gone"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+</RelativeLayout>

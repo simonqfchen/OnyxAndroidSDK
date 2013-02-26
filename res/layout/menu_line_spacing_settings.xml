@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_line_spacing_decreases"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/line_spacing_decreases"
+            android:src="@drawable/line_spacing_decreases" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_line_spacing_enlarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/line_spacing_enlarge"
+            android:src="@drawable/line_spacing_enlarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_line_spacing_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/line_spacing_normal"
+            android:src="@drawable/line_spacing_normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_line_spacing_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/line_spacing_small"
+            android:src="@drawable/line_spacing_small" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_line_spacing_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/line_spacing_big"
+            android:src="@drawable/line_spacing_big" />
+    </LinearLayout>
+
+</LinearLayout>

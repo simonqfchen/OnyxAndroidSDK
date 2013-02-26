@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="selection_adapter_min_height">60px</dimen>
+    <dimen name="reader_settings_gridview_adapter_min_height">60px</dimen>
+
+</resources>

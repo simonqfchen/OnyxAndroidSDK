@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_enlarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_enlarge"
+            android:src="@drawable/zoom_enlarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_narrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_narrow"
+            android:src="@drawable/zoom_narrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_fit_width"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_to_width"
+            android:src="@drawable/zoom_to_width" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_fit_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_to_page"
+            android:src="@drawable/zoom_to_page" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_navigation_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_navigation_bar"
+            android:src="@drawable/zoom_navigation_bar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_two_points_enlarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_two_points_enlarge"
+            android:src="@drawable/zoom_two_points_enlarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/imagebutton_cutting_edge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reader_menu_item_background"
+            android:contentDescription="@drawable/zoom_cutting_edge"
+            android:src="@drawable/zoom_cutting_edge" />
+    </LinearLayout>
+
+</LinearLayout>
