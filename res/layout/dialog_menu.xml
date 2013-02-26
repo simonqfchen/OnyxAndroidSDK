@@ -27,7 +27,7 @@
             android:id="@+id/textview_child_lines"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/menu_child_line_7"
+            android:background="@drawable/item_selected_6"
             android:visibility="gone" />
 
         <LinearLayout

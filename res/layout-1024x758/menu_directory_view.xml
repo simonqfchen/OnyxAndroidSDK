@@ -7,18 +7,12 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
-        android:baselineAligned="false"
-        android:gravity="center_vertical|left" >
 
         <RelativeLayout
             android:id="@+id/layout_toc"
-            android:layout_width="130dp"
+            android:layout_width="115dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/reader_menu_item_background" >
 
             <TextView
@@ -38,19 +32,13 @@
                 android:contentDescription="@drawable/toc"
                 android:src="@drawable/toc" />
         </RelativeLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
-        android:baselineAligned="false"
-        android:gravity="center" >
 
         <RelativeLayout
             android:id="@+id/layout_bookmark"
-            android:layout_width="130dp"
+            android:layout_width="115dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/reader_menu_item_background" >
 
             <TextView
@@ -70,20 +58,12 @@
                 android:contentDescription="@drawable/menu_bookmark"
                 android:src="@drawable/menu_bookmark" />
         </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
-        android:baselineAligned="false"
-        android:gravity="center_vertical|right" >
 
         <RelativeLayout
             android:id="@+id/layout_annotation"
-            android:layout_width="130dp"
+            android:layout_width="115dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/reader_menu_item_background" >
 
             <TextView
@@ -103,6 +83,5 @@
                 android:contentDescription="@drawable/note"
                 android:src="@drawable/note" />
         </RelativeLayout>
-    </LinearLayout>
 
 </LinearLayout>
