@@ -13,7 +13,9 @@
             android:layout_width="115dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_toc"
@@ -39,7 +41,9 @@
             android:layout_width="115dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_bookmark"
@@ -64,7 +68,9 @@
             android:layout_width="115dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_annotation"

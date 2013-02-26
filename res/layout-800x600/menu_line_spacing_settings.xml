@@ -17,7 +17,8 @@
             android:id="@+id/layout_spacing_decreases"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_line_spacing_decreases"
@@ -47,7 +48,8 @@
             android:id="@+id/layout_spacing_enlarge"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_line_spacing_enlarge"
@@ -76,7 +78,8 @@
             android:id="@+id/layout_spacing_normal"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_line_spacing_normal"
@@ -106,7 +109,8 @@
             android:id="@+id/layout_spacing_small"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_line_spacing_small"
@@ -136,7 +140,8 @@
             android:id="@+id/layout_spacing_big"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_line_spacing_big"

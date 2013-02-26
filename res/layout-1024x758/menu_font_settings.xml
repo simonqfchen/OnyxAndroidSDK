@@ -17,7 +17,9 @@
             android:id="@+id/layout_font_increase"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_font_increase"
@@ -48,7 +50,9 @@
             android:id="@+id/layout_font_decrease"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_font_decrease"
@@ -79,7 +83,9 @@
             android:id="@+id/layout_font_embolden"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_font_embolden"
@@ -124,7 +130,8 @@
             android:paddingLeft="5dp"
             android:paddingRight="50dp"
             android:singleLine="true"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:focusable="true" />
     </LinearLayout>
 
 </LinearLayout>

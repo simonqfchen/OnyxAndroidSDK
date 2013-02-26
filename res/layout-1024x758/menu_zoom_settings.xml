@@ -17,7 +17,9 @@
             android:id="@+id/layout_enlarge"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+             >
 
             <TextView
                 android:id="@+id/textview_enlarge"
@@ -50,7 +52,8 @@
             android:id="@+id/layout_narrow"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_narrow"
@@ -82,7 +85,8 @@
             android:id="@+id/layout_fit_width"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_fit_width"
@@ -114,7 +118,8 @@
             android:id="@+id/layout_fit_page"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_fit_page"
@@ -146,7 +151,8 @@
             android:id="@+id/layout_two_points_enlarge"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_two_points_enlarge"
@@ -178,7 +184,8 @@
             android:id="@+id/layout_cutting_edge"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:background="@drawable/reader_menu_item_background" >
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true" >
 
             <TextView
                 android:id="@+id/textview_cutting_edge"
