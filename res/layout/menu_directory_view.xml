@@ -7,57 +7,87 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical" >
 
-        <ImageButton
-            android:id="@+id/imagebutton_toc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+        <RelativeLayout
+            android:id="@+id/layout_toc"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/reader_menu_item_background"
-            android:contentDescription="@drawable/toc"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/toc" />
-    </LinearLayout>
+            android:focusable="true"
+             >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center" >
+            <TextView
+                android:id="@+id/textview_toc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/toc"
+                android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/imagebutton_bookmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_toc"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/toc"
+                android:src="@drawable/toc" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_bookmark"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/reader_menu_item_background"
-            android:contentDescription="@drawable/menu_bookmark"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/menu_bookmark" />
-    </LinearLayout>
+            android:focusable="true"
+             >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical|right" >
+            <TextView
+                android:id="@+id/textview_bookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/menu_item_bookmark"
+                android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/imagebutton_annotation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_bookmark"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/menu_bookmark"
+                android:src="@drawable/menu_bookmark" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_annotation"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/reader_menu_item_background"
-            android:contentDescription="@drawable/note"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/note" />
-    </LinearLayout>
+            android:focusable="true"
+             >
+
+            <TextView
+                android:id="@+id/textview_annotation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/menu_item_annotation"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_annotation"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/note"
+                android:src="@drawable/note" />
+        </RelativeLayout>
 
 </LinearLayout>

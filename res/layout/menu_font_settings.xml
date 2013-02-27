@@ -13,13 +13,31 @@
         android:layout_weight="2"
         android:gravity="center" >
 
-        <ImageButton
-            android:id="@+id/imagebutton_font_increase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layout_font_increase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
-            android:contentDescription="@drawable/font_increase"
-            android:src="@drawable/font_increase" />
+            android:focusable="true"
+             >
+
+            <TextView
+                android:id="@+id/textview_font_increase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/menu_item_font_increase"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_font_increase"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/font_increase"
+                android:src="@drawable/font_increase" />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -28,28 +46,64 @@
         android:layout_weight="2"
         android:gravity="center" >
 
-        <ImageButton
-            android:id="@+id/imagebutton_font_decrease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layout_font_decrease"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
-            android:contentDescription="@drawable/font_decrease"
-            android:src="@drawable/font_decrease" />
+            android:focusable="true"
+             >
+
+            <TextView
+                android:id="@+id/textview_font_decrease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/menu_item_font_decrease"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_font_decrease"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/font_decrease"
+                android:src="@drawable/font_decrease" />
+        </RelativeLayout>
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="center" >
 
-        <ImageButton
-            android:id="@+id/imagebutton_font_embolden"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layout_font_embolden"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
-            android:contentDescription="@drawable/font_embolden"
-            android:src="@drawable/font_embolden" />
+            android:focusable="true"
+             >
+
+            <TextView
+                android:id="@+id/textview_font_embolden"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/menu_item_font_bold"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_font_embolden"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/font_embolden"
+                android:src="@drawable/font_embolden" />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -62,7 +116,7 @@
             android:id="@+id/imageview_font_child"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/reader_menu_item_background"
             android:contentDescription="@drawable/ic_font_child"
             android:src="@drawable/ic_font_child" />
 
@@ -70,13 +124,14 @@
             android:id="@+id/button_font_face"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:textSize="25sp"
+            android:minHeight="55dp"
+            android:background="@drawable/ic_font_face_box"
             android:ellipsize="middle"
-            android:paddingRight="50dp"
             android:paddingLeft="5dp"
+            android:paddingRight="50dp"
             android:singleLine="true"
-            android:background="@drawable/ic_font_face_box" />
+            android:textSize="25sp"
+            android:focusable="true" />
     </LinearLayout>
 
 </LinearLayout>
