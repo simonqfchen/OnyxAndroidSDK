@@ -14,7 +14,9 @@
         android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:gravity="center"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:focusable="true"
+         >
 
         <TextView
             android:id="@+id/textview_dictionary"
@@ -43,7 +45,9 @@
         android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:gravity="center"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:focusable="true"
+         >
 
         <TextView
             android:id="@+id/textview_screen"
@@ -71,7 +75,9 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center" >
+        android:gravity="center"
+        android:focusable="true"
+         >
 
         <TextView
             android:id="@+id/textview_search"
@@ -100,7 +106,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center" >
+        android:gravity="center"
+        android:focusable="true"
+         >
         <TextView
             android:id="@+id/textview_refresh"
             android:layout_width="match_parent"
@@ -127,7 +135,9 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center" >
+        android:gravity="center"
+        android:focusable="true"
+         >
         <TextView
             android:id="@+id/textview_settings"
             android:layout_width="match_parent"

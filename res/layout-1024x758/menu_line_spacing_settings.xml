@@ -12,6 +12,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
             android:layout_marginLeft="10dp"
+            android:focusable="true"
              >
 
             <TextView
@@ -39,6 +40,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
             android:layout_marginLeft="10dp"
+            android:focusable="true"
              >
 
             <TextView
@@ -64,6 +66,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
             android:layout_marginLeft="10dp"
+            android:focusable="true"
              >
 
             <TextView
@@ -90,6 +93,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
             android:layout_marginLeft="10dp"
+            android:focusable="true"
              >
 
             <TextView
@@ -115,6 +119,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
             android:layout_marginLeft="10dp"
+            android:focusable="true"
              >
 
             <TextView
