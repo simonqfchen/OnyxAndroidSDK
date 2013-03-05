@@ -116,9 +116,8 @@
             android:id="@+id/imageview_font_child"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/reader_menu_item_background"
             android:contentDescription="@drawable/ic_font_child"
-            android:src="@drawable/ic_font_child" />
+            android:src="@drawable/font_type" />
 
         <Button
             android:id="@+id/button_font_face"

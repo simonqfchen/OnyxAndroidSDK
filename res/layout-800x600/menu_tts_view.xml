@@ -9,61 +9,47 @@
 
     <ImageButton
         android:id="@+id/imagebutton_tts_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_width="89dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:contentDescription="@drawable/tts_stop"
-        android:scaleType="fitCenter"
         android:src="@drawable/tts_stop" />
 
     <ImageButton
         android:id="@+id/imagebutton_tts_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_width="89dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:contentDescription="@drawable/tts_pause"
-        android:scaleType="fitCenter"
         android:src="@drawable/tts_start" />
 
-    <ImageButton
-        android:id="@+id/imagebutton_tts_mute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:background="@drawable/reader_menu_item_background"
-        android:contentDescription="@drawable/tts_mute"
-        android:scaleType="fitCenter"
-        android:src="@drawable/tts_mute" />
 
     <ImageButton
         android:id="@+id/imagebutton_tts_volume_down"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_width="89dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:contentDescription="@drawable/tts_volume_down"
-        android:scaleType="fitCenter"
         android:src="@drawable/tts_volume_down" />
 
     <SeekBar
         android:id="@+id/progressbar_tts_volume"
         style="@style/tts_seekbar"
-        android:layout_width="200dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:max="100"
         android:thumb="@drawable/tts_thumb" />
 
     <ImageButton
         android:id="@+id/imagebutton_tts_volume_increase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="89dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:contentDescription="@drawable/tts_volume_increase"
-        android:scaleType="fitCenter"
         android:src="@drawable/tts_volume_increase" />
 
 </LinearLayout>

@@ -79,4 +79,5 @@
     <string name="delete_file_skipped">Delete file skipped</string>
     <string name="file_already_exists">File already exists</string>
     <string name="replace_file_failed">Replace file failed</string>
+    <string name="menu_item_font_type">Type</string>
 </resources>

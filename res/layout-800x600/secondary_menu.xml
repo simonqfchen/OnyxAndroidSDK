@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="1dp"
+    android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/layout_child"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.0"
+        android:layout_height="75dp"
         android:baselineAligned="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -22,12 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_selected_6"
-        android:visibility="gone" />
+        android:layout_marginBottom="-4dp"
+        android:visibility="gone"
+         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.0"
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
@@ -39,15 +38,17 @@
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
             android:gravity="center"
-            android:focusable="true" >
-
+            android:focusable="true"
+            android:padding="0dp"
+             >
             <TextView
                 android:id="@+id/textview_tts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:text="@string/menu_item_tts" />
+                android:text="@string/menu_item_tts"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageview_tts"
@@ -76,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:text="@string/menu_item_line_spacing" />
+                android:text="@string/menu_item_line_spacing"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageview_line_spacing"
@@ -105,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:text="@string/directory_title" />
+                android:text="@string/directory_title"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageview_toc"
@@ -134,7 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:text="@string/menu_item_font" />
+                android:text="@string/menu_item_font"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageview_font"
@@ -163,7 +167,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:text="@string/menu_item_rotation" />
+                android:text="@string/menu_item_rotation"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageview_rotation"
@@ -193,7 +198,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:text="@string/menu_item_more" />
+                android:text="@string/menu_item_more"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/imageview_more"
