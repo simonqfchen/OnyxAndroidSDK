@@ -5,6 +5,7 @@ package com.onyx.android.sdk.ui.dialog;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -104,19 +105,26 @@ public class DialogPageSeekBar extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                DialogGotoPage dialogGotoPage = new DialogGotoPage(DialogPageSeekBar.this.getContext());
-                dialogGotoPage.setAcceptNumberListener(new AcceptNumberListener()
-                {
-
-                    @Override
-                    public void onAcceptNumber(int num)
-                    {
-                        if (DialogPageSeekBar.this.judgeSkipPage(num)) {
-                            DialogPageSeekBar.this.cancel();
-                        }
+                DialogPageSeekBar.this.onGotoPage();
+            }
+        });
+        mTextViewCurrentPage.setOnKeyListener(new View.OnKeyListener()
+        {
+            
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    switch (keyCode) {
+                    case KeyEvent.KEYCODE_DPAD_CENTER:
+                    case KeyEvent.KEYCODE_ENTER:
+                        DialogPageSeekBar.this.onGotoPage();
+                        return true;
+                    default:
+                        break;
                     }
-                });
-                dialogGotoPage.show();
+                }
+                return false;
             }
         });
 
@@ -170,5 +178,22 @@ public class DialogPageSeekBar extends OnyxDialogBase
             Toast.makeText(mContext, R.string.Exceed_the_total_number_of_pages, Toast.LENGTH_LONG).show();
             return false;
         }
+    }
+    
+    private void onGotoPage()
+    {
+        DialogGotoPage dialogGotoPage = new DialogGotoPage(DialogPageSeekBar.this.getContext());
+        dialogGotoPage.setAcceptNumberListener(new AcceptNumberListener()
+        {
+
+            @Override
+            public void onAcceptNumber(int num)
+            {
+                if (DialogPageSeekBar.this.judgeSkipPage(num)) {
+                    DialogPageSeekBar.this.cancel();
+                }
+            }
+        });
+        dialogGotoPage.show();
     }
 }

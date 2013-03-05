@@ -24,7 +24,8 @@
             android:paddingLeft="1dp"
             android:paddingRight="1dp"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:focusable="true" />
 
         <TextView
             android:layout_width="wrap_content"
