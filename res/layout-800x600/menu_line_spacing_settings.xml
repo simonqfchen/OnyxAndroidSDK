@@ -67,6 +67,13 @@
                 android:src="@drawable/line_spacing_enlarge" />
         </RelativeLayout>
     </LinearLayout>
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        ></TextView>
 
     <LinearLayout
         android:layout_width="match_parent"

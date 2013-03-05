@@ -9,15 +9,13 @@
 
     <RelativeLayout
         android:id="@+id/layout_dictionary"
-        android:layout_width="0dp"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1.0"
+        android:layout_marginLeft="12dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center"
-        android:visibility="gone"
         android:focusable="true"
-         >
+        android:gravity="center"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/textview_dictionary"
@@ -40,15 +38,13 @@
 
     <RelativeLayout
         android:id="@+id/layout_screen"
-        android:layout_width="0dp"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1.0"
+        android:layout_marginLeft="12dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center"
-        android:visibility="gone"
         android:focusable="true"
-         >
+        android:gravity="center"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/textview_screen"
@@ -71,14 +67,12 @@
 
     <RelativeLayout
         android:id="@+id/layout_search"
-        android:layout_width="0dp"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1.0"
+        android:layout_marginLeft="12dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center"
         android:focusable="true"
-         >
+        android:gravity="center" >
 
         <TextView
             android:id="@+id/textview_search"
@@ -100,16 +94,42 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_refresh"
-        android:layout_width="0dp"
+        android:id="@+id/layout_settings"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="1.0"
+        android:layout_marginLeft="12dp"
         android:background="@drawable/reader_menu_item_background"
-        android:gravity="center"
         android:focusable="true"
-         >
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/textview_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:text="@string/menu_item_settings" />
+
+        <ImageView
+            android:id="@+id/imageview_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textview_settings"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@drawable/settings"
+            android:scaleType="fitCenter"
+            android:src="@drawable/settings" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_refresh"
+        android:layout_width="85dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:background="@drawable/reader_menu_item_background"
+        android:focusable="true"
+        android:gravity="center" >
+
         <TextView
             android:id="@+id/textview_refresh"
             android:layout_width="match_parent"
@@ -129,32 +149,4 @@
             android:src="@drawable/menu_screen_refresh" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_settings"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1.0"
-        android:background="@drawable/reader_menu_item_background"
-        android:gravity="center"
-        android:focusable="true"
-         >
-        <TextView
-            android:id="@+id/textview_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_horizontal"
-            android:text="@string/menu_item_settings" />
-
-        <ImageView
-            android:id="@+id/imageview_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textview_settings"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@drawable/settings"
-            android:scaleType="fitCenter"
-            android:src="@drawable/settings" />
-    </RelativeLayout>
 </LinearLayout>

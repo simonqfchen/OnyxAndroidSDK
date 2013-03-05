@@ -65,7 +65,7 @@
             android:layout_width="115dp"
             android:layout_height="match_parent"
             android:background="@drawable/reader_menu_item_background"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="135dp"
             android:focusable="true"
              >
 
