@@ -14,7 +14,7 @@ import android.view.View;
  */
 public interface IDeviceFactory
 {
-    public enum TouchType { None, IR, Capacitive }
+    public enum TouchType { None, IR, Capacitive, Unknown }
     
     public static interface IDeviceController
     {
@@ -22,8 +22,10 @@ public interface IDeviceFactory
         File getRemovableSDCardDirectory();
         boolean isFileOnRemovableSDCard(File file);
         
-        boolean hasWifi();
-        TouchType getTouchType();
+        TouchType getTouchType(Context context);
+        boolean hasWifi(Context context);
+        boolean hasAudio(Context context);
+        boolean hasFrontLight(Context context);
         
         boolean isEInkScreen();
         

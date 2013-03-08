@@ -61,15 +61,27 @@ public class DeviceInfo
             }
             
             @Override
-            public boolean hasWifi()
+            public TouchType getTouchType(Context context)
+            {
+                return TouchType.IR;
+            }
+            
+            @Override
+            public boolean hasWifi(Context context)
             {
                 return true;
             }
             
             @Override
-            public TouchType getTouchType()
+            public boolean hasAudio(Context context)
             {
-                return TouchType.IR;
+                return true;
+            }
+            
+            @Override
+            public boolean hasFrontLight(Context context)
+            {
+                return true;
             }
             
             @Override

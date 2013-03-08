@@ -39,9 +39,7 @@ public class RK2906Factory implements IDeviceFactory
         private static int sViewPart = DEFAULT_VIEW_MODE;
         
         @SuppressWarnings("rawtypes")
-        private static Class sClassEpdManager = null;
-        @SuppressWarnings("rawtypes")
-        private static Constructor sConstructor = null;
+        private static Constructor sEpdManagerConstructor = null;
         
         private static Method sMethodEpdSetMode = null;
         private static String sEpdModeFull = DEFAULT_EPD_MODE;
@@ -52,6 +50,22 @@ public class RK2906Factory implements IDeviceFactory
         private Object mEpdManagerInstance = null;
         
         private EPDMode mCurrentMode = EPDMode.AUTO;
+        
+        @SuppressWarnings("rawtypes")
+        private static Constructor sDeviceControllerConstructor = null;
+        private static Method sMethodIsTouchable;
+        @SuppressWarnings("unused")
+        private static Method sMethodGetTouchType;
+        private static Method sMethodHasWifi;
+        private static Method sMethodHasAudio;
+        private static Method sMethodHasFrontLight;
+        
+        @SuppressWarnings("unused")
+        private static int sTouchTypeUnknown = 0;
+        @SuppressWarnings("unused")
+        private static int sTouchTypeIR = 0;
+        @SuppressWarnings("unused")
+        private static int sTouchTypeCapacitive = 0;
         
         private RK2906Controller()
         {
@@ -70,12 +84,26 @@ public class RK2906Factory implements IDeviceFactory
                     sViewAuto = class_view.getField("EPD_AUTO").getInt(null);
                     sViewPart = class_view.getField("EPD_PART").getInt(null);
                     
-                    sClassEpdManager = Class.forName("android.hardware.EpdManager");
-                    sConstructor = sClassEpdManager.getConstructor(Context.class);
-                    sMethodEpdSetMode = sClassEpdManager.getMethod("setMode", String.class);
-                    sEpdModeFull = (String)sClassEpdManager.getField("FULL").get(null);
-                    sEpdModeA2 = (String)sClassEpdManager.getField("A2").get(null);
-                    sEpdModePart = (String)sClassEpdManager.getField("PART").get(null);
+                    @SuppressWarnings("rawtypes")
+                    Class class_epd_manager = Class.forName("android.hardware.EpdManager");
+                    sEpdManagerConstructor = class_epd_manager.getConstructor(Context.class);
+                    sMethodEpdSetMode = class_epd_manager.getMethod("setMode", String.class);
+                    sEpdModeFull = (String)class_epd_manager.getField("FULL").get(null);
+                    sEpdModeA2 = (String)class_epd_manager.getField("A2").get(null);
+                    sEpdModePart = (String)class_epd_manager.getField("PART").get(null);
+                    
+                    @SuppressWarnings("rawtypes")
+                    Class class_device_controller = Class.forName("android.hardware.DeviceController");
+                    sDeviceControllerConstructor = class_device_controller.getConstructor(Context.class);
+                    sMethodIsTouchable = class_device_controller.getMethod("isTouchable");
+                    sMethodGetTouchType = class_device_controller.getMethod("getTouchType");
+                    sMethodHasWifi = class_device_controller.getMethod("hasWifi");
+                    sMethodHasAudio = class_device_controller.getMethod("hasAudio");
+                    sMethodHasFrontLight = class_device_controller.getMethod("hasFrontLight");
+                    
+//                    sTouchTypeUnknown = class_device_controller.getField("TOUCH_TYPE_UNKNOWN").getInt(null);
+//                    sTouchTypeIR = class_device_controller.getField("TOUCH_TYPE_IR").getInt(null);
+//                    sTouchTypeCapacitive = class_device_controller.getField("TOUCH_TYPE_CAPACITIVE").getInt(null);
                     
                     sInstance = new RK2906Controller();
                     return sInstance;
@@ -130,15 +158,124 @@ public class RK2906Factory implements IDeviceFactory
         }
         
         @Override
-        public boolean hasWifi()
+        public TouchType getTouchType(Context context)
         {
-            return true;
+            try {
+                Object instance = sDeviceControllerConstructor.newInstance(context);
+                Boolean succ = (Boolean) sMethodIsTouchable.invoke(instance);
+                if (succ == null || !succ.booleanValue()) {
+                    return TouchType.None;
+                }
+                
+                return TouchType.IR;
+                
+//                Integer n = (Integer)sMethodGetTouchType.invoke(instance);
+//                if (n.intValue() == sTouchTypeUnknown) {
+//                    return TouchType.Unknown;
+//                }
+//                else if (n.intValue() == sTouchTypeIR) {
+//                    return TouchType.IR;
+//                }
+//                else if (n.intValue() == sTouchTypeCapacitive) {
+//                    return TouchType.Capacitive;
+//                }
+//                else {
+//                    assert(false);
+//                    return TouchType.Unknown;
+//                }
+            }
+            catch (IllegalArgumentException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InstantiationException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (IllegalAccessException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InvocationTargetException e) {
+                Log.e(TAG, "exception", e);
+            }
+            
+            return TouchType.None;
         }
         
         @Override
-        public TouchType getTouchType()
+        public boolean hasWifi(Context context)
         {
-            return TouchType.IR;
+            try {
+                Object instance = sDeviceControllerConstructor.newInstance(context);
+                Boolean succ = (Boolean) sMethodHasWifi.invoke(instance);
+                if (succ != null) {
+                    return succ.booleanValue();
+                }
+            }
+            catch (IllegalArgumentException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InstantiationException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (IllegalAccessException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InvocationTargetException e) {
+                Log.e(TAG, "exception", e);
+            }
+            
+            return false;
+        }
+        
+        @Override
+        public boolean hasAudio(Context context)
+        {
+            try {
+                Object instance = sDeviceControllerConstructor.newInstance(context);
+                Boolean succ = (Boolean) sMethodHasAudio.invoke(instance);
+                if (succ != null) {
+                    return succ.booleanValue();
+                }
+            }
+            catch (IllegalArgumentException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InstantiationException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (IllegalAccessException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InvocationTargetException e) {
+                Log.e(TAG, "exception", e);
+            }
+            
+            return false;
+        }
+        
+        @Override
+        public boolean hasFrontLight(Context context)
+        {
+            try {
+                Object instance = sDeviceControllerConstructor.newInstance(context);
+                Boolean succ = (Boolean) sMethodHasFrontLight.invoke(instance);
+                if (succ != null) {
+                    return succ.booleanValue();
+                }
+            }
+            catch (IllegalArgumentException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InstantiationException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (IllegalAccessException e) {
+                Log.e(TAG, "exception", e);
+            }
+            catch (InvocationTargetException e) {
+                Log.e(TAG, "exception", e);
+            }
+            
+            return false;
         }
         
         @Override
@@ -170,7 +307,7 @@ public class RK2906Factory implements IDeviceFactory
             try {
                 if (mContext != context) {
                     mContext = context;
-                    mEpdManagerInstance = sConstructor.newInstance(context);
+                    mEpdManagerInstance = sEpdManagerConstructor.newInstance(context);
                 }
                 
                 Boolean res = (Boolean)sMethodEpdSetMode.invoke(mEpdManagerInstance, m);

@@ -121,15 +121,29 @@ public class RK2818Factory implements IDeviceFactory
         }
         
         @Override
-        public boolean hasWifi()
+        public TouchType getTouchType(Context context)
+        {
+            return TouchType.IR;
+        }
+        
+        @Override
+        public boolean hasWifi(Context context)
         {
             return true;
         }
         
         @Override
-        public TouchType getTouchType()
+        public boolean hasAudio(Context context)
         {
-            return TouchType.IR;
+            // TODO Auto-generated method stub
+            return false;
+        }
+        
+        @Override
+        public boolean hasFrontLight(Context context)
+        {
+            // TODO Auto-generated method stub
+            return false;
         }
         
         @Override
