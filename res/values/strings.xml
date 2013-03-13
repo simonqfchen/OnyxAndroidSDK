@@ -80,4 +80,9 @@
     <string name="file_already_exists">File already exists</string>
     <string name="replace_file_failed">Replace file failed</string>
     <string name="menu_item_font_type">Type</string>
+    
+    <string name="Copy">Copy</string>
+    <string name="Dictionary">Dictionary</string>
+    <string name="Annotation">Annotation</string>
+    <string name="Cancel">Cancel</string>
 </resources>
