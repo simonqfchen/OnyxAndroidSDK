@@ -1,21 +1,27 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.PowerManager;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
 
 /**
- * 
+ *
  * @author qingyue
  *
  */
 public class DialogLoading extends OnyxDialogBase
 {
+
+    private static final String TAG = "DialogLoading";
+    private PowerManager.WakeLock mWakeLock = null;
+
     public interface onFinishReaderListener
     {
         public void onFinishReader();
@@ -41,10 +47,45 @@ public class DialogLoading extends OnyxDialogBase
         super(context);
 
         setContentView(R.layout.dialog_loading);
+
         mTextViewMessage = (TextView) findViewById(R.id.textview_message);
         mTextViewMessage.setText(msg);
         setCanceledOnTouchOutside(false);
+
+        this.setOnShowListener(new OnShowListener()
+        {
+
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                if(mWakeLock == null) {
+                    PowerManager pm = (PowerManager)getContext().getSystemService(Context.POWER_SERVICE);
+                    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+                    mWakeLock.acquire();
+                } else {
+                    mWakeLock.acquire();
+                }
+
+            }
+        });
+
+        this.setOnDismissListener(new OnDismissListener()
+        {
+
+            @Override
+            public void onDismiss(DialogInterface dialog)
+            {
+                if(mWakeLock != null) {
+                    mWakeLock.release();
+                    mWakeLock = null;
+                }
+
+            }
+        });
+
     }
+
+
 
     public void setMessage(String msg)
     {
