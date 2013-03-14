@@ -3,5 +3,7 @@
 
     <dimen name="selection_adapter_min_height">60px</dimen>
     <dimen name="reader_settings_gridview_adapter_min_height">60px</dimen>
-
+    <dimen name="annoration_title_size">24sp</dimen>
+    <dimen name="control_panel_floating_button_name_text_size">16sp</dimen>
+    <dimen name="border_stroke_width">2dp</dimen>
 </resources>
