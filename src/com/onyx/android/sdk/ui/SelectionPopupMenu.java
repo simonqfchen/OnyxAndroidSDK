@@ -62,17 +62,6 @@ public class SelectionPopupMenu extends LinearLayout {
             }
         });
 
-        ImageButton imagebuttonShare = (ImageButton) findViewById(R.id.imagebutton_share);
-        imagebuttonShare.setOnClickListener(new OnClickListener()
-        {
-            
-            @Override
-            public void onClick(View v)
-            {
-                handler.share();
-            }
-        });
-
         ImageButton imagebuttonTranslation = (ImageButton) findViewById(R.id.imagebutton_translation);
         imagebuttonTranslation.setOnClickListener(new OnClickListener()
         {
