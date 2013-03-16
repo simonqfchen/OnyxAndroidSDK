@@ -9,9 +9,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.reader.TOCItem;
 import com.onyx.android.sdk.ui.GridViewTOC;
 import com.onyx.android.sdk.ui.data.GridViewTOCAdapter;
-import com.onyx.android.sdk.ui.data.TOCItem;
 
 public class DialogTOC extends OnyxDialogBase
 {

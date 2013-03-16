@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.reader.TOCItem;
 import com.onyx.android.sdk.ui.OnyxGridView;
 import com.onyx.android.sdk.ui.data.GridViewPageLayout.GridViewMode;
 

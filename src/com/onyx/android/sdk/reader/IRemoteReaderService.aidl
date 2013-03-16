@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.onyx.android.sdk.reader;
 
 import java.util.List;
@@ -8,23 +5,26 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import com.onyx.android.sdk.data.cms.OnyxMetadata;
+import com.onyx.android.sdk.reader.DocPageLayout;
+import com.onyx.android.sdk.reader.DocPagingMode;
+import com.onyx.android.sdk.reader.DocTextSelection;
+import com.onyx.android.sdk.reader.Size;
+import com.onyx.android.sdk.reader.TOCItem;
 
 /**
  * @author joy
  *
  */
-public interface IDocumentModel
+interface IRemoteReaderService
 {
     boolean canOpen(String path);
-    
     boolean isOpened();
+    
     /**
      * currently opened file path
      * @return
      */
     String getFilePath();
-    
     boolean openFile(String path);
     boolean close();
     
@@ -34,19 +34,12 @@ public interface IDocumentModel
     void interrupt();
     void resume();
     
-    /**
-     * return null if failed
-     * 
-     * @return
-     */
-    OnyxMetadata readMetadata();
-    
     int getPageCount();
     
     DocPageLayout getPageLayout();
     DocPagingMode getPagingMode();
-    boolean setPagingMode(DocPagingMode mode);
-    
+    boolean setPagingMode(in DocPagingMode mode);
+        
     double getPagePosition();
     double getPagePositionOfLocation(String location);
     boolean gotoPagePosition(double page);
@@ -90,7 +83,7 @@ public interface IDocumentModel
      * @param height
      * @return
      */
-    Bitmap renderPage(double zoom, int left, int top, int width, int height, Bitmap.Config conf, boolean isPrefetch);
+    byte[] renderPage(double zoom, int left, int top, int width, int height, boolean isPrefetch);
     
     boolean hasTOC();
     /**
