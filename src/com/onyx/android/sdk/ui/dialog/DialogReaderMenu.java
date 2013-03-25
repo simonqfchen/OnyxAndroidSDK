@@ -72,7 +72,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         public void showAnnotation();
 
         public void searchContent();
-        public void dictionary();
+        public void startDictionary();
         public void showGoToPageDialog();
 
         public void zoomToPage();
@@ -531,7 +531,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         RelativeLayout layout_annotation = (RelativeLayout) mShowDirectory.findViewById(R.id.layout_annotation);
         if(DeviceInfo.singleton().getDeviceController().getTouchType(activity) == TouchType.None){
         	layout_annotation.setVisibility(View.GONE);
-        }else{
+        } else {
         	layout_annotation.setOnClickListener(new View.OnClickListener()
         	{
 
@@ -552,7 +552,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             public void onClick(View v)
             {
                 DialogReaderMenu.this.dismiss();
-                mMenuHandler.dictionary();
+                mMenuHandler.startDictionary();
             }
         });
 
