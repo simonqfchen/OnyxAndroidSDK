@@ -14,7 +14,6 @@
         android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:gravity="center"
-        android:visibility="gone"
         android:focusable="true"
          >
 

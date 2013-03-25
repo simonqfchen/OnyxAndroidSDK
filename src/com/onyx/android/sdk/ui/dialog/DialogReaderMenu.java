@@ -72,6 +72,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         public void showAnnotation();
 
         public void searchContent();
+        public void dictionary();
         public void showGoToPageDialog();
 
         public void zoomToPage();
@@ -542,6 +543,18 @@ public class DialogReaderMenu extends OnyxDialogBase
         		}
         	});
         }
+        
+        RelativeLayout layout_dictionary = (RelativeLayout) mMoreView.findViewById(R.id.layout_dictionary);
+        layout_dictionary.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                DialogReaderMenu.this.dismiss();
+                mMenuHandler.dictionary();
+            }
+        });
 
         RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
         layout_search.setOnClickListener(new View.OnClickListener()
