@@ -250,7 +250,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         mLayoutFontIncrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_increase);
         mLayoutFontEmbolden = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_embolden);
         mButtonFontFace = (Button) mFontSettings.findViewById(R.id.button_font_face);
-        if(!mMenuHandler.canChangeFontFace()){
+        if (!mMenuHandler.canChangeFontFace()) {
         	mButtonFontFace.setVisibility(View.GONE);
         	mFontSettings.findViewById(R.id.relativelayout_font_type).setVisibility(View.GONE);
         }
