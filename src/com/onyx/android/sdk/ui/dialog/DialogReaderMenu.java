@@ -24,8 +24,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.device.DeviceInfo;
 import com.onyx.android.sdk.device.EpdController;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
+import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
 import com.onyx.android.sdk.ui.util.WindowUtil;
 
 
@@ -70,6 +72,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         public void showAnnotation();
 
         public void searchContent();
+        public void startDictionary();
         public void showGoToPageDialog();
 
         public void zoomToPage();
@@ -526,14 +529,30 @@ public class DialogReaderMenu extends OnyxDialogBase
         });
 
         RelativeLayout layout_annotation = (RelativeLayout) mShowDirectory.findViewById(R.id.layout_annotation);
-        layout_annotation.setOnClickListener(new View.OnClickListener()
+        if(DeviceInfo.singleton().getDeviceController().getTouchType(activity) == TouchType.None){
+        	layout_annotation.setVisibility(View.GONE);
+        } else {
+        	layout_annotation.setOnClickListener(new View.OnClickListener()
+        	{
+
+        		@Override
+        		public void onClick(View v)
+        		{
+        			DialogReaderMenu.this.dismiss();
+        			menuHandler.showAnnotation();
+        		}
+        	});
+        }
+        
+        RelativeLayout layout_dictionary = (RelativeLayout) mMoreView.findViewById(R.id.layout_dictionary);
+        layout_dictionary.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
                 DialogReaderMenu.this.dismiss();
-                menuHandler.showAnnotation();
+                mMenuHandler.startDictionary();
             }
         });
 

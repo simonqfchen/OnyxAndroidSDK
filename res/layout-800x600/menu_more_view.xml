@@ -15,7 +15,7 @@
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
         android:gravity="center"
-        android:visibility="gone" >
+         >
 
         <TextView
             android:id="@+id/textview_dictionary"

@@ -17,6 +17,8 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.device.DeviceInfo;
+import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
 import com.onyx.android.sdk.ui.DirectoryGridView;
 import com.onyx.android.sdk.ui.data.DirectoryItem;
 import com.onyx.android.sdk.ui.data.GridViewAnnotationAdapter;
@@ -58,7 +60,13 @@ public class DialogDirectory extends OnyxDialogBase
 
         tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_toc)).setIndicator(toc).setContent(R.id.layout_toc));
         tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_bookmark)).setIndicator(bookmark).setContent(R.id.layout_bookmark));
-        tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_annotation)).setIndicator(annotation).setContent(R.id.layout_annotation));
+        
+        if (DeviceInfo.singleton().getDeviceController().getTouchType(context) != TouchType.None) {
+        	tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_annotation)).setIndicator(annotation).setContent(R.id.layout_annotation));
+		} else {
+        	View v = this.findViewById(R.id.layout_annotation);
+        	v.setVisibility(View.GONE);
+        }
 
         tab_host.setOnTabChangedListener(new OnTabChangeListener()
         {
