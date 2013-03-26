@@ -617,7 +617,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                             if (mAdapter.getPaginator().canPrevPage()) {
                                 EpdController.invalidate(this, UpdateMode.GU);
                                 mAdapter.getPaginator().prevPage();
-                                this.setSelection(mAdapter.getPaginator().getItemCountInCurrentPage());
+                                this.setSelection(mAdapter.getPaginator().getPageSize());
                             }
                             return true;
                         }
