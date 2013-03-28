@@ -45,7 +45,7 @@ public class OnyxProgressBar extends ImageView
     @Override
     protected void onDraw(Canvas canvas)
     {
-    	if(mAnimationDrawable != null) {
+    	if (mAnimationDrawable != null) {
     		mAnimationDrawable.start();
     	}
         canvas.setDrawFilter(mPaintFilter);
@@ -63,27 +63,21 @@ public class OnyxProgressBar extends ImageView
         @Override
         protected Void doInBackground(Void... params)
         {
-            while (OnyxProgressBar.this.isShown()) {
-                try {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                publishProgress(params);
-            }
-
+        	publishProgress(params);
             return null;
         }
 
         @Override
         protected void onProgressUpdate(Void... values)
         {
-        	if(mAnimationDrawable != null) {
+            OnyxProgressBar.this.invalidate();
+        }
+        
+        @Override
+        protected void onPostExecute(Void result) {
+        	if (mAnimationDrawable != null) {
         		mAnimationDrawable.stop();
         	}
-            OnyxProgressBar.this.invalidate();
         }
     }
 }
