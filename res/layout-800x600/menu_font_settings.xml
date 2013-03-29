@@ -111,6 +111,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativelayout_font_face"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@drawable/reader_menu_item_background"
