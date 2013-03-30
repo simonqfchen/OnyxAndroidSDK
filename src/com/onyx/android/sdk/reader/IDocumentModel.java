@@ -16,6 +16,24 @@ import com.onyx.android.sdk.data.cms.OnyxMetadata;
  */
 public interface IDocumentModel
 {
+    /**
+     * interface to handle all callbacks
+     * 
+     * @author joy
+     *
+     */
+    static interface DocumentCallbackListener {
+        void onRequestDocumentPassword();
+        
+        /**
+         * extensible callback interface
+         * 
+         * @param r
+         */
+        void onCallback(Runnable r);
+    }
+    void setDocumentCallbackListener(DocumentCallbackListener l);
+    
     boolean canOpen(String path);
     
     boolean isOpened();
@@ -27,6 +45,8 @@ public interface IDocumentModel
     
     boolean openFile(String path);
     boolean close();
+    
+    void setDocumentPassword(String password);
     
     /**
      * interrupt all task being processed until resume() being called
