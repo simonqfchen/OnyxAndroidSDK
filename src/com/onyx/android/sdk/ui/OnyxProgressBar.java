@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -13,10 +14,9 @@ import android.widget.ImageView;
 public class OnyxProgressBar extends ImageView
 {
     private PaintFlagsDrawFilter mPaintFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
-    private int[] mRotate = new int[]{0, 90, 180, 270 };
-    private int mProgress = 0;
     private boolean mIsInit = true;
     private ProgressBarTask mTask = new ProgressBarTask();
+    private AnimationDrawable mAnimationDrawable = null;
 
     public OnyxProgressBar(Context context, AttributeSet attrs, int defStyle)
     {
@@ -38,18 +38,16 @@ public class OnyxProgressBar extends ImageView
 
     private void init()
     {
-        setImageResource(R.drawable.menu_loading);
+        setImageResource(R.anim.reader_loading_animation);
+        mAnimationDrawable = (AnimationDrawable) this.getDrawable();  
     }
 
     @Override
     protected void onDraw(Canvas canvas)
     {
-        mProgress++;
-        if (mProgress >= mRotate.length) {
-            mProgress = 0;
-        }
-
-        canvas.rotate(mRotate[mProgress], getWidth() / 2, getHeight() / 2);
+    	if (mAnimationDrawable != null) {
+    		mAnimationDrawable.start();
+    	}
         canvas.setDrawFilter(mPaintFilter);
         super.onDraw(canvas);
 
@@ -65,17 +63,7 @@ public class OnyxProgressBar extends ImageView
         @Override
         protected Void doInBackground(Void... params)
         {
-            while (OnyxProgressBar.this.isShown()) {
-                try {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                publishProgress(params);
-            }
-
+        	publishProgress(params);
             return null;
         }
 
@@ -83,6 +71,13 @@ public class OnyxProgressBar extends ImageView
         protected void onProgressUpdate(Void... values)
         {
             OnyxProgressBar.this.invalidate();
+        }
+        
+        @Override
+        protected void onPostExecute(Void result) {
+        	if (mAnimationDrawable != null) {
+        		mAnimationDrawable.stop();
+        	}
         }
     }
 }
