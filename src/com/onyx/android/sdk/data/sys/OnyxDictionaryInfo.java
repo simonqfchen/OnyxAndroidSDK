@@ -3,6 +3,7 @@
  */
 package com.onyx.android.sdk.data.sys;
 
+import android.app.SearchManager;
 import android.content.Intent;
 
 /**
@@ -24,6 +25,7 @@ public class OnyxDictionaryInfo
     public final String className;
     public final String action;
     public final Integer internal;
+    public String dataKey = SearchManager.QUERY;
     
     private OnyxDictionaryInfo(String id, String name, String packageName, String className, String action, Integer internal ) 
     {
