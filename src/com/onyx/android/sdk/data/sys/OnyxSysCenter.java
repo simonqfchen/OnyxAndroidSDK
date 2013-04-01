@@ -6,8 +6,8 @@ package com.onyx.android.sdk.data.sys;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-
 
 import android.content.Context;
 import android.database.Cursor;
@@ -30,6 +30,7 @@ public class OnyxSysCenter
     private static final String KEY_SUSPEND_INTERVAL = "sys.suspend_interval";
     private static final String KEY_SHUTDOWN_INTERVAL = "sys.shutdown_interval";
     private static final String KEY_TIMEZONE = "sys.timezone";
+    private static final String KEY_DICT = "sys.dict";
     
     private static boolean sInitialized = false;
     private static Map<String, OnyxKeyValueItem> sItemMap = new HashMap<String, OnyxKeyValueItem>();
@@ -167,9 +168,36 @@ public class OnyxSysCenter
         return setStringValue(context, KEY_TIMEZONE, timezone);
     }
     
+    /**
+     * return null if not found
+     * 
+     * @return
+     */
+    public static OnyxDictionaryInfo getDictionary()
+    {
+        if (!sInitialized) {
+            return null;
+        }
+        
+        String dict_id = getStringValue(KEY_DICT);
+        if (dict_id == null) {
+            return null;
+        }
+        
+        return OnyxDictionaryInfo.findDict(dict_id);
+    }
+    
+    public static boolean setDictionary(Context context, OnyxDictionaryInfo dict)
+    {
+        if (!sInitialized) {
+            return false;
+        }
+        return setStringValue(context, KEY_DICT, dict.id);
+    }
+    
     public static boolean setFileType(Context context, String key, String value)
     {
-        key = key.toLowerCase();
+        key = key.toLowerCase(Locale.getDefault());
         if (!sInitialized) {
             return false;
         }
@@ -179,7 +207,7 @@ public class OnyxSysCenter
     
     public static String getFileType(String key)
     {
-        key = key.toLowerCase();
+        key = key.toLowerCase(Locale.getDefault());
         if (!sInitialized) {
             return null;
         }
