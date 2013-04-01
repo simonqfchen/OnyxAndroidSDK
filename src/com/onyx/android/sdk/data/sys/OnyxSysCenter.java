@@ -168,6 +168,11 @@ public class OnyxSysCenter
         return setStringValue(context, KEY_TIMEZONE, timezone);
     }
     
+    public static OnyxDictionaryInfo[] getDictionaryList()
+    {
+        return OnyxDictionaryInfo.getDictionaryList();
+    }
+    
     /**
      * return null if not found
      * 
@@ -181,7 +186,7 @@ public class OnyxSysCenter
         
         String dict_id = getStringValue(KEY_DICT);
         if (dict_id == null) {
-            return null;
+            return OnyxDictionaryInfo.getDefaultDictionary();
         }
         
         return OnyxDictionaryInfo.findDict(dict_id);

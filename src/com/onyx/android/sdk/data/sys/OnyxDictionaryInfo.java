@@ -11,7 +11,7 @@ import android.content.Intent;
  */
 public class OnyxDictionaryInfo
 {
-    public static final OnyxDictionaryInfo PREDEFINED_DICTS[] = {
+    private static final OnyxDictionaryInfo PREDEFINED_DICTS[] = {
         new OnyxDictionaryInfo("QuickDic", "QuickDic Dictionary", "com.hughes.android.dictionary", "com.hughes.android.dictionary.DictionaryManagerActivity", Intent.ACTION_SEARCH, 0),
         new OnyxDictionaryInfo("ColorDict", "ColorDict", "com.socialnmobile.colordict", "com.socialnmobile.colordict.activity.Main", Intent.ACTION_SEARCH, 0),
         new OnyxDictionaryInfo("Fora", "Fora Dictionary", "com.ngc.fora", "com.ngc.fora.ForaDictionary", Intent.ACTION_SEARCH, 0),
@@ -35,6 +35,11 @@ public class OnyxDictionaryInfo
         this.internal = internal;
     }
     
+    public static OnyxDictionaryInfo[] getDictionaryList()
+    {
+        return PREDEFINED_DICTS;
+    }
+    
     /**
      * return null if not found
      * 
@@ -50,5 +55,11 @@ public class OnyxDictionaryInfo
         }
         
         return null;
+    }
+    
+    public static OnyxDictionaryInfo getDefaultDictionary()
+    {
+        assert(PREDEFINED_DICTS.length > 0);
+        return PREDEFINED_DICTS[0];
     }
 }
