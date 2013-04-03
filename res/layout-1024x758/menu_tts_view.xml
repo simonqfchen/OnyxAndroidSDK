@@ -41,6 +41,7 @@
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:focusable="false"
         android:thumb="@drawable/tts_thumb" />
 
     <ImageButton
