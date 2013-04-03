@@ -91,6 +91,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         public void setScreenRefresh();
         public void showReaderSettings();
 
+        public boolean ttsIsSpeaking();
         public void ttsInit();
         public void ttsSpeak();
         public void ttsPause();
@@ -651,7 +652,13 @@ public class DialogReaderMenu extends OnyxDialogBase
 
             @Override
             public void onClick(View v) {
-                menuHandler.ttsSpeak();
+                if (menuHandler.ttsIsSpeaking()) {
+                    menuHandler.ttsPause();
+                }
+                else {
+                    menuHandler.ttsSpeak();
+                }
+                setTtsState(menuHandler.ttsIsSpeaking());
             }
         });
 
@@ -805,6 +812,9 @@ public class DialogReaderMenu extends OnyxDialogBase
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
+
+        this.setTtsState(mMenuHandler.ttsIsSpeaking());
+        
         super.show();
     }
 
