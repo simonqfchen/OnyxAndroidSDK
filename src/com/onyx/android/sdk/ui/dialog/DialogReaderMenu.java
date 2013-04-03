@@ -561,6 +561,22 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.startDictionary();
             }
         });
+        
+      if (!DeviceInfo.singleton().getDeviceController().hasAudio(activity)) {
+    	layout_dictionary.setVisibility(View.GONE);
+      	findViewById(R.id.layout_tts).setVisibility(View.GONE);
+      	RelativeLayout foot_layout_dictionary = (RelativeLayout)findViewById(R.id.layout_dictionary);
+      	foot_layout_dictionary.setVisibility(View.VISIBLE);
+      	foot_layout_dictionary.setOnClickListener(new View.OnClickListener()
+          {
+
+              @Override
+              public void onClick(View v)
+              {
+                  mMenuHandler.startDictionary();
+              }
+          });
+      }
 
         RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
         layout_search.setOnClickListener(new View.OnClickListener()
