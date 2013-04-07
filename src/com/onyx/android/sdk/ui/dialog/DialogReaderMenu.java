@@ -1,9 +1,11 @@
 package com.onyx.android.sdk.ui.dialog;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -644,6 +646,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             {
                 showChildMenu(R.drawable.item_selected_1, mTTsView);
                 menuHandler.ttsInit();
+                setTtsState(menuHandler.ttsIsSpeaking());
             }
         });
 
@@ -668,7 +671,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             @Override
             public void onClick(View v) {
                 menuHandler.ttsStop();
-
+                setTtsState(menuHandler.ttsIsSpeaking());
             }
         });
 
@@ -1021,6 +1024,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         mVolumeSeekBar.setProgress(getVolume());
     }
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     private int getOrientation(RotationScreenProperty property)
     {
         int orientation = -1;
