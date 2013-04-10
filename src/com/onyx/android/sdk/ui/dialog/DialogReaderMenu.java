@@ -424,17 +424,19 @@ public class DialogReaderMenu extends OnyxDialogBase
             }
         });
 
-        RelativeLayout layout_cuttingEdge = (RelativeLayout) mZoomSettings.findViewById(R.id.layout_cutting_edge);
-        layout_cuttingEdge.setOnClickListener(new View.OnClickListener()
-        {
+        if (DeviceInfo.singleton().getDeviceController().getTouchType(activity) == TouchType.None) {
+        	mZoomSettings.findViewById(R.id.layout_cutting_edge).setVisibility(View.GONE);
+        } else {
+			RelativeLayout layout_cuttingEdge = (RelativeLayout) mZoomSettings.findViewById(R.id.layout_cutting_edge);
+			layout_cuttingEdge.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v)
-            {
-                mMenuHandler.zoomBySelection();
-            }
-        });
-
+				@Override
+				public void onClick(View v) {
+					mMenuHandler.zoomBySelection();
+				}
+			});
+        }
+        
         Button increaseFontButton = (Button)findViewById(R.id.button_font_size_increase);
         increaseFontButton.setOnClickListener(new View.OnClickListener()
         {
