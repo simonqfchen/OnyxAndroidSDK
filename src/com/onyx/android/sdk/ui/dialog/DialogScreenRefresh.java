@@ -11,6 +11,7 @@ import android.util.Pair;
 import android.view.View;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.data.sys.OnyxSysCenter;
 import com.onyx.android.sdk.ui.data.SelectionAdapter;
 
 /**
@@ -58,8 +59,11 @@ public class DialogScreenRefresh extends DialogBaseSettings
         mItems.add(new Pair<String, Object>("every 7 pages", Integer.valueOf(7)));
         mItems.add(new Pair<String, Object>("every 9 pages", Integer.valueOf(9)));
         mItems.add(new Pair<String, Object>("automatic", Integer.valueOf(Integer.MAX_VALUE)));
-        RENDER_RESET_MAX_TIME = pageTurning;
-
+        RENDER_RESET_MAX_TIME = OnyxSysCenter.getScreenUpdateGCInterval();
+        if (RENDER_RESET_MAX_TIME == -1) {
+        	RENDER_RESET_MAX_TIME = 5;
+        }
+        
         mAdapter = new SelectionAdapter(hostActivity, this.getGridView(), mItems, 0);
         for (int i = 0; i < mItems.size(); i++) {
             if ((Integer)mItems.get(i).second == RENDER_RESET_MAX_TIME) {
@@ -85,6 +89,7 @@ public class DialogScreenRefresh extends DialogBaseSettings
                     RENDER_RESET_MAX_TIME = 1;
                 }
 
+                OnyxSysCenter.setScreenUpdateGCInterval(hostActivity , RENDER_RESET_MAX_TIME);
                 mOnScreenRefreshListener.screenFefresh(RENDER_RESET_MAX_TIME);
                 
                 Log.d(TAG, "render reset time: " + RENDER_RESET_MAX_TIME);
