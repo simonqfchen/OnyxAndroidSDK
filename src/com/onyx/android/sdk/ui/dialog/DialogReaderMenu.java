@@ -121,10 +121,10 @@ public class DialogReaderMenu extends OnyxDialogBase
     private RelativeLayout mLayoutLineSpacingBig = null;
     private RelativeLayout mLayoutLineSpacingNormal = null;
 
-    private ImageButton mImageButtonRotation_90 = null;
-    private ImageButton mImageButtonRotation_180 = null;
-    private ImageButton mImageButtonRotation_270 = null;
-    private ImageButton mImageButtonRotation_0 = null;
+    private LinearLayout mLayoutRotation_90 = null;
+    private LinearLayout mLayoutRotation_180 = null;
+    private LinearLayout mLayoutRotation_270 = null;
+    private LinearLayout mLayoutRotation_0 = null;
 
     private RelativeLayout mLayoutFontIncrease = null;
     private RelativeLayout mLayoutFontDecrease = null;
@@ -185,14 +185,14 @@ public class DialogReaderMenu extends OnyxDialogBase
         mTotalPageTextView = (TextView)findViewById(R.id.textview_total_page);
         mShowDirectory = mInflater.inflate(R.layout.menu_directory_view, null);
 
-        mImageButtonRotation_0 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_0);
-        mImageButtonRotation_90 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_90);
-        mImageButtonRotation_180 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_180);
-        mImageButtonRotation_270 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_270);
+        mLayoutRotation_0 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_0);
+        mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
+        mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
+        mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
 
         mMenuHandler = menuHandler;
 
-        mImageButtonRotation_0.setOnClickListener(new View.OnClickListener()
+        mLayoutRotation_0.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
@@ -206,7 +206,7 @@ public class DialogReaderMenu extends OnyxDialogBase
                 }
             }
         });
-        mImageButtonRotation_90.setOnClickListener(new View.OnClickListener()
+        mLayoutRotation_90.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
@@ -220,7 +220,7 @@ public class DialogReaderMenu extends OnyxDialogBase
                 }
             }
         });
-        mImageButtonRotation_180.setOnClickListener(new View.OnClickListener()
+        mLayoutRotation_180.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
@@ -234,7 +234,7 @@ public class DialogReaderMenu extends OnyxDialogBase
                 }
             }
         });
-        mImageButtonRotation_270.setOnClickListener(new View.OnClickListener()
+        mLayoutRotation_270.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
