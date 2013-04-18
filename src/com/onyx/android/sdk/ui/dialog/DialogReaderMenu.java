@@ -121,10 +121,10 @@ public class DialogReaderMenu extends OnyxDialogBase
     private RelativeLayout mLayoutLineSpacingBig = null;
     private RelativeLayout mLayoutLineSpacingNormal = null;
 
-    private ImageButton mImageButtonRotation_90 = null;
-    private ImageButton mImageButtonRotation_180 = null;
-    private ImageButton mImageButtonRotation_270 = null;
-    private ImageButton mImageButtonRotation_0 = null;
+    private LinearLayout mImageButtonRotation_90 = null;
+    private LinearLayout mImageButtonRotation_180 = null;
+    private LinearLayout mImageButtonRotation_270 = null;
+    private LinearLayout mImageButtonRotation_0 = null;
 
     private RelativeLayout mLayoutFontIncrease = null;
     private RelativeLayout mLayoutFontDecrease = null;
@@ -185,10 +185,10 @@ public class DialogReaderMenu extends OnyxDialogBase
         mTotalPageTextView = (TextView)findViewById(R.id.textview_total_page);
         mShowDirectory = mInflater.inflate(R.layout.menu_directory_view, null);
 
-        mImageButtonRotation_0 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_0);
-        mImageButtonRotation_90 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_90);
-        mImageButtonRotation_180 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_180);
-        mImageButtonRotation_270 = (ImageButton) mRotationView.findViewById(R.id.imagebutton_rotation_270);
+        mImageButtonRotation_0 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_0);
+        mImageButtonRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
+        mImageButtonRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
+        mImageButtonRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
 
         mMenuHandler = menuHandler;
 

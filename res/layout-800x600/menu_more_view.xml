@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textview_dictionary"
             android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
             android:contentDescription="@drawable/menu_dictionary"
             android:scaleType="fitCenter"
             android:src="@drawable/menu_dictionary" />
@@ -60,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textview_screen"
             android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
             android:contentDescription="@drawable/full_screen"
             android:scaleType="fitCenter"
             android:src="@drawable/full_screen" />
@@ -88,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textview_search"
             android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
             android:contentDescription="@drawable/search"
             android:scaleType="fitCenter"
             android:src="@drawable/search" />
@@ -116,6 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textview_settings"
             android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
             android:contentDescription="@drawable/settings"
             android:scaleType="fitCenter"
             android:src="@drawable/settings" />
@@ -144,6 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/textview_refresh"
             android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
             android:contentDescription="@drawable/menu_screen_refresh"
             android:scaleType="fitCenter"
             android:src="@drawable/menu_screen_refresh" />

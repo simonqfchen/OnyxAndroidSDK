@@ -58,6 +58,7 @@
                 android:layout_above="@id/textview_dictionary"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/menu_dictionary"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/menu_dictionary" />
         </RelativeLayout>
@@ -89,6 +90,7 @@
                 android:layout_above="@id/textview_tts"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/tts"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/tts" />
         </RelativeLayout>
@@ -119,6 +121,7 @@
                 android:layout_above="@id/textview_line_spacing"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/line_spacing"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/line_spacing" />
         </RelativeLayout>
@@ -149,6 +152,7 @@
                 android:layout_above="@id/textview_toc"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/directory"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/directory" />
         </RelativeLayout>
@@ -179,6 +183,7 @@
                 android:layout_above="@id/textview_font"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/font"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/font" />
         </RelativeLayout>
@@ -209,6 +214,7 @@
                 android:layout_above="@id/textview_rotation"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/rotation"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/rotation" />
         </RelativeLayout>
@@ -240,6 +246,7 @@
                 android:layout_above="@id/textview_more"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/more"
+                android:background="@color/read_menu_item_background_color"
                 android:scaleType="fitCenter"
                 android:src="@drawable/more" />
         </RelativeLayout>
