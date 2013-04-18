@@ -145,6 +145,11 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             }
         }
     }
+    
+    public boolean isOpened()
+    {
+        return this.isActive() || this.isPaused();
+    }
 
     /**
      * both stopped and paused will cause active to be false
@@ -179,13 +184,6 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             }
         }
     }
-
-    public boolean isSpeaking()
-    {
-        synchronized (mTtsLocker) {
-            return mTtsSpeaking;
-        }
-    }
     
     public boolean isPaused()
     {
@@ -202,7 +200,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
     public void startTts(String text)
     {
         synchronized (mTtsLocker) {
-            if (isSpeaking()) {
+            if (mTtsSpeaking) {
                 return;
             }
 
@@ -265,7 +263,15 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             }
             mTtsService.stop();
             mTtsSpeaking = false;
+            mTtsPaused = false;
         }
+    }
+    
+    public void shutdown()
+    {
+        assert(mTtsService != null);
+        this.stop();
+        mTtsService.shutdown();
     }
 
     private File getTempWaveFile()
