@@ -664,13 +664,29 @@ public class OnyxCmsCenter
 
     }
 
-    public static boolean searchBooks (Context context, Collection<OnyxLibraryItem> result, String arg)
+    public static boolean searchBooks (Context context, Collection<OnyxLibraryItem> result, String query, String fileTypes)
     {
         Cursor c = null;
         try {
+            String selection = null;
+            String[] file_types = fileTypes.split(",");
+            if (file_types != null && file_types.length > 0) {
+                selection = "(type=?";
+                for(int i = 0; i < file_types.length - 1; i++) {
+                    selection = selection.concat(" OR type=?");   
+                }
+                selection = selection.concat(")");
+            }
+            
+            selection = selection.concat("AND name LIKE ?");
+            String[] selection_args = new String[file_types.length + 1];
+            for (int i = 0; i < file_types.length; i++) {
+                selection_args[i] = file_types[i];
+            }
+            selection_args[selection_args.length - 1] = "%" + query + "%";
+            
             c = context.getContentResolver().query(OnyxLibraryItem.CONTENT_URI, null,
-                    "name like ?",
-                    new String[] { "%" + arg + "%" }, null);
+                    selection, selection_args, null);
             if (c == null) {
                 return false;
             }
