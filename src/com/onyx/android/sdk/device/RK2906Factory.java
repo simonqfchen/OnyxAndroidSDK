@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.device;
 
@@ -23,34 +23,34 @@ import com.onyx.android.sdk.device.EpdController.UpdateMode;
 public class RK2906Factory implements IDeviceFactory
 {
     private final static String TAG = "RK2906Factory";
-    
-    private static class RK2906Controller implements IDeviceController 
+
+    private static class RK2906Controller implements IDeviceController
     {
         private final static int DEFAULT_VIEW_MODE = 0;
         private final static String DEFAULT_EPD_MODE = "3"; // which standing for A2 according to RK2906 specification
-        
+
         private static RK2906Controller sInstance = null;
-        
+
         private static Method sMethodViewRequestEpdMode = null;
         private static int sViewNull = DEFAULT_VIEW_MODE;
         private static int sViewFull = DEFAULT_VIEW_MODE;
         private static int sViewA2 = DEFAULT_VIEW_MODE;
         private static int sViewAuto = DEFAULT_VIEW_MODE;
         private static int sViewPart = DEFAULT_VIEW_MODE;
-        
+
         @SuppressWarnings("rawtypes")
         private static Constructor sEpdManagerConstructor = null;
-        
+
         private static Method sMethodEpdSetMode = null;
         private static String sEpdModeFull = DEFAULT_EPD_MODE;
         private static String sEpdModeA2 = DEFAULT_EPD_MODE;
         private static String sEpdModePart = DEFAULT_EPD_MODE;
-        
+
         private Context mContext = null;
         private Object mEpdManagerInstance = null;
-        
+
         private EPDMode mCurrentMode = EPDMode.AUTO;
-        
+
         @SuppressWarnings("rawtypes")
         private static Constructor sDeviceControllerConstructor = null;
         private static Method sMethodIsTouchable;
@@ -59,18 +59,18 @@ public class RK2906Factory implements IDeviceFactory
         private static Method sMethodHasWifi;
         private static Method sMethodHasAudio;
         private static Method sMethodHasFrontLight;
-        
+
         @SuppressWarnings("unused")
         private static int sTouchTypeUnknown = 0;
         @SuppressWarnings("unused")
         private static int sTouchTypeIR = 0;
         @SuppressWarnings("unused")
         private static int sTouchTypeCapacitive = 0;
-        
+
         private RK2906Controller()
         {
         }
-        
+
         @SuppressWarnings("unchecked")
         public static RK2906Controller createController()
         {
@@ -83,7 +83,7 @@ public class RK2906Factory implements IDeviceFactory
                     sViewA2 = class_view.getField("EPD_A2").getInt(null);
                     sViewAuto = class_view.getField("EPD_AUTO").getInt(null);
                     sViewPart = class_view.getField("EPD_PART").getInt(null);
-                    
+
                     @SuppressWarnings("rawtypes")
                     Class class_epd_manager = Class.forName("android.hardware.EpdManager");
                     sEpdManagerConstructor = class_epd_manager.getConstructor(Context.class);
@@ -91,7 +91,7 @@ public class RK2906Factory implements IDeviceFactory
                     sEpdModeFull = (String)class_epd_manager.getField("FULL").get(null);
                     sEpdModeA2 = (String)class_epd_manager.getField("A2").get(null);
                     sEpdModePart = (String)class_epd_manager.getField("PART").get(null);
-                    
+
                     @SuppressWarnings("rawtypes")
                     Class class_device_controller = Class.forName("android.hardware.DeviceController");
                     sDeviceControllerConstructor = class_device_controller.getConstructor(Context.class);
@@ -100,11 +100,11 @@ public class RK2906Factory implements IDeviceFactory
                     sMethodHasWifi = class_device_controller.getMethod("hasWifi");
                     sMethodHasAudio = class_device_controller.getMethod("hasAudio");
                     sMethodHasFrontLight = class_device_controller.getMethod("hasFrontLight");
-                    
+
 //                    sTouchTypeUnknown = class_device_controller.getField("TOUCH_TYPE_UNKNOWN").getInt(null);
 //                    sTouchTypeIR = class_device_controller.getField("TOUCH_TYPE_IR").getInt(null);
 //                    sTouchTypeCapacitive = class_device_controller.getField("TOUCH_TYPE_CAPACITIVE").getInt(null);
-                    
+
                     sInstance = new RK2906Controller();
                     return sInstance;
                 }
@@ -126,13 +126,13 @@ public class RK2906Factory implements IDeviceFactory
                 catch (NoSuchFieldException e) {
                     Log.w(TAG, e);
                 }
-                
+
                 return null;
             }
-            
+
             return sInstance;
         }
-        
+
         @Override
         public File getExternalStorageDirectory()
         {
@@ -144,7 +144,7 @@ public class RK2906Factory implements IDeviceFactory
         {
             File storage_root = this.getExternalStorageDirectory();
 
-            // if system has an emulated SD card(/mnt/sdcard) provided by device's NAND flash, 
+            // if system has an emulated SD card(/mnt/sdcard) provided by device's NAND flash,
             // then real SD card will be mounted as a child directory(/mnt/sdcard/extsd) in it, which names "extsd" here
             final String SDCARD_MOUNTED_FOLDER = "sdcard";
             File extsd = new File(storage_root, SDCARD_MOUNTED_FOLDER);
@@ -156,7 +156,7 @@ public class RK2906Factory implements IDeviceFactory
         {
             return file.getAbsolutePath().startsWith(getRemovableSDCardDirectory().getAbsolutePath());
         }
-        
+
         @Override
         public TouchType getTouchType(Context context)
         {
@@ -166,9 +166,9 @@ public class RK2906Factory implements IDeviceFactory
                 if (succ == null || !succ.booleanValue()) {
                     return TouchType.None;
                 }
-                
+
                 return TouchType.IR;
-                
+
 //                Integer n = (Integer)sMethodGetTouchType.invoke(instance);
 //                if (n.intValue() == sTouchTypeUnknown) {
 //                    return TouchType.Unknown;
@@ -196,10 +196,10 @@ public class RK2906Factory implements IDeviceFactory
             catch (InvocationTargetException e) {
                 Log.e(TAG, "exception", e);
             }
-            
+
             return TouchType.None;
         }
-        
+
         @Override
         public boolean hasWifi(Context context)
         {
@@ -222,10 +222,10 @@ public class RK2906Factory implements IDeviceFactory
             catch (InvocationTargetException e) {
                 Log.e(TAG, "exception", e);
             }
-            
+
             return false;
         }
-        
+
         @Override
         public boolean hasAudio(Context context)
         {
@@ -248,10 +248,10 @@ public class RK2906Factory implements IDeviceFactory
             catch (InvocationTargetException e) {
                 Log.e(TAG, "exception", e);
             }
-            
+
             return false;
         }
-        
+
         @Override
         public boolean hasFrontLight(Context context)
         {
@@ -274,10 +274,10 @@ public class RK2906Factory implements IDeviceFactory
             catch (InvocationTargetException e) {
                 Log.e(TAG, "exception", e);
             }
-            
+
             return false;
         }
-        
+
         @Override
         public boolean isEInkScreen()
         {
@@ -289,7 +289,7 @@ public class RK2906Factory implements IDeviceFactory
         {
             return mCurrentMode;
         }
-        
+
         @Override
         public boolean setEpdMode(Context context, EpdController.EPDMode mode)
         {
@@ -303,13 +303,13 @@ public class RK2906Factory implements IDeviceFactory
             else if (mode == EPDMode.AUTO || mode == EPDMode.AUTO_PART || mode == EPDMode.TEXT) {
                 m = sEpdModePart;
             }
-            
+
             try {
                 if (mContext != context) {
                     mContext = context;
                     mEpdManagerInstance = sEpdManagerConstructor.newInstance(context);
                 }
-                
+
                 Boolean res = (Boolean)sMethodEpdSetMode.invoke(mEpdManagerInstance, m);
                 if (res != null && res.booleanValue()) {
                     if (mode != EPDMode.FULL) {
@@ -317,7 +317,7 @@ public class RK2906Factory implements IDeviceFactory
                         mCurrentMode = mode;
                     }
                 }
-                
+
                 return false;
             }
             catch (InstantiationException e) {
@@ -332,10 +332,10 @@ public class RK2906Factory implements IDeviceFactory
             catch (InvocationTargetException e) {
                 Log.w(TAG, e);
             }
-            
+
             return false;
         }
-        
+
         @Override
         public void invalidate(View view, UpdateMode mode)
         {
@@ -370,7 +370,7 @@ public class RK2906Factory implements IDeviceFactory
             catch (InvocationTargetException e) {
                 Log.e(TAG, "exception", e);
             }
-                
+
             view.invalidate();
         }
 
@@ -422,12 +422,7 @@ public class RK2906Factory implements IDeviceFactory
     @Override
     public boolean isPresent()
     {
-        return (Build.MANUFACTURER.contentEquals("unknown") &&
-                Build.MODEL.contentEquals("rk29sdk") &&
-                Build.DEVICE.contentEquals("rk29sdk")) ||
-                (Build.MANUFACTURER.contentEquals("unknown") && 
-                        Build.MODEL.contentEquals("R65_HD") &&
-                        Build.DEVICE.contentEquals("R65_HD"));
+        return Build.HARDWARE.contentEquals("rk29board");
     }
 
     @Override
