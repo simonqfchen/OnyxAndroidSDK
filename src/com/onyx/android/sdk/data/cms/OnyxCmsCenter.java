@@ -40,22 +40,26 @@ public class OnyxCmsCenter
      * @param context
      * @param sortOrder
      * @param ascOrder
-     * @param selectionArgs
+     * @param fileTypes file types to be searched, null means all types
      * @param limitNumber how many records to select, -1 for no limitation, or you can use a large enough number such as Interger.MAX_VALUE
      * @param result
      * @return
      */
     public static boolean getLibraryItems(Context context, SortOrder sortOrder, AscDescOrder ascOrder, 
-            String selectionArgs, int limitNumber, Collection<OnyxLibraryItem> result)
+            String fileTypes, int limitNumber, Collection<OnyxLibraryItem> result)
     {
         Cursor c = null;
 
         String selection = null;
-        String[] filetype = selectionArgs.split(",");
-        if (filetype != null && filetype.length > 0) {
-            selection = "type=?";
-            for(int i = 0; i < filetype.length - 1; i++) {
-                selection = selection.concat(" OR type=?");   
+        String[] selection_args = null;
+        
+        if (fileTypes != null) {
+            selection_args = fileTypes.split(",");
+            if (selection_args != null && selection_args.length > 0) {
+                selection = "type=?";
+                for(int i = 0; i < selection_args.length - 1; i++) {
+                    selection = selection.concat(" OR type=?");   
+                }
             }
         }
 
@@ -95,7 +99,7 @@ public class OnyxCmsCenter
             }
             
             ProfileUtil.start(TAG, "query library items");
-            c = context.getContentResolver().query(OnyxLibraryItem.CONTENT_URI, null, selection, filetype, sort_order);
+            c = context.getContentResolver().query(OnyxLibraryItem.CONTENT_URI, null, selection, selection_args, sort_order);
             ProfileUtil.end(TAG, "query library items");
 
             if (c == null) {
@@ -664,26 +668,43 @@ public class OnyxCmsCenter
 
     }
 
+    /**
+     * 
+     * @param context
+     * @param result
+     * @param query the pattern to search
+     * @param fileTypes file types to be searched, null means all types
+     * @return
+     */
     public static boolean searchBooks (Context context, Collection<OnyxLibraryItem> result, String query, String fileTypes)
     {
         Cursor c = null;
         try {
             String selection = null;
-            String[] file_types = fileTypes.split(",");
-            if (file_types != null && file_types.length > 0) {
-                selection = "(type=?";
-                for(int i = 0; i < file_types.length - 1; i++) {
-                    selection = selection.concat(" OR type=?");   
-                }
-                selection = selection.concat(")");
-            }
+            String[] selection_args = null;
             
-            selection = selection.concat("AND name LIKE ?");
-            String[] selection_args = new String[file_types.length + 1];
-            for (int i = 0; i < file_types.length; i++) {
-                selection_args[i] = file_types[i];
+            if (fileTypes != null) {
+                String[] file_types = fileTypes.split(",");
+                if (file_types != null && file_types.length > 0) {
+                    selection = "(type=?";
+                    for(int i = 0; i < file_types.length - 1; i++) {
+                        selection = selection.concat(" OR type=?");   
+                    }
+                    selection = selection.concat(")");
+                }
+
+                selection = selection.concat("AND name LIKE ?");
+                
+                selection_args = new String[file_types.length + 1];
+                for (int i = 0; i < file_types.length; i++) {
+                    selection_args[i] = file_types[i];
+                }
+                selection_args[selection_args.length - 1] = "%" + query + "%";
             }
-            selection_args[selection_args.length - 1] = "%" + query + "%";
+            else {
+                selection = "name LIKE ?";
+                selection_args = new String[] { "%" + query + "%" };
+            }
             
             c = context.getContentResolver().query(OnyxLibraryItem.CONTENT_URI, null,
                     selection, selection_args, null);
