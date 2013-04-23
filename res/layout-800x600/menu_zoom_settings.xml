@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_enlarge"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/zoom_enlarge"
                 android:scaleType="fitCenter"
                 android:src="@drawable/zoom_enlarge" />
@@ -66,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_narrow"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/zoom_narrow"
                 android:scaleType="fitCenter"
                 android:src="@drawable/zoom_narrow" />
@@ -98,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_fit_width"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/zoom_to_width"
                 android:scaleType="fitCenter"
                 android:src="@drawable/zoom_to_width" />
@@ -130,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_fit_page"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/zoom_to_page"
                 android:scaleType="fitCenter"
                 android:src="@drawable/zoom_to_page" />
@@ -162,6 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_two_points_enlarge"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/zoom_two_points_enlarge"
                 android:scaleType="fitCenter"
                 android:src="@drawable/zoom_two_points_enlarge" />

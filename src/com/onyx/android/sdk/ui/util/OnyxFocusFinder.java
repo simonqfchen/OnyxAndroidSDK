@@ -3,6 +3,8 @@
  */
 package com.onyx.android.sdk.ui.util;
 
+import java.util.HashSet;
+
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,11 +99,19 @@ public class OnyxFocusFinder
             break;
         }
         
+        HashSet<View> searched_views = new HashSet<View>();
+        
         View dst_view = find_view;
         while (find_view != null) {
             // when revert_view is null, meaning can't move down any more, so dst_view is bottom most
             dst_view = find_view;
             find_view = find_view.focusSearch(direction);
+            if (searched_views.contains(find_view)) {
+                // jump out search loop
+                break;
+            }
+            
+            searched_views.add(find_view);
         }
 
         return dst_view;
