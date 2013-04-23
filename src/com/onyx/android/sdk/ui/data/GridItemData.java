@@ -23,7 +23,6 @@ public class GridItemData extends OnyxBaseItemData {
 	public GridItemData(OnyxItemURI uri, String text, int imageResourceId)
 	{
 	    super(uri);
-	    
 		mText = text;
 		mImageResourceId = imageResourceId;
 	}
@@ -31,28 +30,22 @@ public class GridItemData extends OnyxBaseItemData {
 	public GridItemData(OnyxItemURI uri, String text, Bitmap bitmap)
 	{
 	    super(uri);
-	    
 	    mText = text;
-	    
 	    mBitmap = bitmap;
 	}
 	
 	public GridItemData(OnyxItemURI uri, int textId, Bitmap bitmap)
 	{
 	    super(uri);
-	    
 	    mTextId = textId;
-	    
 	    mBitmap = bitmap;
 	}
 	
 	public GridItemData(OnyxItemURI uri, int textId, int imageResourceId)
 	{
 	    super(uri);
-
 	    mTextId = textId;
-	    
-       mImageResourceId = imageResourceId;
+	    mImageResourceId = imageResourceId;
 	}
 	
 	public String getText()
