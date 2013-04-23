@@ -22,75 +22,6 @@ public class OnyxMetadata
     public static final String DB_TABLE_NAME = "library_metadata";
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
     
-    public static class BookProgress
-    {
-        private int mCurrent = 0;
-        private int mTotal = 1;
-        
-        private BookProgress()
-        {
-        }
-        
-        /**
-         * current start from 1
-         * 
-         * @param current
-         * @param total
-         */
-        public BookProgress(int current, int total)
-        {
-            if (current < 1) {
-                Log.w(TAG, "BookProgress: current must start from 1");
-                current = 1;
-            }
-            mCurrent = current;
-            mTotal = total;
-        }
-        
-        public static BookProgress fromString(String str)
-        {
-            if (str == null) {
-                return new BookProgress();
-            }
-            
-            String[] array = str.split("/");
-            if (array.length != 2) {
-                assert(false);
-                return new BookProgress();
-            }
-            
-            try {
-                int current = Integer.parseInt(array[0]);
-                int total = Integer.parseInt(array[1]);
-                return new BookProgress(current, total);
-            }
-            catch (Exception e) {
-                Log.e(TAG, "exception", e);
-            }
-            
-            return new BookProgress();
-        }
-        
-        public int getCurrent()
-        {
-            return mCurrent;
-        }
-        
-        public int getTotal()
-        {
-            return mTotal;
-        }
-        
-        /**
-         * in "xxx/yyy" form
-         */
-        @Override
-        public String toString()
-        {
-            return mCurrent + "/" + mTotal;
-        }
-    }
-    
     public static class Columns implements BaseColumns
     {
         public static String MD5 = "MD5";
@@ -204,7 +135,7 @@ public class OnyxMetadata
             String encoding = c.getString(sColumnEncoding);
             long last_access = c.getLong(sColumnLastAccess);
             long last_modified = c.getLong(sColumnLastModified);
-            BookProgress progress = BookProgress.fromString(c.getString(sColumnProgress));
+            OnyxBookProgress progress = OnyxBookProgress.fromString(c.getString(sColumnProgress));
             int favorite = c.getInt(sColumnFavorite);
             int rating = c.getInt(sColumnRating);
             String tags = c.getString(sColumnTags);
@@ -326,7 +257,7 @@ public class OnyxMetadata
     private String mEncoding = null;
     private Date mLastAccess = null;
     private Date mLastModified = null;
-    private BookProgress mProgress = null;
+    private OnyxBookProgress mProgress = null;
     private int mFavorite = 0;
     private int mRating = 0;
     private ArrayList<String> mTags = null;
@@ -590,11 +521,11 @@ public class OnyxMetadata
      * 
      * @return
      */
-    public BookProgress getProgress()
+    public OnyxBookProgress getProgress()
     {
         return mProgress;
     }
-    public void setProgress(BookProgress progress)
+    public void setProgress(OnyxBookProgress progress)
     {
         this.mProgress = progress;
     }
