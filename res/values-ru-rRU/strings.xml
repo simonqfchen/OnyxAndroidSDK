@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="app_name">OnyxSDK</string>
     <string name="title">Название</string>
@@ -61,18 +61,18 @@
     <string name="menu_item_line_spacing">Между строк</string>
     <string name="menu_item_refresh">Обновление</string>
     <string name="menu_item_settings">Настройки</string>
-    <string name="menu_item_font_increase">Увеличить</string>
-    <string name="menu_item_font_decrease">Уменьшить</string>
+    <string name="menu_item_font_increase">Больше</string>
+    <string name="menu_item_font_decrease">Меньше</string>
     <string name="menu_item_font_bold">Жирный</string>
-    <string name="menu_item_normal">Нормальный</string>
-    <string name="menu_item_small">Маленький</string>
-    <string name="menu_item_big">Большой</string>
+    <string name="menu_item_normal">Стандарт</string>
+    <string name="menu_item_small">Мало</string>
+    <string name="menu_item_big">Много</string>
     <string name="menu_item_to_page">По размеру страницы</string>
     <string name="menu_item_to_width">По ширине</string>
     <string name="menu_item_crop">Обрезать</string>
     <string name="menu_item_selection">Выделить</string>
-    <string name="menu_item_zoom_in">Приблизить</string>
-    <string name="menu_item_zoom_out">Отдалить</string>
+    <string name="menu_item_zoom_in">Больше</string>
+    <string name="menu_item_zoom_out">Меньше</string>
     <string name="delete_file_failed">Удаление файла не удалось</string>
     <string name="delete_file_canceled">Удаление файла отменено</string>
     <string name="delete_file_skipped">Удаление файла пропущено</string>
