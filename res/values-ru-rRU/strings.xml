@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="app_name">OnyxSDK</string>
     <string name="title">Название</string>
@@ -43,7 +43,7 @@
     <string name="tabwidget_bookmark">Закладка</string>
     <string name="tabwidget_toc">Содержание</string>
     <string name="tabwidget_annotation">Аннотация</string>
-    <string name="directory_title">Переход</string>
+    <string name="directory_title">Папка</string>
     <string name="screen_refresh">Обновить</string>
     <string name="search_view_page">%1$s/%2$s</string>
     <string name="menu_item_rotation">Поворот</string>
