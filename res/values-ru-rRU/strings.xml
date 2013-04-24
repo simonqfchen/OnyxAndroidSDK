@@ -43,8 +43,8 @@
     <string name="tabwidget_bookmark">Закладка</string>
     <string name="tabwidget_toc">Содержание</string>
     <string name="tabwidget_annotation">Аннотация</string>
-    <string name="directory_title">Директория</string>
-    <string name="screen_refresh">Обновление экрана</string>
+    <string name="directory_title">Папка</string>
+    <string name="screen_refresh">Обновить</string>
     <string name="search_view_page">%1$s/%2$s</string>
     <string name="menu_item_rotation">Поворот</string>
     <string name="menu_item_font">Шрифт</string>
@@ -52,7 +52,7 @@
     <string name="menu_item_tts">Озвучить</string>
     <string name="menu_item_search">Поиск</string>
     <string name="menu_item_zoom">Масштаб</string>
-    <string name="menu_item_more">Больше</string>
+    <string name="menu_item_more">Ещё</string>
     <string name="menu_item_bookmark">Закладка</string>
     <string name="menu_item_annotation">Аннотация</string>
     <string name="menu_item_dictionary">Словарь</string>
