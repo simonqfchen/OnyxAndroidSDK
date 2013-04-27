@@ -62,7 +62,6 @@ public class DialogSearchView extends OnyxDialogBase
                 mHandler.showSearchAll();
             }
         });
-        buttonSearchAll.setVisibility(View.GONE);
 
         ImageView buttonDismiss = (ImageView) findViewById(R.id.imagebutton_dismiss);
         buttonDismiss.setOnClickListener(new View.OnClickListener()
