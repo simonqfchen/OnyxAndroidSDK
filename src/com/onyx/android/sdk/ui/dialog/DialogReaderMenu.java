@@ -41,7 +41,7 @@ public class DialogReaderMenu extends OnyxDialogBase
     public static enum RotationScreenProperty {rotation_0, rotation_90, rotation_180, rotation_270};
     public static enum FontSizeProperty {increase, decrease};
 
-    public static interface IMenuHandler
+    public static interface IReaderMenuHandler
     {
         public int getPageIndex();
         public int getPageCount();
@@ -139,7 +139,7 @@ public class DialogReaderMenu extends OnyxDialogBase
     WindowManager.LayoutParams mParams = null;
     Window mWindow = null;
 
-    private IMenuHandler mMenuHandler = null;
+    private IReaderMenuHandler mMenuHandler = null;
 
     private boolean mIsShowChildMenu = false;
     private boolean mIsInitReaderMenu = true;
@@ -159,7 +159,7 @@ public class DialogReaderMenu extends OnyxDialogBase
     private AudioManager mAudioManager;
     private int mMaxVolume;
 
-    public DialogReaderMenu(Activity activity, final IMenuHandler menuHandler)
+    public DialogReaderMenu(Activity activity, final IReaderMenuHandler menuHandler)
     {
         super(activity, R.style.dialog_menu);
 
