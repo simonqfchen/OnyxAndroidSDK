@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="reader_menu_dialog_y">250px</dimen>
+</resources>
