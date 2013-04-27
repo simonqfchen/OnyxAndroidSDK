@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF" >
+
+    <include
+        android:id="@+id/layout_secondary_menu"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        layout="@layout/secondary_menu" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:visibility="gone"
+        android:background="#000000"
+        />
+
+    <include
+        android:id="@+id/layout_main_menu"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        layout="@layout/main_menu" />
+
+</LinearLayout>
