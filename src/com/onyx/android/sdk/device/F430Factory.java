@@ -76,7 +76,7 @@ public class F430Factory implements IDeviceFactory
         @Override
         public EPDMode getEpdMode()
         {
-            return EPDMode.AUTO;
+            return mEpdMode;
         }
 
         @Override

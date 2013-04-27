@@ -29,6 +29,9 @@ public class DialogSearchView extends OnyxDialogBase
 
         setContentView(R.layout.dialog_search_view);
         mHandler = handler;
+        
+        View search_all = findViewById(R.id.imagebutton_all);
+        search_all.setVisibility(View.GONE);
 
         ImageView buttonForward = (ImageView) findViewById(R.id.imagebutton_forward);
         buttonForward.setOnClickListener(new View.OnClickListener()
