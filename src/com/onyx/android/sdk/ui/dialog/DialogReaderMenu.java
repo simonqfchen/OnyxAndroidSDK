@@ -479,6 +479,10 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.nextPage();
             }
         });
+        
+        prevPageButton.setNextFocusLeftId(R.id.button_next);
+        nextPageButton.setNextFocusRightId(R.id.button_previous);
+        
         Button rotationScreenButton = (Button)findViewById(R.id.button_back);
         rotationScreenButton.setOnClickListener(new View.OnClickListener()
         {
