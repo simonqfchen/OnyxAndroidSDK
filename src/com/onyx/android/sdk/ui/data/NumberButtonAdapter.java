@@ -14,12 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.ui.OnyxGridView;
 
 /**
  * @author dxwts
  *
  */
-public class NumberButtonAdapter extends BaseAdapter
+public class NumberButtonAdapter extends OnyxPagedAdapter
 {
 
     /* (non-Javadoc)
@@ -30,9 +31,15 @@ public class NumberButtonAdapter extends BaseAdapter
     
     private Context mContext;
     
-    public NumberButtonAdapter(Context context)
+    private static final int sHorizontalSpacing = 10;
+    private static final int sVerticalSpacing = 10;
+    
+    public NumberButtonAdapter(OnyxGridView onyxGridView , Context context)
     {
+    	super(onyxGridView);
         mContext = context;
+        this.getPageLayout().setHorizontalSpacing(sHorizontalSpacing);
+        this.getPageLayout().setVerticalSpacing(sVerticalSpacing);
     }
     
     @Override

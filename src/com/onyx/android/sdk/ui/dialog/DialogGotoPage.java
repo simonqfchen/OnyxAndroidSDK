@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 import com.onyx.android.sdk.R;
 import com.onyx.android.sdk.device.EpdController;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
+import com.onyx.android.sdk.ui.OnyxGridView;
 import com.onyx.android.sdk.ui.data.NumberButtonAdapter;
 
 /**
@@ -81,11 +81,15 @@ public class DialogGotoPage extends OnyxDialogBase
     {
         setContentView(R.layout.dialog_go_to_page);
         
-        GridView numGridView = (GridView)findViewById(R.id.button_gridview);
+        OnyxGridView numGridView = (OnyxGridView)findViewById(R.id.button_gridview);
         mTextViewPageNum = (TextView)findViewById(R.id.textview_page_num);
 
-        mAdapter = new NumberButtonAdapter(context); 
+        mAdapter = new NumberButtonAdapter(numGridView , context); 
         numGridView.setAdapter(mAdapter);
+        numGridView.setFocusableInTouchMode(true);
+        numGridView.requestFocus();
+        numGridView.setCrossHorizon(false);
+        numGridView.setCrossVertical(false);
         numGridView.setOnItemClickListener(new OnItemClickListener()
         {
 
