@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="search_view_background">#CCFFFFFF</color>
+    <color name="search_view_background">#55FFFFFF</color>
     <color name="read_menu_item_background_color">#FFFFFFFF</color>
 </resources>
