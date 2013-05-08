@@ -88,6 +88,7 @@ public class DialogReaderMenu extends OnyxDialogBase
 
         public void toggleFullscreen();
         public boolean showZoomSettings();
+        public boolean showSpacingSettings();
         public boolean canChangeFontFace();
         public boolean isFullscreen();
         public void setScreenRefresh();
