@@ -78,11 +78,6 @@ public class DialogSearchView extends OnyxDialogBase
         mTextViewPage = (TextView) findViewById(R.id.textview_page);
         mTextViewPage.setText("");
 
-        buttonForward.getBackground().setAlpha(100);
-        buttonBackward.getBackground().setAlpha(100);
-        buttonSearchAll.getBackground().setAlpha(100);
-        buttonDismiss.getBackground().setAlpha(100);
-
         Window window = getWindow();
         LayoutParams params = window.getAttributes();
         params.y = window.getWindowManager().getDefaultDisplay().getHeight();
