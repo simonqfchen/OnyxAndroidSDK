@@ -168,9 +168,25 @@ public class OnyxSysCenter
         return setStringValue(context, KEY_TIMEZONE, timezone);
     }
     
-    public static OnyxDictionaryInfo[] getDictionaryList()
+    /**
+     * only return dicts which are available on the device
+     * 
+     * @param context
+     * @return
+     */
+    public static OnyxDictionaryInfo[] getAvailableDictionaryList(Context context)
     {
-        return OnyxDictionaryInfo.getDictionaryList();
+        OnyxDictionaryInfo[] array_dict = OnyxDictionaryInfo.getDictionaryList();
+        
+        ArrayList<OnyxDictionaryInfo> dicts = new ArrayList<OnyxDictionaryInfo>();
+        for (OnyxDictionaryInfo d : array_dict) {
+            if (OnyxDictionaryInfo.isDictionaryAvaiable(context, d)) {
+                dicts.add(d);
+            }
+        }
+        
+        OnyxDictionaryInfo[] result = new OnyxDictionaryInfo[dicts.size()];
+        return dicts.toArray(result);
     }
     
     /**
