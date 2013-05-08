@@ -787,6 +787,7 @@ public class DialogReaderMenu extends OnyxDialogBase
                 else if (mMenuHandler.showSpacingSettings()) {
                     showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
                 } else {
+                	DialogReaderMenu.this.dismiss();
                 	mMenuHandler.searchContent();
                 }
             }
