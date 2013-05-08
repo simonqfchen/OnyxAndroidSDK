@@ -588,6 +588,9 @@ public class DialogReaderMenu extends OnyxDialogBase
       }
 
         RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
+		if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
+			layout_search.setVisibility(View.GONE);
+		}
         layout_search.setOnClickListener(new View.OnClickListener()
         {
 
@@ -765,9 +768,12 @@ public class DialogReaderMenu extends OnyxDialogBase
             imageView.setImageResource(R.drawable.zoom);
             textView.setText(R.string.menu_item_zoom);
         }
-        else {
+        else if (mMenuHandler.showSpacingSettings()) {
             imageView.setImageResource(R.drawable.line_spacing);
             textView.setText(R.string.menu_item_line_spacing);
+        } else {
+        	imageView.setImageResource(R.drawable.search);
+        	textView.setText(R.string.menu_item_search);
         }
         layout_spacing.setOnClickListener(new View.OnClickListener()
         {
@@ -778,8 +784,10 @@ public class DialogReaderMenu extends OnyxDialogBase
                 if (mMenuHandler.showZoomSettings()) {
                     showChildMenu(R.drawable.item_selected_2, mZoomSettings);
                 }
-                else {
+                else if (mMenuHandler.showSpacingSettings()) {
                     showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
+                } else {
+                	mMenuHandler.searchContent();
                 }
             }
         });
