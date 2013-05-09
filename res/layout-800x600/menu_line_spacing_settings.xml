@@ -32,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_line_spacing_decreases"
+                android:background="@color/read_menu_item_background_color"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/line_spacing_decreases"
                 android:src="@drawable/line_spacing_decreases" />
@@ -63,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/line_spacing_enlarge"
                 android:src="@drawable/line_spacing_enlarge" />
         </RelativeLayout>
@@ -101,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_line_spacing_normal"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/line_spacing_normal"
                 android:src="@drawable/line_spacing_normal" />
         </RelativeLayout>
@@ -132,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_line_spacing_small"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/line_spacing_small"
                 android:src="@drawable/line_spacing_small" />
         </RelativeLayout>
@@ -163,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/textview_line_spacing_big"
                 android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
                 android:contentDescription="@drawable/line_spacing_big"
                 android:src="@drawable/line_spacing_big" />
         </RelativeLayout>
