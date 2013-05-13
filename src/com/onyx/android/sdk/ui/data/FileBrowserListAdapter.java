@@ -133,7 +133,6 @@ public class FileBrowserListAdapter extends OnyxPagedAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-
         View ret_view = null;
 
         int idx = this.getPaginator().getItemIndex(position, this.getPaginator().getPageIndex());

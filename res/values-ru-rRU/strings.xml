@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="app_name">OnyxSDK</string>
     <string name="title">Название</string>
@@ -59,7 +59,7 @@
     <string name="menu_item_screen_full">Полный экран</string>
     <string name="menu_item_screen_exit_full">Обычный экран</string>
     <string name="menu_item_line_spacing">Между строк</string>
-    <string name="menu_item_refresh">Обновление</string>
+    <string name="menu_item_refresh">Экран</string>
     <string name="menu_item_settings">Настройки</string>
     <string name="menu_item_font_increase">Больше</string>
     <string name="menu_item_font_decrease">Меньше</string>
@@ -83,5 +83,10 @@
     <string name="Dictionary">Словарь</string>
     <string name="Annotation">Аннотация</string>
     <string name="Cancel">Отмена</string>
-    <string name="edittext_hint">Edit text</string>
+    <string name="always">всегда</string>
+    <string name="every_3_pages">Каждые 3 страниц</string>
+    <string name="every_5_pages">Каждые 5 страниц</string>
+    <string name="every_7_pages">Каждые 7 страниц</string>
+    <string name="every_9_pages">Каждые 9 страниц</string>
+    <string name="automatic">автоматический</string>
 </resources>

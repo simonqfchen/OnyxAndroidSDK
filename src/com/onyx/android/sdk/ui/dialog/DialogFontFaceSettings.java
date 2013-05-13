@@ -87,7 +87,9 @@ public class DialogFontFaceSettings extends DialogBaseSettings
         mAdapter.getPaginator().setPageSize(fontFoces.length);
 
         int[] location = new int[2];
-        mReaderMenu.getWindow().getDecorView().getLocationOnScreen(location);
+		if (mReaderMenu != null) {
+			mReaderMenu.getWindow().getDecorView().getLocationOnScreen(location);
+		}
         mReaderMenuY = location[1];
     }
 
@@ -98,7 +100,9 @@ public class DialogFontFaceSettings extends DialogBaseSettings
         DialogFontFaceSettings.this.getWindow().getDecorView().getLocationOnScreen(loc);
         int y = loc[1];
         if (event.getY() + y < mReaderMenuY) {
-            mReaderMenu.dismiss();
+			if (mReaderMenu != null) {
+				mReaderMenu.dismiss();
+			}
         }
 
         return super.onTouchEvent(event);

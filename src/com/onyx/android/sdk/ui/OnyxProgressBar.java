@@ -76,7 +76,7 @@ public class OnyxProgressBar extends ImageView
         @Override
         protected void onPostExecute(Void result) {
         	if (mAnimationDrawable != null) {
-        		mAnimationDrawable.stop();
+//        		mAnimationDrawable.stop();
         	}
         }
     }

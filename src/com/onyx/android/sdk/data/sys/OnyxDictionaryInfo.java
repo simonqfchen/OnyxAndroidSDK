@@ -4,7 +4,11 @@
 package com.onyx.android.sdk.data.sys;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * @author joy
@@ -63,5 +67,28 @@ public class OnyxDictionaryInfo
     {
         assert(PREDEFINED_DICTS.length > 0);
         return PREDEFINED_DICTS[0];
+    }
+    
+    public static boolean isDictionaryAvaiable(Context context, OnyxDictionaryInfo dict)
+    {
+        try {
+            ActivityInfo app_info = context.getPackageManager().getActivityInfo(
+                            new ComponentName(dict.packageName, dict.className),
+                            0);
+            return app_info != null;
+        }
+        catch (NameNotFoundException e) {
+            return false;
+        }
+    }
+    
+    public static boolean isDictionaryAvaiable(Context context, String dictId)
+    {
+        OnyxDictionaryInfo dict = findDict(dictId);
+        if (dict == null) {
+            return false;
+        }
+        
+        return isDictionaryAvaiable(context, dict);
     }
 }

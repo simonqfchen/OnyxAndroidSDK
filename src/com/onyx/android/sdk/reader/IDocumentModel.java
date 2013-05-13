@@ -131,8 +131,32 @@ public interface IDocumentModel
     
     DocTextSelection measureSelection(String locationBegin, String locationEnd);
     
+    /**
+     * return null if failed
+     * 
+     * @param pattern
+     * @return
+     */
     List<DocTextSelection> searchInCurrentScreen(String pattern);
+    /**
+     * return null if failed
+     * 
+     * @param pattern
+     * @return
+     */
     String searchForwardAfterCurrentScreen(String pattern);
+    /**
+     * return null if failed
+     * 
+     * @param pattern
+     * @return
+     */
     String searchBackwardBeforeCurrentScreen(String pattern);
+    /**
+     * return null if failed
+     * 
+     * @param pattern
+     * @return
+     */
     String[] searchAllInDocument(String pattern);
 }

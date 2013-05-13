@@ -41,7 +41,7 @@ public class DialogReaderMenu extends OnyxDialogBase
     public static enum RotationScreenProperty {rotation_0, rotation_90, rotation_180, rotation_270};
     public static enum FontSizeProperty {increase, decrease};
 
-    public static interface IMenuHandler
+    public static interface IReaderMenuHandler
     {
         public int getPageIndex();
         public int getPageCount();
@@ -88,6 +88,7 @@ public class DialogReaderMenu extends OnyxDialogBase
 
         public void toggleFullscreen();
         public boolean showZoomSettings();
+        public boolean showSpacingSettings();
         public boolean canChangeFontFace();
         public boolean isFullscreen();
         public void setScreenRefresh();
@@ -136,10 +137,11 @@ public class DialogReaderMenu extends OnyxDialogBase
     private TextView mTotalPageTextView = null;
     private Activity mActivity = null;
 
+    int mWindowFlags = 0;
     WindowManager.LayoutParams mParams = null;
     Window mWindow = null;
 
-    private IMenuHandler mMenuHandler = null;
+    private IReaderMenuHandler mMenuHandler = null;
 
     private boolean mIsShowChildMenu = false;
     private boolean mIsInitReaderMenu = true;
@@ -159,7 +161,7 @@ public class DialogReaderMenu extends OnyxDialogBase
     private AudioManager mAudioManager;
     private int mMaxVolume;
 
-    public DialogReaderMenu(Activity activity, final IMenuHandler menuHandler)
+    public DialogReaderMenu(Activity activity, final IReaderMenuHandler menuHandler)
     {
         super(activity, R.style.dialog_menu);
 
@@ -479,6 +481,10 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.nextPage();
             }
         });
+        
+        prevPageButton.setNextFocusLeftId(R.id.button_next);
+        nextPageButton.setNextFocusRightId(R.id.button_previous);
+        
         Button rotationScreenButton = (Button)findViewById(R.id.button_back);
         rotationScreenButton.setOnClickListener(new View.OnClickListener()
         {
@@ -583,6 +589,9 @@ public class DialogReaderMenu extends OnyxDialogBase
       }
 
         RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
+		if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
+			layout_search.setVisibility(View.GONE);
+		}
         layout_search.setOnClickListener(new View.OnClickListener()
         {
 
@@ -760,9 +769,12 @@ public class DialogReaderMenu extends OnyxDialogBase
             imageView.setImageResource(R.drawable.zoom);
             textView.setText(R.string.menu_item_zoom);
         }
-        else {
+        else if (mMenuHandler.showSpacingSettings()) {
             imageView.setImageResource(R.drawable.line_spacing);
             textView.setText(R.string.menu_item_line_spacing);
+        } else {
+        	imageView.setImageResource(R.drawable.search);
+        	textView.setText(R.string.menu_item_search);
         }
         layout_spacing.setOnClickListener(new View.OnClickListener()
         {
@@ -773,8 +785,11 @@ public class DialogReaderMenu extends OnyxDialogBase
                 if (mMenuHandler.showZoomSettings()) {
                     showChildMenu(R.drawable.item_selected_2, mZoomSettings);
                 }
-                else {
+                else if (mMenuHandler.showSpacingSettings()) {
                     showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
+                } else {
+                	DialogReaderMenu.this.dismiss();
+                	mMenuHandler.searchContent();
                 }
             }
         });
@@ -813,6 +828,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         EpdController.setMode(this.getContext(), EPDMode.AUTO);
 
         if (WindowUtil.isFullScreen(mActivity.getWindow())) {
+            mWindowFlags = mActivity.getWindow().getAttributes().flags; 
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -833,6 +849,7 @@ public class DialogReaderMenu extends OnyxDialogBase
             mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            mActivity.getWindow().setFlags(mWindowFlags, mWindowFlags);
         }
         super.dismiss();
     }

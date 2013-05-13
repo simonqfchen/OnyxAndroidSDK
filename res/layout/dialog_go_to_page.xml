@@ -41,7 +41,7 @@
         android:textColor="#000000"
         android:textSize="25sp" />
 
-    <GridView
+    <com.onyx.android.sdk.ui.OnyxGridView
         android:id="@+id/button_gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +53,6 @@
         android:numColumns="3"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp" >
-    </GridView>
+    </com.onyx.android.sdk.ui.OnyxGridView>
 
 </LinearLayout>
