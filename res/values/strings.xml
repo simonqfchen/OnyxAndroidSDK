@@ -22,7 +22,7 @@
     <string name="SD_card_has_been_removed">SD card has been removed</string>
     <string name="file_not_exist">file not exist</string>
     <string name="dialogpaged_skip">skip:</string>
-    <string name="edittext_hint"/>
+    <string name="edittext_hint">Edit text</string>
     <string name="page">page</string>
     <string name="go">Go</string>
     <string name="Exceed_the_total_number_of_pages">Exceed the total number of pages</string>

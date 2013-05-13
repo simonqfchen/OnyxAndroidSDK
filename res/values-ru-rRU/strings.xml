@@ -83,4 +83,5 @@
     <string name="Dictionary">Словарь</string>
     <string name="Annotation">Аннотация</string>
     <string name="Cancel">Отмена</string>
+    <string name="edittext_hint">Edit text</string>
 </resources>
