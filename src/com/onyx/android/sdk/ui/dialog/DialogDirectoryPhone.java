@@ -23,21 +23,14 @@ import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
 import com.onyx.android.sdk.ui.data.DirectoryAnnotationPhoneAdapter;
 import com.onyx.android.sdk.ui.data.DirectoryItem;
 import com.onyx.android.sdk.ui.data.DirectoryPhoneAdapter;
+import com.onyx.android.sdk.ui.dialog.DialogDirectory.DirectoryTab;
+import com.onyx.android.sdk.ui.dialog.DialogDirectory.IGotoPageHandler;
 
 /**
  * @author peekaboo
  */
 public class DialogDirectoryPhone extends OnyxDialogBase
 {
-    public static enum DirectoryTab {toc, bookmark, annotation};
-
-    public static interface IGotoPageHandler
-    {
-        public void jumpTOC( DirectoryItem item);
-        public void jumpBookmark(DirectoryItem item);
-        public void jumpAnnotation(DirectoryItem item);
-    }
-
     private IGotoPageHandler mGotoPageHandler = null;
     private TextView mTextViewTitle = null;
 
