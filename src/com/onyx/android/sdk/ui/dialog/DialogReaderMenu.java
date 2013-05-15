@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
@@ -438,7 +440,7 @@ public class DialogReaderMenu extends OnyxDialogBase
 				}
 			});
         }
-        
+
         Button increaseFontButton = (Button)findViewById(R.id.button_font_size_increase);
         increaseFontButton.setOnClickListener(new View.OnClickListener()
         {
@@ -481,10 +483,10 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.nextPage();
             }
         });
-        
+
         prevPageButton.setNextFocusLeftId(R.id.button_next);
         nextPageButton.setNextFocusRightId(R.id.button_previous);
-        
+
         Button rotationScreenButton = (Button)findViewById(R.id.button_back);
         rotationScreenButton.setOnClickListener(new View.OnClickListener()
         {
@@ -521,6 +523,15 @@ public class DialogReaderMenu extends OnyxDialogBase
         });
 
         RelativeLayout layout_toc = (RelativeLayout) mShowDirectory.findViewById(R.id.layout_toc);
+        Configuration conf = activity.getResources().getConfiguration();
+        String currentLanguage = conf.locale.toString();
+        if(currentLanguage.equals("ru_RU")) {
+            ViewGroup viewGroup = layout_toc;
+            if(R.id.textview_toc == viewGroup.getChildAt(0).getId()) {
+                ((TextView) viewGroup.getChildAt(0)).setTextSize(17);
+            }
+
+        }
         layout_toc.setOnClickListener(new View.OnClickListener()
         {
 
@@ -559,7 +570,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         		}
         	});
         }
-        
+
         RelativeLayout layout_dictionary = (RelativeLayout) mMoreView.findViewById(R.id.layout_dictionary);
         layout_dictionary.setOnClickListener(new View.OnClickListener()
         {
@@ -571,7 +582,7 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.startDictionary();
             }
         });
-        
+
       if (!DeviceInfo.singleton().getDeviceController().hasAudio(activity)) {
     	  layout_dictionary.setVisibility(View.GONE);
     	  findViewById(R.id.layout_tts).setVisibility(View.GONE);
@@ -828,14 +839,14 @@ public class DialogReaderMenu extends OnyxDialogBase
         EpdController.setMode(this.getContext(), EPDMode.AUTO);
 
         if (WindowUtil.isFullScreen(mActivity.getWindow())) {
-            mWindowFlags = mActivity.getWindow().getAttributes().flags; 
+            mWindowFlags = mActivity.getWindow().getAttributes().flags;
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
         this.setTtsState(mMenuHandler.ttsIsSpeaking());
-        
+
         super.show();
     }
 
