@@ -523,15 +523,6 @@ public class DialogReaderMenu extends OnyxDialogBase
         });
 
         RelativeLayout layout_toc = (RelativeLayout) mShowDirectory.findViewById(R.id.layout_toc);
-        Configuration conf = activity.getResources().getConfiguration();
-        String currentLanguage = conf.locale.toString();
-        if(currentLanguage.equals("ru_RU")) {
-            ViewGroup viewGroup = layout_toc;
-            if(R.id.textview_toc == viewGroup.getChildAt(0).getId()) {
-                ((TextView) viewGroup.getChildAt(0)).setTextSize(17);
-            }
-
-        }
         layout_toc.setOnClickListener(new View.OnClickListener()
         {
 
@@ -760,6 +751,41 @@ public class DialogReaderMenu extends OnyxDialogBase
                 menuHandler.showGoToPageDialog();
             }
         });
+
+        Configuration conf = activity.getResources().getConfiguration();
+        String currentLanguage = conf.locale.toString();
+        if(currentLanguage.equals("ru_RU")) {
+            ViewGroup viewGroup_toc = layout_toc;
+            if(R.id.textview_toc == viewGroup_toc.getChildAt(0).getId()) {
+                ((TextView) viewGroup_toc.getChildAt(0)).setTextSize(17);
+            }
+
+            ViewGroup viewGroup_font_increase = mLayoutFontDecrease;
+
+            if(R.id.textview_font_decrease == viewGroup_font_increase.getChildAt(0).getId()) {
+                ((TextView) viewGroup_font_increase.getChildAt(0)).setTextSize(18);
+            }
+
+            ViewGroup viewGroup_line_space_normal = mLayoutLineSpacingNormal;
+
+            if(R.id.textview_line_spacing_normal == viewGroup_line_space_normal.getChildAt(0).getId()) {
+                ((TextView) viewGroup_line_space_normal.getChildAt(0)).setTextSize(16);
+            }
+
+            ViewGroup viewGroup_line_space_small = mLayoutLineSpacingSmall;
+
+            if(R.id.textview_line_spacing_small == viewGroup_line_space_small.getChildAt(0).getId()) {
+                ((TextView) viewGroup_line_space_small.getChildAt(0)).setTextSize(18);
+            }
+
+            ViewGroup viewGroup_line_space_decreases = lineSpacingDecreases;
+
+            if(R.id.textview_line_spacing_decreases == viewGroup_line_space_decreases.getChildAt(0).getId()) {
+                ((TextView) viewGroup_line_space_decreases.getChildAt(0)).setTextSize(18);
+            }
+
+
+        }
 
         mCurrentPageTextView.setText(String.valueOf(mMenuHandler.getPageIndex()));
         mTotalPageTextView.setText(String.valueOf(mMenuHandler.getPageCount()));
