@@ -131,7 +131,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/menu_item_to_page"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -67,7 +67,7 @@
     <string name="menu_item_normal">Нормальный</string>
     <string name="menu_item_small">Маленький</string>
     <string name="menu_item_big">Большой</string>
-    <string name="menu_item_to_page">По размеру страницы</string>
+    <string name="menu_item_to_page">По странице</string>
     <string name="menu_item_to_width">По ширине</string>
     <string name="menu_item_crop">Обрезать</string>
     <string name="menu_item_selection">Выделить</string>
