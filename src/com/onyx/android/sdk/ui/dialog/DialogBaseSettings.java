@@ -1,9 +1,10 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,7 +34,7 @@ public class DialogBaseSettings extends OnyxDialogBase
     private OnyxGridView mGridView = null;
     private SelectionAdapter mAdapter = null;
     private View mView = null;
-    
+
     private static final int sUnselection = -1;
     private boolean mIsCanChooseZeroItem = true;
 
@@ -42,8 +43,8 @@ public class DialogBaseSettings extends OnyxDialogBase
         super(context);
 
         this.setContentView(R.layout.dialog_settings_selection_template);
-        mView = (View) findViewById(R.id.layout_dialog_view);
-        
+        mView = findViewById(R.id.layout_dialog_view);
+
         mButtonPreviousPage = (Button) this.findViewById(R.id.button_previous_dialogpaged);
         mButtonNextPage = (Button) this.findViewById(R.id.button_next_dialogpaged);
         mButtonSet = (Button) this.findViewById(R.id.button_set_dialogpaged);
@@ -112,6 +113,7 @@ public class DialogBaseSettings extends OnyxDialogBase
 
         mGridView.setOnItemClickListener(new OnItemClickListener()
         {
+            @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id)
             {
@@ -130,6 +132,21 @@ public class DialogBaseSettings extends OnyxDialogBase
             }
         });
 
+        DialogBaseSettings.this.setOnShowListener(new OnShowListener()
+        {
+
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                int height = mGridView.getHeight();
+
+                if (height != mGridView.getLayoutParams().height) {
+                    mGridView.getLayoutParams().height = height;
+                }
+
+            }
+        });
+
     }
 
     public TextView getTextViewTitle()
@@ -141,7 +158,7 @@ public class DialogBaseSettings extends OnyxDialogBase
     {
         return mGridView;
     }
-    
+
     public Button getButtonSet()
     {
         return mButtonSet;
@@ -151,13 +168,13 @@ public class DialogBaseSettings extends OnyxDialogBase
     {
         return mButtonCancel;
     }
-    
+
     private void updateTextViewProgress()
     {
         final int current_page = mGridView.getPagedAdapter().getPaginator().getPageIndex() + 1;
-        final int page_count = (mGridView.getPagedAdapter().getPaginator().getPageCount() != 0) ? 
+        final int page_count = (mGridView.getPagedAdapter().getPaginator().getPageCount() != 0) ?
                 mGridView.getPagedAdapter().getPaginator().getPageCount() : 1;
-                
+
                 mTextViewProgress.setText(String.valueOf(current_page) + this.getContext().getResources().getString(R.string.slash) + String.valueOf(page_count));
     }
 
@@ -169,8 +186,28 @@ public class DialogBaseSettings extends OnyxDialogBase
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	EpdController.invalidate(mView, UpdateMode.GU);
-    	return super.onKeyDown(keyCode, event);
+        EpdController.invalidate(mView, UpdateMode.GU);
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+        if(keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
+
+            if (mGridView.getPagedAdapter().getPaginator().canNextPage()) {
+                mGridView.getPagedAdapter().getPaginator().nextPage();
+            }
+
+            return true;
+        } else if(keyCode == KeyEvent.KEYCODE_PAGE_UP){
+            if (mGridView.getPagedAdapter().getPaginator().canPrevPage()) {
+                mGridView.getPagedAdapter().getPaginator().prevPage();
+            }
+            return true;
+        } else {
+            return super.onKeyUp(keyCode, event);
+        }
     }
 
     public void setIsCanChooseZeroItem(boolean canChooseZeroItem)
