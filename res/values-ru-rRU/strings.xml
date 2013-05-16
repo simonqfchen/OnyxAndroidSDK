@@ -71,8 +71,8 @@
     <string name="menu_item_to_width">По ширине</string>
     <string name="menu_item_crop">Обрезать</string>
     <string name="menu_item_selection">Выделить</string>
-    <string name="menu_item_zoom_in">Приблизить</string>
-    <string name="menu_item_zoom_out">Отдалить</string>
+    <string name="menu_item_zoom_in">Увеличить</string>
+    <string name="menu_item_zoom_out">Уменьшить</string>
     <string name="delete_file_failed">Удаление файла не удалось</string>
     <string name="delete_file_canceled">Удаление файла отменено</string>
     <string name="delete_file_skipped">Удаление файла пропущено</string>
