@@ -3,6 +3,7 @@
  */
 package com.onyx.android.sdk.ui.dialog;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,11 +38,11 @@ public class DialogFontFaceSettings extends DialogBaseSettings
         mOnSettingsFontFaceLinstener = l;
     }
 
-    private DialogReaderMenu mReaderMenu = null;
+    private Dialog mReaderMenu = null;
     private int mReaderMenuY = -1;
     private SelectionAdapter mAdapter = null;
 
-    public DialogFontFaceSettings(Context context, String[] fontFoces, String currentFontFace, DialogReaderMenu readerMenu)
+    public DialogFontFaceSettings(Context context, String[] fontFoces, String currentFontFace, Dialog readerMenu)
     {
         super(context);
 

@@ -3,6 +3,7 @@
  */
 package com.onyx.android.sdk.ui.dialog;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.MotionEvent;
@@ -58,11 +59,11 @@ public class DialogGotoPage extends OnyxDialogBase
     private NumberButtonAdapter mAdapter = null;
     private String mPageNum = null;
     private TextView mTextViewPageNum;
-    private DialogReaderMenu mReaderMenu = null;
+    private Dialog mReaderMenu = null;
     
     private EPDMode mEpdModeBackup = EPDMode.AUTO;
 
-    public DialogGotoPage(Context context, DialogReaderMenu readerMenu)
+    public DialogGotoPage(Context context, Dialog readerMenu)
     {
         super(context);
 
