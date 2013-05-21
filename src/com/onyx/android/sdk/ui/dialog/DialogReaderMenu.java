@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
@@ -438,7 +440,7 @@ public class DialogReaderMenu extends OnyxDialogBase
 				}
 			});
         }
-        
+
         Button increaseFontButton = (Button)findViewById(R.id.button_font_size_increase);
         increaseFontButton.setOnClickListener(new View.OnClickListener()
         {
@@ -481,10 +483,10 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.nextPage();
             }
         });
-        
+
         prevPageButton.setNextFocusLeftId(R.id.button_next);
         nextPageButton.setNextFocusRightId(R.id.button_previous);
-        
+
         Button rotationScreenButton = (Button)findViewById(R.id.button_back);
         rotationScreenButton.setOnClickListener(new View.OnClickListener()
         {
@@ -559,7 +561,7 @@ public class DialogReaderMenu extends OnyxDialogBase
         		}
         	});
         }
-        
+
         RelativeLayout layout_dictionary = (RelativeLayout) mMoreView.findViewById(R.id.layout_dictionary);
         layout_dictionary.setOnClickListener(new View.OnClickListener()
         {
@@ -571,7 +573,7 @@ public class DialogReaderMenu extends OnyxDialogBase
                 mMenuHandler.startDictionary();
             }
         });
-        
+
       if (!DeviceInfo.singleton().getDeviceController().hasAudio(activity)) {
     	  layout_dictionary.setVisibility(View.GONE);
     	  findViewById(R.id.layout_tts).setVisibility(View.GONE);
@@ -750,6 +752,41 @@ public class DialogReaderMenu extends OnyxDialogBase
             }
         });
 
+        Configuration conf = activity.getResources().getConfiguration();
+        String currentLanguage = conf.locale.toString();
+        if(currentLanguage.equals("ru_RU")) {
+            ViewGroup viewGroup_toc = layout_toc;
+            if(R.id.textview_toc == viewGroup_toc.getChildAt(0).getId()) {
+                ((TextView) viewGroup_toc.getChildAt(0)).setTextSize(17);
+            }
+
+            ViewGroup viewGroup_font_increase = mLayoutFontDecrease;
+
+            if(R.id.textview_font_decrease == viewGroup_font_increase.getChildAt(0).getId()) {
+                ((TextView) viewGroup_font_increase.getChildAt(0)).setTextSize(18);
+            }
+
+            ViewGroup viewGroup_line_space_normal = mLayoutLineSpacingNormal;
+
+            if(R.id.textview_line_spacing_normal == viewGroup_line_space_normal.getChildAt(0).getId()) {
+                ((TextView) viewGroup_line_space_normal.getChildAt(0)).setTextSize(16);
+            }
+
+            ViewGroup viewGroup_line_space_small = mLayoutLineSpacingSmall;
+
+            if(R.id.textview_line_spacing_small == viewGroup_line_space_small.getChildAt(0).getId()) {
+                ((TextView) viewGroup_line_space_small.getChildAt(0)).setTextSize(18);
+            }
+
+            ViewGroup viewGroup_line_space_decreases = lineSpacingDecreases;
+
+            if(R.id.textview_line_spacing_decreases == viewGroup_line_space_decreases.getChildAt(0).getId()) {
+                ((TextView) viewGroup_line_space_decreases.getChildAt(0)).setTextSize(18);
+            }
+
+
+        }
+
         mCurrentPageTextView.setText(String.valueOf(mMenuHandler.getPageIndex()));
         mTotalPageTextView.setText(String.valueOf(mMenuHandler.getPageCount()));
 
@@ -828,14 +865,14 @@ public class DialogReaderMenu extends OnyxDialogBase
         EpdController.setMode(this.getContext(), EPDMode.AUTO);
 
         if (WindowUtil.isFullScreen(mActivity.getWindow())) {
-            mWindowFlags = mActivity.getWindow().getAttributes().flags; 
+            mWindowFlags = mActivity.getWindow().getAttributes().flags;
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
         this.setTtsState(mMenuHandler.ttsIsSpeaking());
-        
+
         super.show();
     }
 

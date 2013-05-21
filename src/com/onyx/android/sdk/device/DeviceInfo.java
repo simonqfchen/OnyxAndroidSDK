@@ -149,6 +149,7 @@ public class DeviceInfo
         this.registerDevice(new RK2818Factory());
         this.registerDevice(new RK2906Factory());
         this.registerDevice(new IMX508Factory());
+        this.registerDevice(new F430Factory());
     }
     
     public static DeviceInfo singleton()
