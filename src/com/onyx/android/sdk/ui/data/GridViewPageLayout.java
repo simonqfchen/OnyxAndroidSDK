@@ -6,6 +6,7 @@ package com.onyx.android.sdk.ui.data;
 import java.util.ArrayList;
 
 import android.util.Log;
+import android.widget.GridView;
 
 import com.onyx.android.sdk.ui.OnyxGridView;
 
@@ -200,6 +201,13 @@ public class GridViewPageLayout
     {
         if ((gridView.getHeight() == 0) || (gridView.getWidth() == 0)) {
             return;
+        }
+        
+        if (mViewMode == GridViewMode.Thumbnail) {
+        	gridView.setNumColumns(GridView.AUTO_FIT);
+        } else {
+            assert (mViewMode == GridViewMode.Detail);
+            gridView.setNumColumns(1);
         }
 
         final int items_region_width = gridView.getWidth() - gridView.getListPaddingLeft() - gridView.getListPaddingRight();
