@@ -44,7 +44,7 @@
     <string name="tabwidget_toc">Содержание</string>
     <string name="tabwidget_annotation">Аннотация</string>
     <string name="directory_title">Переход</string>
-    <string name="screen_refresh">Обновлять экран</string>
+    <string name="screen_refresh">Полное обновление экрана</string>
     <string name="search_view_page">%1$s/%2$s</string>
     <string name="menu_item_rotation">Поворот</string>
     <string name="menu_item_font">Шрифт</string>
@@ -61,18 +61,18 @@
     <string name="menu_item_line_spacing">Между строк</string>
     <string name="menu_item_refresh">Экран</string>
     <string name="menu_item_settings">Настройки</string>
-    <string name="menu_item_font_increase">Увеличить</string>
-    <string name="menu_item_font_decrease">Уменьшить</string>
+    <string name="menu_item_font_increase">Больше</string>
+    <string name="menu_item_font_decrease">Меньше</string>
     <string name="menu_item_font_bold">Жирный</string>
     <string name="menu_item_normal">Нормальный</string>
     <string name="menu_item_small">Маленький</string>
     <string name="menu_item_big">Большой</string>
-    <string name="menu_item_to_page">По странице</string>
+    <string name="menu_item_to_page">В размер</string>
     <string name="menu_item_to_width">По ширине</string>
     <string name="menu_item_crop">Обрезать</string>
     <string name="menu_item_selection">Выделить</string>
-    <string name="menu_item_zoom_in">Увеличить</string>
-    <string name="menu_item_zoom_out">Уменьшить</string>
+    <string name="menu_item_zoom_in">Больше</string>
+    <string name="menu_item_zoom_out">Меньше</string>
     <string name="delete_file_failed">Удаление файла не удалось</string>
     <string name="delete_file_canceled">Удаление файла отменено</string>
     <string name="delete_file_skipped">Удаление файла пропущено</string>
@@ -83,10 +83,10 @@
     <string name="Dictionary">Словарь</string>
     <string name="Annotation">Аннотация</string>
     <string name="Cancel">Отмена</string>
-    <string name="always">всегда</string>
-    <string name="every_3_pages">Каждые 3 страниц</string>
+    <string name="always">Всегда</string>
+    <string name="every_3_pages">Каждые 3 страницы</string>
     <string name="every_5_pages">Каждые 5 страниц</string>
     <string name="every_7_pages">Каждые 7 страниц</string>
     <string name="every_9_pages">Каждые 9 страниц</string>
-    <string name="automatic">автоматический</string>
+    <string name="automatic">Автоматически</string>
 </resources>
