@@ -23,8 +23,7 @@ public class F430Factory implements IDeviceFactory
     
     private static class F430Controller implements IDeviceController
     {
-        private EPDMode mEpdMode = EPDMode.AUTO;
-
+        
         @Override
         public File getExternalStorageDirectory()
         {
@@ -76,7 +75,20 @@ public class F430Factory implements IDeviceFactory
         @Override
         public EPDMode getEpdMode()
         {
-            return mEpdMode;
+            int mode = epdControlApi.epdGetwavmode();
+            switch (mode) {
+            case 1:
+                return EPDMode.AUTO;
+            case 2:
+                return EPDMode.AUTO;
+            case 3:
+                return EPDMode.AUTO;
+            case 4:
+                return EPDMode.AUTO_A2;
+            default:
+                assert(false);
+                return EPDMode.AUTO;
+            }
         }
 
         @Override
@@ -87,19 +99,16 @@ public class F430Factory implements IDeviceFactory
             case AUTO_PART:
             case TEXT:
                 epdControlApi.epdScale16();
-                mEpdMode = EPDMode.AUTO;
                 break;
             case AUTO_A2:
             case AUTO_BLACK_WHITE:
                 epdControlApi.epdScale2();
-                mEpdMode = EPDMode.AUTO_A2;
                 break;
             case FULL:
                 epdControlApi.epdRedraw();
                 break;
             default:
-                epdControlApi.epdScale16();
-                mEpdMode = EPDMode.AUTO;
+                epdControlApi.epdScale2();
                 break;
             }
             
@@ -112,8 +121,6 @@ public class F430Factory implements IDeviceFactory
             switch (mode) {
             case GU:
             case GU_FAST:
-                epdControlApi.epdScale16();
-                mEpdMode = EPDMode.AUTO;
                 view.invalidate();
                 break;
             case GC:
@@ -121,8 +128,6 @@ public class F430Factory implements IDeviceFactory
                 epdControlApi.epdRedraw();
                 break;
             case DW:
-                epdControlApi.epdScale2();
-                mEpdMode = EPDMode.AUTO_A2;
                 view.invalidate();
                 break;
             default:
@@ -138,8 +143,6 @@ public class F430Factory implements IDeviceFactory
             switch (mode) {
             case GU:
             case GU_FAST:
-                epdControlApi.epdScale16();
-                mEpdMode = EPDMode.AUTO;
                 view.postInvalidate();
                 break;
             case GC:
@@ -147,8 +150,6 @@ public class F430Factory implements IDeviceFactory
                 epdControlApi.epdRedraw();
                 break;
             case DW:
-                epdControlApi.epdScale2();
-                mEpdMode = EPDMode.AUTO_A2;
                 view.postInvalidate();
                 break;
             default:
