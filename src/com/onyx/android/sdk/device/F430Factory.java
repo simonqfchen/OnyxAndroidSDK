@@ -21,7 +21,7 @@ import com.onyx.android.sdk.device.EpdController.UpdateMode;
 public class F430Factory implements IDeviceFactory
 {
     
-    private static class F430Controller implements IDeviceController
+    public static class F430Controller implements IDeviceController
     {
         
         @Override
