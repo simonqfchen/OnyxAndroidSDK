@@ -24,7 +24,7 @@ public final class IMX508Factory  implements IDeviceFactory
 {
     private static String TAG = "IMX508Factory";
     
-    private static class IMX508Controller implements IDeviceController 
+    public static class IMX508Controller implements IDeviceController 
     {
         private static IMX508Controller sInstance = null;
 
@@ -60,7 +60,6 @@ public final class IMX508Factory  implements IDeviceFactory
         {
         }
 
-        @SuppressWarnings("unused")
         public int getWindowRotation()
         {
             if (sMethodGetWindowRotation != null) {
@@ -78,7 +77,6 @@ public final class IMX508Factory  implements IDeviceFactory
             return Surface.ROTATION_0;
         }
 
-        @SuppressWarnings("unused")
         public boolean setWindowRotation(int rotation)
         {
             if (sMethodSetWindowRotation != null) {
@@ -98,7 +96,6 @@ public final class IMX508Factory  implements IDeviceFactory
             return false;
         }
 
-        @SuppressWarnings("unused")
         public boolean setUpdatePolicy(View view, EpdController.UpdatePolicy policy, int guInterval)
         {
             int dst_mode_value = getPolicyValue(policy);

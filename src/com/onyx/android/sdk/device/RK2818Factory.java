@@ -24,7 +24,7 @@ public class RK2818Factory implements IDeviceFactory
 {
     private final static String TAG = "RK2818Controller";
     
-    private static class RK2818Controller implements IDeviceController 
+    public static class RK2818Controller implements IDeviceController 
     {
         private final static int DEFAULT_MODE = 0; // which standing for A2 according to RK2818 specification
         

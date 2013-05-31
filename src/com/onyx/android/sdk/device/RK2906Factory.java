@@ -24,7 +24,7 @@ public class RK2906Factory implements IDeviceFactory
 {
     private final static String TAG = "RK2906Factory";
 
-    private static class RK2906Controller implements IDeviceController
+    public static class RK2906Controller implements IDeviceController
     {
         private final static int DEFAULT_VIEW_MODE = 0;
         private final static String DEFAULT_EPD_MODE = "3"; // which standing for A2 according to RK2906 specification
