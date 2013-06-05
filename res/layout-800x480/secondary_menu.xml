@@ -73,7 +73,6 @@
             android:background="@drawable/reader_menu_item_background"
             android:gravity="center"
             android:focusable="true"
-            android:padding="0dp"
              >
             <TextView
                 android:id="@+id/textview_tts"
