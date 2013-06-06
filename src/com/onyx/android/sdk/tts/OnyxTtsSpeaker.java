@@ -203,6 +203,10 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             if (mTtsSpeaking) {
                 return;
             }
+            
+            if (text == null || text.trim().length() == 0) {
+                return;
+            }
 
             setActive(true);
 
