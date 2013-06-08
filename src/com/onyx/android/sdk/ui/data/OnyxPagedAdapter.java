@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.data;
 
@@ -15,19 +15,19 @@ public abstract class OnyxPagedAdapter extends BaseAdapter
 {
     @SuppressWarnings("unused")
     private static final String TAG = "OnyxPagedAdapter";
-    
+
     private OnyxGridView mGridView = null;
-    private GridViewPaginator mPaginator = new GridViewPaginator();
+    private final GridViewPaginator mPaginator = new GridViewPaginator();
     private GridViewPageLayout mPageLayout = null;
-    
+
     public OnyxPagedAdapter(OnyxGridView gridView)
     {
         mGridView = gridView;
         mPageLayout = new GridViewPageLayout(gridView);
-        
+
         mPageLayout.registerOnStateChangedListener(new GridViewPageLayout.OnStateChangedListener()
         {
-            
+
             @Override
             public void onStateChanged()
             {
@@ -47,10 +47,10 @@ public abstract class OnyxPagedAdapter extends BaseAdapter
                 }
             }
         });
-        
+
         mPaginator.registerOnStateChangedListener(new GridViewPaginator.OnStateChangedListener()
         {
-            
+
             @Override
             public void onStateChanged()
             {
@@ -82,26 +82,34 @@ public abstract class OnyxPagedAdapter extends BaseAdapter
 
     	return false;
     }
-    
+
     @Override
     public int getCount()
     {
         return mPaginator.getItemCountInCurrentPage();
     }
-    
+
     public OnyxGridView getGridView()
     {
         return mGridView;
     }
-    
+
     public GridViewPaginator getPaginator()
     {
         return mPaginator;
     }
-    
+
     public GridViewPageLayout getPageLayout()
     {
         return mPageLayout;
     }
-    
+
+    /**
+     * Update page index. It should be called after deleting items.
+     * @param value the index of the page
+     */
+    public void setItemCount(int value) {
+        mPaginator.setItemCount(value);
+    }
+
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.data;
 
@@ -22,7 +22,7 @@ import com.onyx.android.sdk.ui.data.GridViewPageLayout.GridViewMode;
 public class GridViewDirectoryAdapter extends OnyxPagedAdapter
 {
     private LayoutInflater mInflater = null;
-    private ArrayList<DirectoryItem> mDirectoryItems = new ArrayList<DirectoryItem>();
+    private final ArrayList<DirectoryItem> mDirectoryItems = new ArrayList<DirectoryItem>();
 
     private static final int sItemMinWidth = 145;
     private static final int sItemMinHeight = 60;
@@ -58,6 +58,11 @@ public class GridViewDirectoryAdapter extends OnyxPagedAdapter
     public long getItemId(int position)
     {
         return 0;
+    }
+
+    public void remove(int position) {
+        mDirectoryItems.remove(position);
+        super.setItemCount(mDirectoryItems.size());
     }
 
     @Override

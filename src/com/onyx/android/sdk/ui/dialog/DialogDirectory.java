@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.dialog;
 
@@ -9,9 +9,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import com.onyx.android.sdk.ui.data.GridViewDirectoryAdapter;
 public class DialogDirectory extends OnyxDialogBase
 {
     public static enum DirectoryTab {toc, bookmark, annotation};
+    private BookmarksPopupWindow popupwindow = null;
 
     public static interface IGotoPageHandler
     {
@@ -38,14 +41,24 @@ public class DialogDirectory extends OnyxDialogBase
         public void jumpAnnotation(DirectoryItem item);
     }
 
-    private IGotoPageHandler mGotoPageHandler = null;
-    private TextView mTextViewTitle = null;
+    public static interface IEditPageHandler {
+        public void deleteBookmark(DirectoryItem item);
+        public void deleteAnnotation(DirectoryItem item);
+        public void editAnnotation(DirectoryItem item);
+    }
 
-    public DialogDirectory(Context context, ArrayList<DirectoryItem> tocItems, ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems, final IGotoPageHandler gotoPageHandler, DirectoryTab tab)
+    private IGotoPageHandler mGotoPageHandler = null;
+    private IEditPageHandler mEditPageHandler = null;
+    private TextView mTextViewTitle = null;
+    private Context mContext = null;
+
+    public DialogDirectory(Context context, ArrayList<DirectoryItem> tocItems, ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems, final IGotoPageHandler gotoPageHandler,final IEditPageHandler editPageHandler, DirectoryTab tab)
     {
         super(context, R.style.full_screen_dialog);
         setContentView(R.layout.dialog_directory);
+        mContext = context;
         mGotoPageHandler = gotoPageHandler;
+        mEditPageHandler = editPageHandler;
         TabHost tab_host = (TabHost) findViewById(R.id.tabhost);
         tab_host.setup();
 
@@ -60,7 +73,7 @@ public class DialogDirectory extends OnyxDialogBase
 
         tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_toc)).setIndicator(toc).setContent(R.id.layout_toc));
         tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_bookmark)).setIndicator(bookmark).setContent(R.id.layout_bookmark));
-        
+
         if (DeviceInfo.singleton().getDeviceController().getTouchType(context) != TouchType.None) {
         	tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_annotation)).setIndicator(annotation).setContent(R.id.layout_annotation));
 		} else {
@@ -81,18 +94,18 @@ public class DialogDirectory extends OnyxDialogBase
         mTextViewTitle = (TextView) findViewById(R.id.textview_title);
 
         DirectoryGridView gridViewTOC = (DirectoryGridView) findViewById(R.id.gridview_toc);
-        DirectoryGridView gridViewBookmark = (DirectoryGridView) findViewById(R.id.gridview_bookmark);
+        final DirectoryGridView gridViewBookmark = (DirectoryGridView) findViewById(R.id.gridview_bookmark);
         DirectoryGridView gridViewAnnotation = (DirectoryGridView) findViewById(R.id.gridview_annotation);
 
-        if (tocItems != null) {            
+        if (tocItems != null) {
             GridViewDirectoryAdapter tocAdapter = new GridViewDirectoryAdapter(context, gridViewTOC.getGridView(), tocItems);
             gridViewTOC.getGridView().setAdapter(tocAdapter);
         }
-        if (bookmarkItems != null) {            
+        if (bookmarkItems != null) {
             GridViewDirectoryAdapter bookmarkAdapter = new GridViewDirectoryAdapter(context, gridViewBookmark.getGridView(), bookmarkItems);
             gridViewBookmark.getGridView().setAdapter(bookmarkAdapter);
         }
-        if (annotationItems != null) {            
+        if (annotationItems != null) {
             GridViewAnnotationAdapter annotationAdapter = new GridViewAnnotationAdapter(context, gridViewAnnotation.getGridView(), annotationItems);
             gridViewAnnotation.getGridView().setAdapter(annotationAdapter);
         }
@@ -108,17 +121,31 @@ public class DialogDirectory extends OnyxDialogBase
                 mGotoPageHandler.jumpTOC(item);
             }
         });
+
         gridViewBookmark.getGridView().setOnItemClickListener(new OnItemClickListener()
         {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                DialogDirectory.this.dismiss();
                 DirectoryItem item = (DirectoryItem) view.getTag();
-                mGotoPageHandler.jumpBookmark(item);
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                View popup_view = inflater.inflate(R.layout.bookmark_item_popupwindow, null);
+                LinearLayout layout = (LinearLayout) popup_view.findViewById(R.id.layout_popup);
+                if (popupwindow != null) {
+                    popupwindow.dismiss();
+                    popupwindow = null;
+                }
+                popupwindow = new BookmarksPopupWindow(layout, DialogDirectory.this, item, mGotoPageHandler, mEditPageHandler, gridViewBookmark, position);
+                popupwindow.setOutsideTouchable(true);
+                popupwindow.setFocusable(true);
+                popupwindow.setTouchable(true);
+                LayoutParams params = view.getLayoutParams();
+                int width = params.width - popupwindow.getWidth();
+                popupwindow.showAsDropDown(view, width, 0);
             }
         });
+
         gridViewAnnotation.getGridView().setOnItemClickListener(new OnItemClickListener()
         {
 
@@ -161,4 +188,5 @@ public class DialogDirectory extends OnyxDialogBase
             break;
         }
     }
+
 }
