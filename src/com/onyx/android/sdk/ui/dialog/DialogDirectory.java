@@ -32,7 +32,7 @@ import com.onyx.android.sdk.ui.data.GridViewDirectoryAdapter;
 public class DialogDirectory extends OnyxDialogBase
 {
     public static enum DirectoryTab {toc, bookmark, annotation};
-    private BookmarksPopupWindow popupwindow = null;
+    private BookmarksPopupWindow mPopupWindow = null;
 
     public static interface IGotoPageHandler
     {
@@ -52,7 +52,9 @@ public class DialogDirectory extends OnyxDialogBase
     private TextView mTextViewTitle = null;
     private Context mContext = null;
 
-    public DialogDirectory(Context context, ArrayList<DirectoryItem> tocItems, ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems, final IGotoPageHandler gotoPageHandler,final IEditPageHandler editPageHandler, DirectoryTab tab)
+    public DialogDirectory(Context context, ArrayList<DirectoryItem> tocItems,
+            ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems,
+            final IGotoPageHandler gotoPageHandler,final IEditPageHandler editPageHandler, DirectoryTab tab)
     {
         super(context, R.style.full_screen_dialog);
         setContentView(R.layout.dialog_directory);
@@ -132,17 +134,17 @@ public class DialogDirectory extends OnyxDialogBase
                 LayoutInflater inflater = LayoutInflater.from(mContext);
                 View popup_view = inflater.inflate(R.layout.bookmark_item_popupwindow, null);
                 LinearLayout layout = (LinearLayout) popup_view.findViewById(R.id.layout_popup);
-                if (popupwindow != null) {
-                    popupwindow.dismiss();
-                    popupwindow = null;
+                if (mPopupWindow != null) {
+                    mPopupWindow.dismiss();
+                    mPopupWindow = null;
                 }
-                popupwindow = new BookmarksPopupWindow(layout, DialogDirectory.this, item, mGotoPageHandler, mEditPageHandler, gridViewBookmark, position);
-                popupwindow.setOutsideTouchable(true);
-                popupwindow.setFocusable(true);
-                popupwindow.setTouchable(true);
+                mPopupWindow = new BookmarksPopupWindow(layout, DialogDirectory.this, item, mGotoPageHandler, mEditPageHandler, gridViewBookmark, position);
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setFocusable(true);
+                mPopupWindow.setTouchable(true);
                 LayoutParams params = view.getLayoutParams();
-                int width = params.width - popupwindow.getWidth();
-                popupwindow.showAsDropDown(view, width, 0);
+                int width = params.width - mPopupWindow.getWidth();
+                mPopupWindow.showAsDropDown(view, width, 0);
             }
         });
 
