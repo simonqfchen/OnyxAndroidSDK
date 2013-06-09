@@ -29,7 +29,7 @@ import com.onyx.android.sdk.ui.util.OnyxFocusFinder;
  * @author joy
  *
  */
-public class DialogContextMenu extends OnyxDialogBase
+public class DialogContextMenu extends DialogBaseOnyx
 {
     @SuppressWarnings("unused")
     private final static String TAG = "DialogContextMenu";

@@ -37,7 +37,7 @@ import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler;
 import com.onyx.android.sdk.ui.util.WindowUtil;
 
 
-public class DialogReaderMenuPhone extends OnyxDialogBase
+public class DialogReaderMenuPhone extends DialogBaseOnyx
 {
     private final static String TAG = "DialogReaderMenuPhone";
 

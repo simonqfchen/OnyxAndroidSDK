@@ -27,7 +27,7 @@ import com.onyx.android.sdk.ui.data.GridViewDirectoryAdapter;
 /**
  * @author qingyue
  */
-public class DialogDirectory extends OnyxDialogBase
+public class DialogDirectory extends DialogBaseOnyx
 {
     public static enum DirectoryTab {toc, bookmark, annotation};
 

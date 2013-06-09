@@ -29,7 +29,7 @@ import com.onyx.android.sdk.ui.dialog.DialogDirectory.IGotoPageHandler;
 /**
  * @author peekaboo
  */
-public class DialogDirectoryPhone extends OnyxDialogBase
+public class DialogDirectoryPhone extends DialogBaseOnyx
 {
     private IGotoPageHandler mGotoPageHandler = null;
     private TextView mTextViewTitle = null;

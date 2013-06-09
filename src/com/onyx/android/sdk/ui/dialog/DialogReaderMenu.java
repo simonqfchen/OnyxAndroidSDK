@@ -38,7 +38,7 @@ import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler.RotationScreenProp
 import com.onyx.android.sdk.ui.util.WindowUtil;
 
 
-public class DialogReaderMenu extends OnyxDialogBase
+public class DialogReaderMenu extends DialogBaseOnyx
 {
     private final static String TAG = "DialogReaderMenu";
 
