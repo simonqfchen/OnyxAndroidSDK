@@ -32,76 +32,15 @@ import com.onyx.android.sdk.device.DeviceInfo;
 import com.onyx.android.sdk.device.EpdController;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
 import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
+import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler;
+import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler.LineSpacingProperty;
+import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler.RotationScreenProperty;
 import com.onyx.android.sdk.ui.util.WindowUtil;
 
 
 public class DialogReaderMenu extends OnyxDialogBase
 {
     private final static String TAG = "DialogReaderMenu";
-
-    public static enum LineSpacingProperty {normal, big, small, decreases, enlarge};
-    public static enum RotationScreenProperty {rotation_0, rotation_90, rotation_180, rotation_270};
-    public static enum FontSizeProperty {increase, decrease};
-
-    public static interface IReaderMenuHandler
-    {
-        public int getPageIndex();
-        public int getPageCount();
-
-        public void nextPage();
-        public void previousPage();
-        public void gotoPage(int i);
-
-        public void updateCurrentPage(LinearLayout l);
-
-        public void increaseFontSize();
-        public void decreaseFontSize();
-        public void changeFontsize(FontSizeProperty property);
-
-        public void toggleFontEmbolden();
-
-        public void showSetFontView();
-        public String getFontFace();
-        public void setFontFace();
-
-        public void rotationScreen(int i);
-        public void changeRotationScreen(int orientation);
-
-        public void showLineSpacingView();
-        public void setLineSpacing(LineSpacingProperty property);
-
-        public void showTOC();
-        public void showBookMarks();
-        public void showTTsView();
-        public void showAnnotation();
-
-        public void searchContent();
-        public void startDictionary();
-        public void showGoToPageDialog();
-
-        public void zoomToPage();
-        public void zoomToWidth();
-        public void zoomToHeight();
-        public void zoomBySelection();
-        public void zoomByTwoPoints();
-        public void zoomByValue(double z);
-        public void zoomIn();
-        public void zoomOut();
-
-        public void toggleFullscreen();
-        public boolean showZoomSettings();
-        public boolean showSpacingSettings();
-        public boolean canChangeFontFace();
-        public boolean isFullscreen();
-        public void setScreenRefresh();
-        public void showReaderSettings();
-
-        public boolean ttsIsSpeaking();
-        public void ttsInit();
-        public void ttsSpeak();
-        public void ttsPause();
-        public void ttsStop();
-    }
 
     private long mThreadId = -1;
     private Handler mHandler = new Handler();
