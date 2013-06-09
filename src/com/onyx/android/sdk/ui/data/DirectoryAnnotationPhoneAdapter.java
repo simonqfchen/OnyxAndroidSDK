@@ -11,8 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
-import com.onyx.android.sdk.ui.dialog.AnnotationItem;
-import com.onyx.android.sdk.ui.dialog.AnnotationItem.TitleType;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem.TitleType;
 
 /**
  * 

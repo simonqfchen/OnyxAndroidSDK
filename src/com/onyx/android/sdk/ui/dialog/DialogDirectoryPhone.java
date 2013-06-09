@@ -25,6 +25,7 @@ import com.onyx.android.sdk.ui.data.DirectoryItem;
 import com.onyx.android.sdk.ui.data.DirectoryPhoneAdapter;
 import com.onyx.android.sdk.ui.dialog.DialogDirectory.DirectoryTab;
 import com.onyx.android.sdk.ui.dialog.DialogDirectory.IGotoPageHandler;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem;
 
 /**
  * @author peekaboo

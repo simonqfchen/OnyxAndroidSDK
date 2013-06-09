@@ -1,4 +1,4 @@
-package com.onyx.android.sdk.ui.dialog;
+package com.onyx.android.sdk.ui.dialog.data;
 
 import com.onyx.android.sdk.ui.data.DirectoryItem;
 
