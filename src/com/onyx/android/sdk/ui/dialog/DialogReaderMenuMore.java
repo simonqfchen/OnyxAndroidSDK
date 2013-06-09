@@ -14,7 +14,7 @@ import android.view.WindowManager;
  * @author peekaboo
  *
  */
-public class DialogReaderMenuMore extends OnyxDialogBase
+public class DialogReaderMenuMore extends DialogBaseOnyx
 {
 
     public DialogReaderMenuMore(Activity activity , View view)

@@ -25,11 +25,12 @@ import com.onyx.android.sdk.ui.DirectoryGridView;
 import com.onyx.android.sdk.ui.data.DirectoryItem;
 import com.onyx.android.sdk.ui.data.GridViewAnnotationAdapter;
 import com.onyx.android.sdk.ui.data.GridViewDirectoryAdapter;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem;
 
 /**
  * @author qingyue
  */
-public class DialogDirectory extends OnyxDialogBase
+public class DialogDirectory extends DialogBaseOnyx
 {
     public static enum DirectoryTab {toc, bookmark, annotation};
     private BookmarksPopupWindow mPopupWindow = null;

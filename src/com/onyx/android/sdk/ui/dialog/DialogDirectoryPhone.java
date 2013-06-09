@@ -25,11 +25,12 @@ import com.onyx.android.sdk.ui.data.DirectoryItem;
 import com.onyx.android.sdk.ui.data.DirectoryPhoneAdapter;
 import com.onyx.android.sdk.ui.dialog.DialogDirectory.DirectoryTab;
 import com.onyx.android.sdk.ui.dialog.DialogDirectory.IGotoPageHandler;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem;
 
 /**
  * @author peekaboo
  */
-public class DialogDirectoryPhone extends OnyxDialogBase
+public class DialogDirectoryPhone extends DialogBaseOnyx
 {
     private IGotoPageHandler mGotoPageHandler = null;
     private TextView mTextViewTitle = null;

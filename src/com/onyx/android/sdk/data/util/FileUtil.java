@@ -521,6 +521,12 @@ public class FileUtil
         }
     }
     
+    /**
+     * return file extension without heading dot
+     * 
+     * @param fileName
+     * @return
+     */
     public static String getFileExtension(String fileName)
     {
         int dot_pos = fileName.lastIndexOf('.');
