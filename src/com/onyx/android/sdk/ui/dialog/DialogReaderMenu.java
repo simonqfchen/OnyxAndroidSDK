@@ -831,14 +831,15 @@ public class DialogReaderMenu extends DialogBaseOnyx
     public void enterDJVUModeUI()
     {
         this.findViewById(R.id.layout_tts).setVisibility(View.GONE);
-        this.findViewById(R.id.layout_font).setVisibility(View.GONE);
-
         this.findViewById(R.id.layout_dictionary_footer).setVisibility(View.VISIBLE);
-        this.findViewById(R.id.layout_refresh_footer).setVisibility(View.VISIBLE);
 
         mMoreView.findViewById(R.id.layout_dictionary).setVisibility(View.GONE);
         mMoreView.findViewById(R.id.layout_search).setVisibility(View.GONE);
-        mMoreView.findViewById(R.id.layout_refresh).setVisibility(View.GONE);
+        
+        mFontSettings.findViewById(R.id.layout_font_decrease).setVisibility(View.GONE);
+        mFontSettings.findViewById(R.id.layout_font_increase).setVisibility(View.GONE);
+        mFontSettings.findViewById(R.id.relativelayout_font_face).setVisibility(View.GONE);
+        mFontSettings.findViewById(R.id.relativelayout_font_type).setVisibility(View.GONE);
     }
 
     public void setButtonFontFaceText(String text)
