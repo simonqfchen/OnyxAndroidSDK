@@ -83,7 +83,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
     Window mWindow = null;
 
     private IReaderMenuHandler mMenuHandler = null;
-
+    
     private boolean mIsShowChildMenu = false;
     private boolean mIsInitReaderMenu = true;
 
@@ -513,26 +513,13 @@ public class DialogReaderMenu extends DialogBaseOnyx
             }
         });
 
-      if (!DeviceInfo.singleton().getDeviceController().hasAudio(activity)) {
-    	  layout_dictionary.setVisibility(View.GONE);
-    	  findViewById(R.id.layout_tts).setVisibility(View.GONE);
-    	  RelativeLayout foot_layout_dictionary = (RelativeLayout)findViewById(R.id.layout_dictionary);
-    	  foot_layout_dictionary.setVisibility(View.VISIBLE);
-    	  foot_layout_dictionary.setOnClickListener(new View.OnClickListener()
-    	  {
-
-    		  @Override
-    		  public void onClick(View v)
-    		  {
-    			  mMenuHandler.startDictionary();
-    		  }
-    	  });
-      }
+        if (!DeviceInfo.singleton().getDeviceController().hasAudio(activity)) {
+            this.findViewById(R.id.layout_tts).setVisibility(View.GONE);
+            this.findViewById(R.id.layout_dictionary_footer).setVisibility(View.VISIBLE);
+            mMoreView.findViewById(R.id.layout_dictionary).setVisibility(View.GONE);
+        }
 
         RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
-		if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
-			layout_search.setVisibility(View.GONE);
-		}
         layout_search.setOnClickListener(new View.OnClickListener()
         {
 
@@ -666,7 +653,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
             }
         });
 
-        showLineSpacingOrZoomSettings();
+        updateLineSpacingOrZoomSettings();
 
         RelativeLayout layout_font = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_font);
         layout_font.setOnClickListener(new View.OnClickListener()
@@ -677,6 +664,40 @@ public class DialogReaderMenu extends DialogBaseOnyx
             {
                 mButtonFontFace.setText(mMenuHandler.getFontFace());
                 showChildMenu(R.drawable.item_selected_4, mFontSettings);
+            }
+        });
+        
+        RelativeLayout layout_dictionary_footer = (RelativeLayout)findViewById(R.id.layout_dictionary_footer);
+        layout_dictionary_footer.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                mMenuHandler.startDictionary();
+            }
+        });
+        
+        RelativeLayout layout_search_footer = (RelativeLayout)findViewById(R.id.layout_search_footer);
+        layout_search_footer.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                DialogReaderMenu.this.dismiss();
+                mMenuHandler.searchContent();
+            }
+        });
+        
+        RelativeLayout layout_refresh_footer = (RelativeLayout)findViewById(R.id.layout_refresh_footer);
+        layout_refresh_footer.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                mMenuHandler.setScreenRefresh();
             }
         });
 
@@ -736,39 +757,13 @@ public class DialogReaderMenu extends DialogBaseOnyx
         mWindow.setAttributes(mParams);
     }
 
-    private void showLineSpacingOrZoomSettings()
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus)
     {
-        RelativeLayout layout_spacing = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_spacing);
-        ImageView imageView = (ImageView) mLayoutSecondaryMenu.findViewById(R.id.imageview_line_spacing);
-        TextView textView = (TextView) mLayoutSecondaryMenu.findViewById(R.id.textview_line_spacing);
-        if (mMenuHandler.showZoomSettings()) {
-            imageView.setImageResource(R.drawable.zoom);
-            textView.setText(R.string.menu_item_zoom);
+        if (mIsInitReaderMenu) {
+            showChildMenu(R.drawable.item_selected_6, mMoreView);
+            mIsInitReaderMenu = false;
         }
-        else if (mMenuHandler.showSpacingSettings()) {
-            imageView.setImageResource(R.drawable.line_spacing);
-            textView.setText(R.string.menu_item_line_spacing);
-        } else {
-        	imageView.setImageResource(R.drawable.search);
-        	textView.setText(R.string.menu_item_search);
-        }
-        layout_spacing.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-                if (mMenuHandler.showZoomSettings()) {
-                    showChildMenu(R.drawable.item_selected_2, mZoomSettings);
-                }
-                else if (mMenuHandler.showSpacingSettings()) {
-                    showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
-                } else {
-                	DialogReaderMenu.this.dismiss();
-                	mMenuHandler.searchContent();
-                }
-            }
-        });
     }
 
     @Override
@@ -830,6 +825,31 @@ public class DialogReaderMenu extends DialogBaseOnyx
         super.dismiss();
     }
 
+    public void setButtonFontFaceText(String text)
+    {
+        mButtonFontFace.setText(text);
+    }
+
+    public interface onShowTTsViewLinsener
+    {
+        public void showTTsView();
+    }
+    
+    public onShowTTsViewLinsener mOnShowTTsViewLinsener = new onShowTTsViewLinsener()
+    {
+
+        @Override
+        public void showTTsView()
+        {
+            //do nothing
+        }
+    };
+    
+    public void setOnShowTTsViewLinsener(onShowTTsViewLinsener l)
+    {
+        mOnShowTTsViewLinsener = l;
+    }
+
     private void showChildMenu(int backgroundresoruce, View childView)
     {
         android.view.ViewGroup.LayoutParams params = mLayoutSecondaryMenu.getLayoutParams();
@@ -857,29 +877,6 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
             mIsShowChildMenu = true;
         }
-    }
-
-    public void setButtonFontFaceText(String text)
-    {
-        mButtonFontFace.setText(text);
-    }
-
-    public interface onShowTTsViewLinsener
-    {
-        public void showTTsView();
-    }
-    public onShowTTsViewLinsener mOnShowTTsViewLinsener = new onShowTTsViewLinsener()
-    {
-
-        @Override
-        public void showTTsView()
-        {
-            //do nothing
-        }
-    };
-    public void setOnShowTTsViewLinsener(onShowTTsViewLinsener l)
-    {
-        mOnShowTTsViewLinsener = l;
     }
 
     public interface onShowLineSpacingViewLinsener
@@ -964,12 +961,48 @@ public class DialogReaderMenu extends DialogBaseOnyx
         }
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus)
+    private void updateLineSpacingOrZoomSettings()
     {
-        if (mIsInitReaderMenu) {
-            showChildMenu(R.drawable.item_selected_6, mMoreView);
-            mIsInitReaderMenu = false;
+        RelativeLayout layout_spacing = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_spacing);
+
+        if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
+            layout_spacing.setVisibility(View.GONE);
+            this.findViewById(R.id.layout_search_footer).setVisibility(View.VISIBLE);
+            mMoreView.findViewById(R.id.layout_search).setVisibility(View.GONE);
+        }
+        else {
+            ImageView imageView = (ImageView) mLayoutSecondaryMenu.findViewById(R.id.imageview_line_spacing);
+            TextView textView = (TextView) mLayoutSecondaryMenu.findViewById(R.id.textview_line_spacing);
+
+            if (mMenuHandler.showZoomSettings()) {
+                imageView.setImageResource(R.drawable.zoom);
+                textView.setText(R.string.menu_item_zoom);
+            }
+            else if (mMenuHandler.showSpacingSettings()) {
+                imageView.setImageResource(R.drawable.line_spacing);
+                textView.setText(R.string.menu_item_line_spacing);
+            }
+            else {
+                assert(false);
+            }
+
+            layout_spacing.setOnClickListener(new View.OnClickListener()
+            {
+
+                @Override
+                public void onClick(View v)
+                {
+                    if (mMenuHandler.showZoomSettings()) {
+                        showChildMenu(R.drawable.item_selected_2, mZoomSettings);
+                    }
+                    else if (mMenuHandler.showSpacingSettings()) {
+                        showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
+                    } else {
+                        DialogReaderMenu.this.dismiss();
+                        mMenuHandler.searchContent();
+                    }
+                }
+            });
         }
     }
 
