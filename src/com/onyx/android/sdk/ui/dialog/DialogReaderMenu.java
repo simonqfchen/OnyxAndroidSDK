@@ -825,6 +825,22 @@ public class DialogReaderMenu extends DialogBaseOnyx
         super.dismiss();
     }
 
+    /**
+     * dirty hacking for DJVU's menu, must be called before menu dialog is shown
+     */
+    public void enterDJVUModeUI()
+    {
+        this.findViewById(R.id.layout_tts).setVisibility(View.GONE);
+        this.findViewById(R.id.layout_font).setVisibility(View.GONE);
+
+        this.findViewById(R.id.layout_dictionary_footer).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.layout_refresh_footer).setVisibility(View.VISIBLE);
+
+        mMoreView.findViewById(R.id.layout_dictionary).setVisibility(View.GONE);
+        mMoreView.findViewById(R.id.layout_search).setVisibility(View.GONE);
+        mMoreView.findViewById(R.id.layout_refresh).setVisibility(View.GONE);
+    }
+
     public void setButtonFontFaceText(String text)
     {
         mButtonFontFace.setText(text);
