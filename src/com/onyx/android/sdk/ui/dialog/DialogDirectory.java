@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -98,7 +100,7 @@ public class DialogDirectory extends DialogBaseOnyx
 
         DirectoryGridView gridViewTOC = (DirectoryGridView) findViewById(R.id.gridview_toc);
         final DirectoryGridView gridViewBookmark = (DirectoryGridView) findViewById(R.id.gridview_bookmark);
-        DirectoryGridView gridViewAnnotation = (DirectoryGridView) findViewById(R.id.gridview_annotation);
+        final DirectoryGridView gridViewAnnotation = (DirectoryGridView) findViewById(R.id.gridview_annotation);
 
         if (tocItems != null) {
             GridViewDirectoryAdapter tocAdapter = new GridViewDirectoryAdapter(context, gridViewTOC.getGridView(), tocItems);
@@ -132,18 +134,20 @@ public class DialogDirectory extends DialogBaseOnyx
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 DirectoryItem item = (DirectoryItem) view.getTag();
-                LayoutInflater inflater = LayoutInflater.from(mContext);
-                View popup_view = inflater.inflate(R.layout.bookmark_item_popupwindow, null);
-                LinearLayout layout = (LinearLayout) popup_view.findViewById(R.id.layout_popup);
-                if (mPopupWindow != null) {
-                    mPopupWindow.dismiss();
-                    mPopupWindow = null;
+                LinearLayout layout = initPopupWindow();
+                if (mPopupWindow == null) {
+                    mPopupWindow = new BookmarksPopupWindow(mContext, layout, DialogDirectory.this,
+                            mGotoPageHandler, mEditPageHandler);
+                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setFocusable(true);
+                    mPopupWindow.setTouchable(true);
                 }
-                mPopupWindow = new BookmarksPopupWindow(layout, DialogDirectory.this, item, mGotoPageHandler, mEditPageHandler, gridViewBookmark, position);
-                mPopupWindow.setOutsideTouchable(true);
-                mPopupWindow.setFocusable(true);
-                mPopupWindow.setTouchable(true);
-                LayoutParams params = view.getLayoutParams();
+                if (mPopupWindow.getMode() != 0) {
+                    mPopupWindow.removeButton(1, 1);
+                }
+
+                mPopupWindow.setDirectoryItem(item, gridViewBookmark, position);
+                ViewGroup.LayoutParams params = view.getLayoutParams();
                 int width = params.width - mPopupWindow.getWidth();
                 mPopupWindow.showAsDropDown(view, width, 0);
             }
@@ -155,9 +159,25 @@ public class DialogDirectory extends DialogBaseOnyx
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                DialogDirectory.this.dismiss();
                 DirectoryItem item = (DirectoryItem) view.getTag();
-                mGotoPageHandler.jumpAnnotation(item);
+                LinearLayout layout = initPopupWindow();
+                //mGotoPageHandler.jumpAnnotation(item);
+                if (mPopupWindow == null) {
+                    mPopupWindow = new BookmarksPopupWindow(mContext, layout, DialogDirectory.this,
+                            mGotoPageHandler, mEditPageHandler);
+                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setFocusable(true);
+                    mPopupWindow.setTouchable(true);
+                }
+                if (mPopupWindow.getMode() != 1) {
+                    mPopupWindow.addButton(1, 1);
+                }
+
+                mPopupWindow.setDirectoryItem(item, gridViewAnnotation, position);
+                ViewGroup.LayoutParams params = view.getLayoutParams();
+                int width = params.width - mPopupWindow.getWidth();
+                mPopupWindow.showAsDropDown(view, width, 0);
+
             }
         });
 
@@ -190,6 +210,44 @@ public class DialogDirectory extends DialogBaseOnyx
             mTextViewTitle.setText(R.string.tabwidget_toc);
             break;
         }
+    }
+
+    private LinearLayout initPopupWindow(){
+        LinearLayout layout = new LinearLayout(mContext);
+        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 5, 0);
+
+        ImageButton gotoButton = new ImageButton(mContext);
+        gotoButton.setId(0);
+        gotoButton.setLayoutParams(params);
+        gotoButton.setImageResource(R.drawable.toc_menu_go);
+        gotoButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(gotoButton, 0);
+
+        ImageButton editButton = new ImageButton(mContext);
+        editButton.setLayoutParams(params);
+        editButton.setId(1);
+        editButton.setImageResource(R.drawable.toc_menu_edit);
+        editButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(editButton, 1);
+
+        ImageButton deleButton = new ImageButton(mContext);
+        deleButton.setLayoutParams(params);
+        deleButton.setId(2);
+        deleButton.setImageResource(R.drawable.toc_menu_dele);
+        deleButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(deleButton, 2);
+
+        ImageButton exitButton = new ImageButton(mContext);
+        exitButton.setId(3);
+        exitButton.setLayoutParams(params);
+        exitButton.setImageResource(R.drawable.toc_menu_exit);
+        exitButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(exitButton, 3);
+
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setLayoutParams(params);
+        return layout;
     }
 
 }
