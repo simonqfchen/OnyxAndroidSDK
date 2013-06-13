@@ -44,7 +44,7 @@ public class DialogScreenRefresh extends DialogBaseSettings
     /**
      * times to reset display to eliminate ghost pixels
      */
-    public static int RENDER_RESET_MAX_TIME = 1;
+    public static int RENDER_RESET_MAX_TIME = 5;
     
     private SelectionAdapter mAdapter = null;
     final ArrayList<Pair<String, Object>> mItems = new ArrayList<Pair<String, Object>>();
@@ -86,7 +86,7 @@ public class DialogScreenRefresh extends DialogBaseSettings
                     RENDER_RESET_MAX_TIME = (Integer)mItems.get(sel).second;
                 }
                 else {
-                    RENDER_RESET_MAX_TIME = 1;
+                    RENDER_RESET_MAX_TIME = 5;
                 }
 
                 OnyxSysCenter.setScreenUpdateGCInterval(hostActivity , RENDER_RESET_MAX_TIME);
