@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
 
-public class DialogSearchView extends OnyxDialogBase
+public class DialogSearchView extends DialogBaseOnyx
 {
     public static interface IHandler
     {

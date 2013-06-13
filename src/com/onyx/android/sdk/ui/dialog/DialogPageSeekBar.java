@@ -23,7 +23,7 @@ import com.onyx.android.sdk.ui.dialog.DialogGotoPage.AcceptNumberListener;
  * @author qingyue
  *
  */
-public class DialogPageSeekBar extends OnyxDialogBase
+public class DialogPageSeekBar extends DialogBaseOnyx
 {
     @SuppressWarnings("unused")
     private static final String TAG = "DialogPageSeekBar";

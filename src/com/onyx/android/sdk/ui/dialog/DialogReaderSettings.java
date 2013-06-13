@@ -13,7 +13,7 @@ import com.onyx.android.sdk.R;
 import com.onyx.android.sdk.ui.OnyxGridView;
 import com.onyx.android.sdk.ui.data.ReaderSettingsAdapter;
 
-public class DialogReaderSettings extends OnyxDialogBase
+public class DialogReaderSettings extends DialogBaseOnyx
 {
     public enum ReaderSettingsItemProperty{PageMargins}
 

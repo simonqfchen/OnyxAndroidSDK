@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.onyx.android.sdk.R;
 import com.onyx.android.sdk.ui.OnyxGridView;
 import com.onyx.android.sdk.ui.data.GridViewPageLayout.GridViewMode;
-import com.onyx.android.sdk.ui.dialog.AnnotationItem;
-import com.onyx.android.sdk.ui.dialog.AnnotationItem.TitleType;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem.TitleType;
 
 /**
  * @author qingyue

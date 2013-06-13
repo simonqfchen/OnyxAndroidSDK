@@ -33,13 +33,11 @@ import com.onyx.android.sdk.device.DeviceInfo;
 import com.onyx.android.sdk.device.EpdController;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
 import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
-import com.onyx.android.sdk.ui.dialog.DialogReaderMenu.IReaderMenuHandler;
-import com.onyx.android.sdk.ui.dialog.DialogReaderMenu.LineSpacingProperty;
-import com.onyx.android.sdk.ui.dialog.DialogReaderMenu.RotationScreenProperty;
+import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler;
 import com.onyx.android.sdk.ui.util.WindowUtil;
 
 
-public class DialogReaderMenuPhone extends OnyxDialogBase
+public class DialogReaderMenuPhone extends DialogBaseOnyx
 {
     private final static String TAG = "DialogReaderMenuPhone";
 
@@ -139,7 +137,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_0);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_0);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -153,7 +151,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_90);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_90);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -167,7 +165,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_180);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_180);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -181,7 +179,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_270);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_270);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -244,7 +242,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.normal);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.normal);
             }
         });
         mLayoutLineSpacingBig.setOnClickListener(new View.OnClickListener()
@@ -253,7 +251,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.big);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.big);
             }
         });
         mLayoutLineSpacingSmall.setOnClickListener(new View.OnClickListener()
@@ -262,7 +260,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.small);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.small);
             }
         });
         RelativeLayout lineSpacingEnlarge = (RelativeLayout) mLineSpacingSettings.findViewById(R.id.layout_spacing_enlarge);
@@ -272,7 +270,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.enlarge);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.enlarge);
             }
         });
         RelativeLayout lineSpacingDecreases = (RelativeLayout) mLineSpacingSettings.findViewById(R.id.layout_spacing_decreases);
@@ -282,7 +280,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.decreases);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.decreases);
             }
         });
 
@@ -970,11 +968,11 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    private int getOrientation(RotationScreenProperty property)
+    private int getOrientation(IReaderMenuHandler.RotationScreenProperty property)
     {
         int orientation = -1;
         int current_orientation = mActivity.getRequestedOrientation();
-        if (property == RotationScreenProperty.rotation_90) {
+        if (property == IReaderMenuHandler.RotationScreenProperty.rotation_90) {
             if (current_orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
             }
@@ -991,7 +989,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
             }
         }
-        else if (property == RotationScreenProperty.rotation_180) {
+        else if (property == IReaderMenuHandler.RotationScreenProperty.rotation_180) {
             if (current_orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
             }
@@ -1008,7 +1006,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
             }
         }
-        else if (property == RotationScreenProperty.rotation_270) {
+        else if (property == IReaderMenuHandler.RotationScreenProperty.rotation_270) {
             if (current_orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
             }

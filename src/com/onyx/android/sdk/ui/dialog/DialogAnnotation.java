@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.onyx.android.sdk.R;
 
-public class DialogAnnotation extends OnyxDialogBase
+public class DialogAnnotation extends DialogBaseOnyx
 {
     public enum AnnotationAction{add, update}
 
