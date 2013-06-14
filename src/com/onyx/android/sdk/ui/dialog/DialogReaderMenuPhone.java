@@ -67,6 +67,8 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
     private LinearLayout mLayoutRotation_270 = null;
     private LinearLayout mLayoutRotation_0 = null;
 
+    private LinearLayout mReaderMenuCenterArea = null;
+    
     private RelativeLayout mLayoutFontIncrease = null;
     private RelativeLayout mLayoutFontDecrease = null;
     private RelativeLayout mLayoutFontEmbolden = null;
@@ -126,7 +128,15 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
         mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
         mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
-
+        
+        mReaderMenuCenterArea = (LinearLayout) findViewById(R.id.reader_menu_center_area);
+        mReaderMenuCenterArea.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogReaderMenuPhone.this.dismiss();
+			}
+		});
         mMenuHandler = menuHandler;
 
         mLayoutRotation_0.setOnClickListener(new View.OnClickListener()

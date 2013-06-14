@@ -1,27 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#FFFFFF" >
+    >
 
-    <include
-        android:id="@+id/layout_secondary_menu"
+    <RelativeLayout
+        android:id="@+id/top_menu"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
-        layout="@layout/secondary_menu" />
+        android:layout_height="wrap_content"
+        android:background="#FFFFFFFF"
+        android:paddingLeft="10dp"
+        android:layout_alignParentTop="true"
+        >
 
-    <TextView
+        <ImageView
+            android:id="@+id/button_bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:contentDescription="@string/hint"
+            android:src="@drawable/bookmark"
+            />
+
+        <RelativeLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/button_bookmark"
+            android:background="#FFFFFFFF"
+            >
+
+            <ImageView
+                android:id="@+id/button_search"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="#FF000000"
+                android:contentDescription="@string/hint"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:src="@drawable/search_icon"
+                android:text="@string/menu_item_search" />
+
+            <EditText
+                android:id="@+id/edittext_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="4dp"
+                android:layout_toLeftOf="@id/button_search"
+                android:hint="@string/menu_item_search"
+                android:background="@drawable/search_box_background"
+                android:singleLine="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+       
+    <TextView 
+        android:id="@+id/textview_line"
         android:layout_width="match_parent"
+        android:background="#FF000000"
+        android:layout_below="@id/top_menu"
         android:layout_height="2dp"
-        android:visibility="gone"
-        android:background="#000000"
         />
-
-    <include
-        android:id="@+id/layout_main_menu"
+    
+    <LinearLayout
+        android:id="@+id/reader_menu_center_area"
         android:layout_width="match_parent"
-        android:layout_height="41dp"
-        layout="@layout/main_menu" />
+        android:layout_above="@+id/low_menu"
+        android:layout_below="@id/top_menu"
+        android:layout_height="match_parent" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/low_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/layout_secondary_menu"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            layout="@layout/secondary_menu" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_main_menu"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            layout="@layout/main_menu" />
+    </LinearLayout>
+
+</RelativeLayout>
