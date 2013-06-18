@@ -4,14 +4,12 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +20,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -45,8 +42,8 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
     private Handler mHandler = new Handler();
 
     private TextView mTextViewChildLines = null;
-    private DialogReaderMenuMore mMoreDialog = null;
     
+    private ImageView mImageViewBookMark = null;
     private LinearLayout mLayoutSecondaryMenu = null;
     private LinearLayout mLayoutChild = null;
     private LayoutInflater mInflater = null;
@@ -85,6 +82,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
     private IReaderMenuHandler mMenuHandler = null;
 
     private boolean mIsShowChildMenu = false;
+    private boolean mIsInitReaderMenu = true;
 
     private int mTextViewChildLineResoruce = -1;
 
@@ -112,12 +110,13 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         mLayoutSecondaryMenu = (LinearLayout) findViewById(R.id.layout_secondary_menu);
         mLayoutChild = (LinearLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_child);
         mTextViewChildLines = (TextView) mLayoutSecondaryMenu.findViewById(R.id.textview_child_lines);
-
+;
+        		
         mInflater = LayoutInflater.from(mActivity);
         mFontSettings = mInflater.inflate(R.layout.menu_font_settings, null);
         mLineSpacingSettings = mInflater.inflate(R.layout.menu_line_spacing_settings, null);
         mTTsView = mInflater.inflate(R.layout.menu_tts_view, null);
-        mMoreView = mInflater.inflate(R.layout.dialog_reader_menu_more_layout, null);
+        mMoreView = mInflater.inflate(R.layout.menu_more_view, null);
         mRotationView = mInflater.inflate(R.layout.menu_rotation_settings, null);
         mZoomSettings = mInflater.inflate(R.layout.menu_zoom_settings, null);
         mCurrentPageTextView = (TextView)findViewById(R.id.textview_current_page);
@@ -128,6 +127,16 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
         mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
         mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
+        
+        mImageViewBookMark = (ImageView) findViewById(R.id.imageview_bookmark);
+        mImageViewBookMark.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogReaderMenuPhone.this.dismiss();
+                menuHandler.showBookMarks();
+			}
+		});
         
         mReaderMenuCenterArea = (LinearLayout) findViewById(R.id.reader_menu_center_area);
         mReaderMenuCenterArea.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +205,17 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             }
         });
 
+        RelativeLayout layout_dictionary_footer = (RelativeLayout)findViewById(R.id.layout_dictionary_footer);
+        layout_dictionary_footer.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                showChildMenu(R.drawable.phone_item_selected_3, mShowDirectory);
+            }
+        });
+        
         mLayoutFontDecrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_decrease);
         mLayoutFontIncrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_increase);
         mLayoutFontEmbolden = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_embolden);
@@ -324,10 +344,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             @Override
             public void onClick(View v)
             {
-            	if (mMoreDialog == null) {
-            		mMoreDialog = new DialogReaderMenuMore(mActivity, mMoreView);
-            	}
-            	mMoreDialog.show();
+            	showChildMenu(R.drawable.phone_item_selected_5, mMoreView);
             }
         });
 
@@ -517,75 +534,47 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         	});
         }
         
-        Button button_fonts = (Button) mMoreView.findViewById(R.id.button_fonts);
-        button_fonts.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_refash = (RelativeLayout) mMoreView.findViewById(R.id.layout_refresh);
+        layout_refash.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
-                showChildMenu(mFontSettings);
-            }
-        });
-        
-        Button button_spacing = (Button) mMoreView.findViewById(R.id.button_spacing);
-        button_spacing.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-            	mMoreDialog.dismiss();
-				showChildMenu(mLineSpacingSettings);
-            }
-        });
-        
-        Button button_refash = (Button) mMoreView.findViewById(R.id.button_refash);
-        button_refash.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-            	mMoreDialog.dismiss();
                 mMenuHandler.setScreenRefresh();
             }
         });
         
         
-        Button button_dictionary = (Button) mMoreView.findViewById(R.id.button_dictionary);
-        button_dictionary.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_dictionary = (RelativeLayout) mMoreView.findViewById(R.id.layout_dictionary);
+        layout_dictionary.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
                 mMenuHandler.startDictionary();
             }
         });
         
-        Button button_search = (Button) mMoreView.findViewById(R.id.button_search);
-        button_search.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
+        layout_search.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
                 mMenuHandler.searchContent();
             }
         });
         
-        Button button_settings = (Button) mMoreView.findViewById(R.id.button_settings);
-        button_settings.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_settings = (RelativeLayout) mMoreView.findViewById(R.id.layout_settings);
+        layout_settings.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
                 mMenuHandler.showReaderSettings();
             }
         });
@@ -598,7 +587,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             @Override
             public void onClick(View v)
             {
-            	showChildMenu(mTTsView);
+            	showChildMenu(R.drawable.phone_item_selected_1 , mTTsView);
                 menuHandler.ttsInit();
                 setTtsState(menuHandler.ttsIsSpeaking());
             }
@@ -678,7 +667,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             public void onClick(View v)
             {
                 mButtonFontFace.setText(mMenuHandler.getFontFace());
-                showChildMenu(R.drawable.item_selected_4, mFontSettings);
+                showChildMenu(R.drawable.phone_item_selected_4, mFontSettings);
             }
         });
 
@@ -723,15 +712,24 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             public void onClick(View v)
             {
                 if (mMenuHandler.showZoomSettings()) {
-                    showChildMenu(R.drawable.item_selected_2, mZoomSettings);
+                    showChildMenu(R.drawable.phone_item_selected_2, mZoomSettings);
                 }
                 else {
-                    showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
+                    showChildMenu(R.drawable.phone_item_selected_2, mLineSpacingSettings);
                 }
             }
         });
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
+        if (mIsInitReaderMenu) {
+            showChildMenu(R.drawable.phone_item_selected_5, mMoreView);
+            mIsInitReaderMenu = false;
+        }
+    }
+    
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -787,14 +785,6 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
         super.dismiss();
-    }
-    
-    private void showChildMenu(View contentView) {
-    	PopupWindow popup_window = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		popup_window.setFocusable(true);
-		popup_window.setBackgroundDrawable(new BitmapDrawable());
-		popup_window.showAtLocation(mLayoutSecondaryMenu, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -120);
     }
     
     private void showChildMenu(int backgroundresoruce, View childView)

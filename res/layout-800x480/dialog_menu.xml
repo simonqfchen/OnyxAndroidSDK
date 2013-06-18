@@ -15,12 +15,11 @@
         >
 
         <ImageView
-            android:id="@+id/button_bookmark"
+            android:id="@+id/imageview_bookmark"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
             android:padding="5dp"
             android:contentDescription="@string/hint"
             android:src="@drawable/bookmark"
@@ -30,32 +29,31 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/button_bookmark"
+            android:layout_toLeftOf="@id/imageview_bookmark"
             android:background="#FFFFFFFF"
             >
-
-            <ImageView
-                android:id="@+id/button_search"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="#FF000000"
-                android:contentDescription="@string/hint"
-                android:layout_alignParentRight="true"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:src="@drawable/search_icon"
-                android:text="@string/menu_item_search" />
 
             <EditText
                 android:id="@+id/edittext_search_box"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginLeft="4dp"
-                android:layout_toLeftOf="@id/button_search"
-                android:hint="@string/menu_item_search"
+                android:hint=""
                 android:background="@drawable/search_box_background"
                 android:singleLine="true" />
+            
+            <ImageView
+                android:id="@+id/imageview_search_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="2dp"
+                android:layout_marginRight="4dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/hint"
+                android:src="@drawable/search_icon"
+                />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -86,7 +84,7 @@
         <include
             android:id="@+id/layout_secondary_menu"
             android:layout_width="match_parent"
-            android:layout_height="74dp"
+            android:layout_height="70dp"
             layout="@layout/secondary_menu" />
 
         <TextView
@@ -98,7 +96,7 @@
         <include
             android:id="@+id/layout_main_menu"
             android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_height="35dp"
             layout="@layout/main_menu" />
     </LinearLayout>
 

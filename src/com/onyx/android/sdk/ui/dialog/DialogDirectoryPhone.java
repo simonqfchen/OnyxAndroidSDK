@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ public class DialogDirectoryPhone extends DialogBaseOnyx
 {
     private IGotoPageHandler mGotoPageHandler = null;
     private TextView mTextViewTitle = null;
+    private final int TABWIDGET_ICON_HEIGHT = 50;
 
     public DialogDirectoryPhone(Context context, ArrayList<DirectoryItem> tocItems, ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems, final IGotoPageHandler gotoPageHandler, DirectoryTab tab)
     {
@@ -60,7 +63,14 @@ public class DialogDirectoryPhone extends DialogBaseOnyx
         	View v = this.findViewById(R.id.layout_annotation);
         	v.setVisibility(View.GONE);
         }
-
+        
+        TabWidget tabWidget = (TabWidget)findViewById(android.R.id.tabs);
+        for (int i = 0 ; i < tabWidget.getChildCount(); i++) {
+        	ImageView image = (ImageView)tabWidget.getChildAt(i).findViewById(android.R.id.icon);
+        	image.getLayoutParams().height = TABWIDGET_ICON_HEIGHT;
+        	image.getLayoutParams().width = TABWIDGET_ICON_HEIGHT;
+        }
+        
         tab_host.setOnTabChangedListener(new OnTabChangeListener()
         {
 
