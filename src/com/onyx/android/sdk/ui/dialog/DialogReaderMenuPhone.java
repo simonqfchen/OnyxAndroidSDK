@@ -44,7 +44,6 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
     private TextView mTextViewChildLines = null;
     
     private ImageView mImageViewBookMark = null;
-    private ImageView mImageViewSearch = null;
     private LinearLayout mLayoutSecondaryMenu = null;
     private LinearLayout mLayoutChild = null;
     private LayoutInflater mInflater = null;
@@ -111,6 +110,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         mLayoutSecondaryMenu = (LinearLayout) findViewById(R.id.layout_secondary_menu);
         mLayoutChild = (LinearLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_child);
         mTextViewChildLines = (TextView) mLayoutSecondaryMenu.findViewById(R.id.textview_child_lines);
+;
         		
         mInflater = LayoutInflater.from(mActivity);
         mFontSettings = mInflater.inflate(R.layout.menu_font_settings, null);
@@ -127,16 +127,6 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
         mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
         mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
-        
-        mImageViewSearch = (ImageView) findViewById(R.id.imageview_search_icon);
-        mImageViewSearch.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mMenuHandler.searchContent();
-				DialogReaderMenuPhone.this.dismiss();
-			}
-		});
         
         mImageViewBookMark = (ImageView) findViewById(R.id.imageview_bookmark);
         mImageViewBookMark.setOnClickListener(new View.OnClickListener() {
