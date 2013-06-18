@@ -46,6 +46,7 @@ public interface IReaderMenuHandler
     void showAnnotation();
 
     void searchContent();
+    void searchContent(String query);
     void startDictionary();
     void showGoToPageDialog();
 

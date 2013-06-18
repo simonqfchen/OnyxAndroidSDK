@@ -17,6 +17,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +44,9 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
 
     private TextView mTextViewChildLines = null;
     
+    private EditText mEditTextSearchContent = null;
     private ImageView mImageViewBookMark = null;
+    private ImageView mImageViewSearch = null;
     private LinearLayout mLayoutSecondaryMenu = null;
     private LinearLayout mLayoutChild = null;
     private LayoutInflater mInflater = null;
@@ -127,6 +130,19 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
         mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
         mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
+        
+        mEditTextSearchContent = (EditText) findViewById(R.id.edittext_search_box);
+        
+        mImageViewSearch = (ImageView) findViewById(R.id.imageview_search_icon);
+        mImageViewSearch.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				System.out.println("mEditTextSearchContent.getText() = " + mEditTextSearchContent.getText());
+				mMenuHandler.searchContent(mEditTextSearchContent.getText().toString());
+				DialogReaderMenuPhone.this.dismiss();
+			}
+		});
         
         mImageViewBookMark = (ImageView) findViewById(R.id.imageview_bookmark);
         mImageViewBookMark.setOnClickListener(new View.OnClickListener() {
