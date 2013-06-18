@@ -290,14 +290,14 @@ public class DialogReaderMenu extends DialogBaseOnyx
             }
         });
 
-        RelativeLayout layout_more = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_more);
+        final RelativeLayout layout_more = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_more);
         layout_more.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.item_selected_6, mMoreView);
+                showChildMenu(layout_more, mMoreView);
             }
         });
 
@@ -439,25 +439,25 @@ public class DialogReaderMenu extends DialogBaseOnyx
             }
         });
 
-        RelativeLayout layout_rotation = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_rotation);
+        final RelativeLayout layout_rotation = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_rotation);
         layout_rotation.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.item_selected_5, mRotationView);
+                showChildMenu(layout_rotation, mRotationView);
             }
         });
 
-        RelativeLayout layout_directory = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_toc);
+        final RelativeLayout layout_directory = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_toc);
         layout_directory.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.item_selected_3, mShowDirectory);
+                showChildMenu(layout_directory, mShowDirectory);
             }
         });
 
@@ -576,14 +576,14 @@ public class DialogReaderMenu extends DialogBaseOnyx
             }
         });
 
-        RelativeLayout layout_tts = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_tts);
+        final RelativeLayout layout_tts = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_tts);
         layout_tts.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-                showChildMenu(R.drawable.item_selected_1, mTTsView);
+                showChildMenu(layout_tts, mTTsView);
                 menuHandler.ttsInit();
                 setTtsState(menuHandler.ttsIsSpeaking());
             }
@@ -655,7 +655,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
         updateLineSpacingOrZoomSettings();
 
-        RelativeLayout layout_font = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_font);
+        final RelativeLayout layout_font = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_font);
         layout_font.setOnClickListener(new View.OnClickListener()
         {
 
@@ -663,7 +663,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
             public void onClick(View v)
             {
                 mButtonFontFace.setText(mMenuHandler.getFontFace());
-                showChildMenu(R.drawable.item_selected_4, mFontSettings);
+                showChildMenu(layout_font, mFontSettings);
             }
         });
         
@@ -761,7 +761,8 @@ public class DialogReaderMenu extends DialogBaseOnyx
     public void onWindowFocusChanged(boolean hasFocus)
     {
         if (mIsInitReaderMenu) {
-            showChildMenu(R.drawable.item_selected_6, mMoreView);
+            final RelativeLayout layout_more = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_more);
+            showChildMenu(layout_more, mMoreView);
             mIsInitReaderMenu = false;
         }
     }
@@ -865,6 +866,54 @@ public class DialogReaderMenu extends DialogBaseOnyx
     public void setOnShowTTsViewLinsener(onShowTTsViewLinsener l)
     {
         mOnShowTTsViewLinsener = l;
+    }
+    
+    private void showChildMenu(View parentMenuView, View childView)
+    {
+        LinearLayout menu_group = (LinearLayout)this.findViewById(R.id.layout_menu_group);
+
+        int selection_count = 0;
+        for (int i = 0; i < menu_group.getChildCount(); i++) {
+            View v = menu_group.getChildAt(i);
+            if (v.getVisibility() != View.VISIBLE) {
+                continue;
+            }
+            
+            if (parentMenuView == menu_group.getChildAt(i)) {
+                break;
+            }
+            selection_count++;
+        }
+        if (selection_count == menu_group.getChildCount()) {
+            return;
+        }
+        
+        int selection_drawable = 0;
+        switch (selection_count) {
+        case 0:
+            selection_drawable = R.drawable.item_selected_1;
+            break;
+        case 1:
+            selection_drawable = R.drawable.item_selected_2;
+            break;
+        case 2:
+            selection_drawable = R.drawable.item_selected_3;
+            break;
+        case 3:
+            selection_drawable = R.drawable.item_selected_4;
+            break;
+        case 4:
+            selection_drawable = R.drawable.item_selected_5;
+            break;
+        case 5:
+            selection_drawable = R.drawable.item_selected_6;
+            break;
+        default:
+            assert(false);
+            return;
+        }
+        
+        this.showChildMenu(selection_drawable, childView);
     }
 
     private void showChildMenu(int backgroundresoruce, View childView)
@@ -980,7 +1029,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
     private void updateLineSpacingOrZoomSettings()
     {
-        RelativeLayout layout_spacing = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_spacing);
+        final RelativeLayout layout_spacing = (RelativeLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_spacing);
 
         if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
             layout_spacing.setVisibility(View.GONE);
@@ -1010,10 +1059,10 @@ public class DialogReaderMenu extends DialogBaseOnyx
                 public void onClick(View v)
                 {
                     if (mMenuHandler.showZoomSettings()) {
-                        showChildMenu(R.drawable.item_selected_2, mZoomSettings);
+                        showChildMenu(layout_spacing, mZoomSettings);
                     }
                     else if (mMenuHandler.showSpacingSettings()) {
-                        showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
+                        showChildMenu(layout_spacing, mLineSpacingSettings);
                     } else {
                         DialogReaderMenu.this.dismiss();
                         mMenuHandler.searchContent();

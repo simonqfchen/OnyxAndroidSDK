@@ -25,6 +25,7 @@
          />
 
     <LinearLayout
+        android:id="@+id/layout_menu_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false"
