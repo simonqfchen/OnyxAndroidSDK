@@ -21,7 +21,7 @@ import com.onyx.android.sdk.ui.data.GridViewBookmarkAdapter;
  * @author dxwts
  *
  */
-public class DialogBookmarks extends OnyxDialogBase
+public class DialogBookmarks extends DialogBaseOnyx
 {
 
     public interface onGoToPageListener

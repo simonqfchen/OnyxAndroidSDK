@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/menu_background"
     android:baselineAligned="false"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
     <RelativeLayout
         android:id="@+id/layout_dictionary"
-        android:layout_width="85dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
         android:gravity="center"
@@ -22,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
             android:gravity="center_horizontal"
             android:text="@string/menu_item_dictionary" />
 
@@ -39,9 +41,9 @@
 
     <RelativeLayout
         android:id="@+id/layout_screen"
-        android:layout_width="85dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
         android:gravity="center"
@@ -52,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
             android:gravity="center_horizontal"
             android:text="@string/menu_item_screen_full" />
 
@@ -69,11 +72,12 @@
 
     <RelativeLayout
         android:id="@+id/layout_search"
-        android:layout_width="85dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
+        android:visibility="gone"
         android:gravity="center" >
 
         <TextView
@@ -81,6 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
             android:gravity="center_horizontal"
             android:text="@string/menu_item_search" />
 
@@ -98,9 +103,9 @@
 
     <RelativeLayout
         android:id="@+id/layout_settings"
-        android:layout_width="85dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
         android:gravity="center" >
@@ -111,6 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
+            android:ellipsize="marquee"
             android:text="@string/menu_item_settings" />
 
         <ImageView
@@ -124,12 +130,12 @@
             android:scaleType="fitCenter"
             android:src="@drawable/settings" />
     </RelativeLayout>
-
+    
     <RelativeLayout
         android:id="@+id/layout_refresh"
-        android:layout_width="85dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
         android:gravity="center" >
@@ -139,6 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
             android:gravity="center_horizontal"
             android:text="@string/menu_item_refresh" />
 
@@ -152,6 +159,36 @@
             android:contentDescription="@drawable/menu_screen_refresh"
             android:scaleType="fitCenter"
             android:src="@drawable/menu_screen_refresh" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/layout_margin"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/reader_menu_item_background"
+        android:focusable="true"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/textview_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
+            android:gravity="center_horizontal"
+            android:text="@string/menu_item_margin" />
+
+        <ImageView
+            android:id="@+id/imageview_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textview_margin"
+            android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
+            android:contentDescription="@drawable/menu_margin"
+            android:scaleType="fitCenter"
+            android:src="@drawable/menu_margin" />
     </RelativeLayout>
 
 </LinearLayout>

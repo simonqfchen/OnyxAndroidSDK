@@ -17,7 +17,7 @@ import com.onyx.android.sdk.device.EnvironmentUtil;
  * @author dxwts
  * 
  */
-public class DialogFileBrowser extends OnyxDialogBase
+public class DialogFileBrowser extends DialogBaseOnyx
 {
     public interface OnOpenFileListener
     {

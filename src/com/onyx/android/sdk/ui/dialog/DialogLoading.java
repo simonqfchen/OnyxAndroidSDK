@@ -16,7 +16,7 @@ import com.onyx.android.sdk.R;
  * @author qingyue
  *
  */
-public class DialogLoading extends OnyxDialogBase
+public class DialogLoading extends DialogBaseOnyx
 {
 
     private static final String TAG = "DialogLoading";
