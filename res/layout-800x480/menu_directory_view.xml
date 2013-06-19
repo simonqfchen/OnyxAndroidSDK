@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:baselineAligned="false"
+    android:background="@drawable/menu_background"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
     <RelativeLayout
         android:id="@+id/layout_toc"
         android:layout_width="85dp"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:layout_marginLeft="15dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true" >
@@ -36,7 +36,7 @@
     <RelativeLayout
         android:id="@+id/layout_bookmark"
         android:layout_width="85dp"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true" >
 
@@ -61,7 +61,7 @@
     <RelativeLayout
         android:id="@+id/layout_annotation"
         android:layout_width="85dp"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:layout_marginRight="15dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true" >
