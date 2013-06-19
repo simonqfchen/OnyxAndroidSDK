@@ -25,52 +25,18 @@
          />
 
     <LinearLayout
+        android:id="@+id/layout_menu_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
         <RelativeLayout
-            android:id="@+id/layout_dictionary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1.0"
-            android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true"
-            android:visibility="gone"
-            android:padding="0dp"
-             >
-            <TextView
-                android:id="@+id/textview_dictionary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:gravity="center_horizontal"
-                android:text="@string/menu_item_dictionary"
-                android:visibility="gone"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/imageview_dictionary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/textview_dictionary"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/menu_dictionary"
-                android:background="@color/read_menu_item_background_color"
-                android:scaleType="fitCenter"
-                android:src="@drawable/menu_dictionary" />
-        </RelativeLayout>
-        
-        <RelativeLayout
             android:id="@+id/layout_tts"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1.0"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:background="@drawable/reader_menu_item_background"
+            android:layout_weight="1.0"
             android:gravity="center"
             android:focusable="true"
              >
@@ -79,15 +45,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:visibility="gone"
                 android:gravity="center_horizontal"
                 android:text="@string/menu_item_tts"
-                android:textSize="15sp" />
+                />
 
             <ImageView
                 android:id="@+id/imageview_tts"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="75dp"
                 android:layout_above="@id/textview_tts"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@drawable/tts"
@@ -98,10 +63,10 @@
     
         <RelativeLayout
             android:id="@+id/layout_font_increase"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_weight="1.0"
+            android:visibility="gone"
             android:background="@drawable/reader_menu_item_background"
             android:gravity="center"
             android:focusable="true" >
@@ -114,7 +79,7 @@
                 android:gravity="center_horizontal"
                 android:visibility="gone"
                 android:text="@string/menu_item_font_increase"
-                android:textSize="15sp" />
+                />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -129,11 +94,74 @@
         </RelativeLayout>
         
         <RelativeLayout
-            android:id="@+id/layout_font_decrease"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:id="@+id/layout_spacing"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_weight="1.0"
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/textview_line_spacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:ellipsize="marquee"
+                android:text="@string/menu_item_line_spacing"
+                />
+
+            <ImageView
+                android:id="@+id/imageview_line_spacing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_line_spacing"
+                android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/line_spacing"
+                android:scaleType="fitCenter"
+                android:src="@drawable/line_spacing" />
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/layout_dictionary_footer"
+            android:layout_width="75dp"
+            android:layout_height="70dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/reader_menu_item_background"
+            android:gravity="center"
+            android:focusable="true"
+            >
+            <TextView
+                android:id="@+id/textview_dictionary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:ellipsize="marquee"
+                android:text="@string/menu_item_dictionary"
+                />
+
+            <ImageView
+                android:id="@+id/imageview_dictionary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_dictionary"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@drawable/menu_dictionary"
+                android:background="@color/read_menu_item_background_color"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu_dictionary" />
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/layout_font_decrease"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_weight="1.0"
+            android:visibility="gone"
             android:background="@drawable/reader_menu_item_background"
             android:focusable="true"
             android:gravity="center"
@@ -146,7 +174,6 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
                 android:text="@string/menu_item_line_spacing"
-                android:textSize="15sp"
                 android:visibility="gone" />
 
             <ImageView
@@ -162,45 +189,10 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/layout_spacing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1.0"
-            android:background="@drawable/reader_menu_item_background"
-            android:focusable="true"
-            android:gravity="center"
-            android:visibility="gone" >
-
-            <TextView
-                android:id="@+id/textview_line_spacing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:gravity="center_horizontal"
-                android:text="@string/menu_item_line_spacing"
-                android:textSize="15sp"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/imageview_line_spacing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/textview_line_spacing"
-                android:layout_centerHorizontal="true"
-                android:background="@color/read_menu_item_background_color"
-                android:contentDescription="@drawable/line_spacing"
-                android:scaleType="fitCenter"
-                android:src="@drawable/line_spacing" />
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/layout_font"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_weight="1.0"
-            android:visibility="gone"
             android:background="@drawable/reader_menu_item_background"
             android:gravity="center"
             android:focusable="true" >
@@ -211,9 +203,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
-                android:visibility="gone"
                 android:text="@string/menu_item_font"
-                android:textSize="15sp" />
+                />
 
             <ImageView
                 android:id="@+id/imageview_font"
@@ -229,12 +220,12 @@
         
         <RelativeLayout
             android:id="@+id/layout_toc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
             android:gravity="center"
+            android:visibility="gone"
             android:focusable="true" >
 
             <TextView
@@ -245,7 +236,7 @@
                 android:gravity="center_horizontal"
                 android:visibility="gone"
                 android:text="@string/directory_title"
-                android:textSize="15sp" />
+                />
 
             <ImageView
                 android:id="@+id/imageview_toc"
@@ -261,10 +252,8 @@
 
         <RelativeLayout
             android:id="@+id/layout_more"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
             android:gravity="center"
@@ -278,7 +267,7 @@
                 android:gravity="center_horizontal"
                 android:visibility="gone"
                 android:text="@string/menu_item_more"
-                android:textSize="15sp" />
+                />
 
             <ImageView
                 android:id="@+id/imageview_more"

@@ -19,8 +19,8 @@
 
             <Button
                 android:id="@+id/button_exit"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/selection_close_default" />
@@ -44,13 +44,13 @@
                 android:paddingLeft="20dp"
                 android:text="@string/directory_title"
                 android:textColor="#000000"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
         </RelativeLayout>
 
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:background="@drawable/button_background_skip_page" />
 
         <FrameLayout

@@ -24,7 +24,7 @@ import com.onyx.android.sdk.ui.data.NumberButtonAdapter;
  * @author dxwts
  *
  */
-public class DialogGotoPage extends OnyxDialogBase
+public class DialogGotoPage extends DialogBaseOnyx
 {
     public static interface AcceptNumberListener {
         void onAcceptNumber(int num);

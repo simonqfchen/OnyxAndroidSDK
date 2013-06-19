@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.dialog;
 
@@ -9,9 +9,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -23,13 +27,15 @@ import com.onyx.android.sdk.ui.DirectoryGridView;
 import com.onyx.android.sdk.ui.data.DirectoryItem;
 import com.onyx.android.sdk.ui.data.GridViewAnnotationAdapter;
 import com.onyx.android.sdk.ui.data.GridViewDirectoryAdapter;
+import com.onyx.android.sdk.ui.dialog.data.AnnotationItem;
 
 /**
  * @author qingyue
  */
-public class DialogDirectory extends OnyxDialogBase
+public class DialogDirectory extends DialogBaseOnyx
 {
     public static enum DirectoryTab {toc, bookmark, annotation};
+    private BookmarksPopupWindow mPopupWindow = null;
 
     public static interface IGotoPageHandler
     {
@@ -38,14 +44,26 @@ public class DialogDirectory extends OnyxDialogBase
         public void jumpAnnotation(DirectoryItem item);
     }
 
-    private IGotoPageHandler mGotoPageHandler = null;
-    private TextView mTextViewTitle = null;
+    public static interface IEditPageHandler {
+        public void deleteBookmark(DirectoryItem item);
+        public void deleteAnnotation(DirectoryItem item);
+        public void editAnnotation(DirectoryItem item);
+    }
 
-    public DialogDirectory(Context context, ArrayList<DirectoryItem> tocItems, ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems, final IGotoPageHandler gotoPageHandler, DirectoryTab tab)
+    private IGotoPageHandler mGotoPageHandler = null;
+    private IEditPageHandler mEditPageHandler = null;
+    private TextView mTextViewTitle = null;
+    private Context mContext = null;
+
+    public DialogDirectory(Context context, ArrayList<DirectoryItem> tocItems,
+            ArrayList<DirectoryItem> bookmarkItems, ArrayList<AnnotationItem> annotationItems,
+            final IGotoPageHandler gotoPageHandler,final IEditPageHandler editPageHandler, DirectoryTab tab)
     {
         super(context, R.style.full_screen_dialog);
         setContentView(R.layout.dialog_directory);
+        mContext = context;
         mGotoPageHandler = gotoPageHandler;
+        mEditPageHandler = editPageHandler;
         TabHost tab_host = (TabHost) findViewById(R.id.tabhost);
         tab_host.setup();
 
@@ -60,7 +78,7 @@ public class DialogDirectory extends OnyxDialogBase
 
         tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_toc)).setIndicator(toc).setContent(R.id.layout_toc));
         tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_bookmark)).setIndicator(bookmark).setContent(R.id.layout_bookmark));
-        
+
         if (DeviceInfo.singleton().getDeviceController().getTouchType(context) != TouchType.None) {
         	tab_host.addTab(tab_host.newTabSpec(resources.getString(R.string.tabwidget_annotation)).setIndicator(annotation).setContent(R.id.layout_annotation));
 		} else {
@@ -81,18 +99,18 @@ public class DialogDirectory extends OnyxDialogBase
         mTextViewTitle = (TextView) findViewById(R.id.textview_title);
 
         DirectoryGridView gridViewTOC = (DirectoryGridView) findViewById(R.id.gridview_toc);
-        DirectoryGridView gridViewBookmark = (DirectoryGridView) findViewById(R.id.gridview_bookmark);
-        DirectoryGridView gridViewAnnotation = (DirectoryGridView) findViewById(R.id.gridview_annotation);
+        final DirectoryGridView gridViewBookmark = (DirectoryGridView) findViewById(R.id.gridview_bookmark);
+        final DirectoryGridView gridViewAnnotation = (DirectoryGridView) findViewById(R.id.gridview_annotation);
 
-        if (tocItems != null) {            
+        if (tocItems != null) {
             GridViewDirectoryAdapter tocAdapter = new GridViewDirectoryAdapter(context, gridViewTOC.getGridView(), tocItems);
             gridViewTOC.getGridView().setAdapter(tocAdapter);
         }
-        if (bookmarkItems != null) {            
+        if (bookmarkItems != null) {
             GridViewDirectoryAdapter bookmarkAdapter = new GridViewDirectoryAdapter(context, gridViewBookmark.getGridView(), bookmarkItems);
             gridViewBookmark.getGridView().setAdapter(bookmarkAdapter);
         }
-        if (annotationItems != null) {            
+        if (annotationItems != null) {
             GridViewAnnotationAdapter annotationAdapter = new GridViewAnnotationAdapter(context, gridViewAnnotation.getGridView(), annotationItems);
             gridViewAnnotation.getGridView().setAdapter(annotationAdapter);
         }
@@ -108,26 +126,58 @@ public class DialogDirectory extends OnyxDialogBase
                 mGotoPageHandler.jumpTOC(item);
             }
         });
+
         gridViewBookmark.getGridView().setOnItemClickListener(new OnItemClickListener()
         {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                DialogDirectory.this.dismiss();
                 DirectoryItem item = (DirectoryItem) view.getTag();
-                mGotoPageHandler.jumpBookmark(item);
+                LinearLayout layout = initPopupWindow();
+                if (mPopupWindow == null) {
+                    mPopupWindow = new BookmarksPopupWindow(mContext, layout, DialogDirectory.this,
+                            mGotoPageHandler, mEditPageHandler);
+                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setFocusable(true);
+                    mPopupWindow.setTouchable(true);
+                }
+                if (mPopupWindow.getMode() != 0) {
+                    mPopupWindow.removeButton(1, 1);
+                }
+
+                mPopupWindow.setDirectoryItem(item, gridViewBookmark, position);
+                ViewGroup.LayoutParams params = view.getLayoutParams();
+                int width = params.width - mPopupWindow.getWidth();
+                mPopupWindow.showAsDropDown(view, width, 0);
             }
         });
+
         gridViewAnnotation.getGridView().setOnItemClickListener(new OnItemClickListener()
         {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                DialogDirectory.this.dismiss();
                 DirectoryItem item = (DirectoryItem) view.getTag();
-                mGotoPageHandler.jumpAnnotation(item);
+                LinearLayout layout = initPopupWindow();
+                //mGotoPageHandler.jumpAnnotation(item);
+                if (mPopupWindow == null) {
+                    mPopupWindow = new BookmarksPopupWindow(mContext, layout, DialogDirectory.this,
+                            mGotoPageHandler, mEditPageHandler);
+                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setFocusable(true);
+                    mPopupWindow.setTouchable(true);
+                }
+                if (mPopupWindow.getMode() != 1) {
+                    mPopupWindow.addButton(1, 1);
+                }
+
+                mPopupWindow.setDirectoryItem(item, gridViewAnnotation, position);
+                ViewGroup.LayoutParams params = view.getLayoutParams();
+                int width = params.width - mPopupWindow.getWidth();
+                mPopupWindow.showAsDropDown(view, width, 0);
+
             }
         });
 
@@ -161,4 +211,43 @@ public class DialogDirectory extends OnyxDialogBase
             break;
         }
     }
+
+    private LinearLayout initPopupWindow(){
+        LinearLayout layout = new LinearLayout(mContext);
+        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 5, 0);
+
+        ImageButton gotoButton = new ImageButton(mContext);
+        gotoButton.setId(0);
+        gotoButton.setLayoutParams(params);
+        gotoButton.setImageResource(R.drawable.toc_menu_go);
+        gotoButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(gotoButton, 0);
+
+        ImageButton editButton = new ImageButton(mContext);
+        editButton.setLayoutParams(params);
+        editButton.setId(1);
+        editButton.setImageResource(R.drawable.toc_menu_edit);
+        editButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(editButton, 1);
+
+        ImageButton deleButton = new ImageButton(mContext);
+        deleButton.setLayoutParams(params);
+        deleButton.setId(2);
+        deleButton.setImageResource(R.drawable.toc_menu_dele);
+        deleButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(deleButton, 2);
+
+        ImageButton exitButton = new ImageButton(mContext);
+        exitButton.setId(3);
+        exitButton.setLayoutParams(params);
+        exitButton.setImageResource(R.drawable.toc_menu_exit);
+        exitButton.setBackgroundResource(R.drawable.gridview_selector);
+        layout.addView(exitButton, 3);
+
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setLayoutParams(params);
+        return layout;
+    }
+
 }

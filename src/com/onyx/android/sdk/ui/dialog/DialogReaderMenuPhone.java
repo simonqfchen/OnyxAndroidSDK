@@ -4,14 +4,12 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,10 +17,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -33,13 +31,11 @@ import com.onyx.android.sdk.device.DeviceInfo;
 import com.onyx.android.sdk.device.EpdController;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
 import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
-import com.onyx.android.sdk.ui.dialog.DialogReaderMenu.IReaderMenuHandler;
-import com.onyx.android.sdk.ui.dialog.DialogReaderMenu.LineSpacingProperty;
-import com.onyx.android.sdk.ui.dialog.DialogReaderMenu.RotationScreenProperty;
+import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler;
 import com.onyx.android.sdk.ui.util.WindowUtil;
 
 
-public class DialogReaderMenuPhone extends OnyxDialogBase
+public class DialogReaderMenuPhone extends DialogBaseOnyx
 {
     private final static String TAG = "DialogReaderMenuPhone";
 
@@ -47,8 +43,10 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
     private Handler mHandler = new Handler();
 
     private TextView mTextViewChildLines = null;
-    private DialogReaderMenuMore mMoreDialog = null;
     
+    private EditText mEditTextSearchContent = null;
+    private ImageView mImageViewBookMark = null;
+    private ImageView mImageViewSearch = null;
     private LinearLayout mLayoutSecondaryMenu = null;
     private LinearLayout mLayoutChild = null;
     private LayoutInflater mInflater = null;
@@ -69,6 +67,8 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
     private LinearLayout mLayoutRotation_270 = null;
     private LinearLayout mLayoutRotation_0 = null;
 
+    private LinearLayout mReaderMenuCenterArea = null;
+    
     private RelativeLayout mLayoutFontIncrease = null;
     private RelativeLayout mLayoutFontDecrease = null;
     private RelativeLayout mLayoutFontEmbolden = null;
@@ -85,6 +85,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
     private IReaderMenuHandler mMenuHandler = null;
 
     private boolean mIsShowChildMenu = false;
+    private boolean mIsInitReaderMenu = true;
 
     private int mTextViewChildLineResoruce = -1;
 
@@ -112,12 +113,13 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
         mLayoutSecondaryMenu = (LinearLayout) findViewById(R.id.layout_secondary_menu);
         mLayoutChild = (LinearLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_child);
         mTextViewChildLines = (TextView) mLayoutSecondaryMenu.findViewById(R.id.textview_child_lines);
-
+;
+        		
         mInflater = LayoutInflater.from(mActivity);
         mFontSettings = mInflater.inflate(R.layout.menu_font_settings, null);
         mLineSpacingSettings = mInflater.inflate(R.layout.menu_line_spacing_settings, null);
         mTTsView = mInflater.inflate(R.layout.menu_tts_view, null);
-        mMoreView = mInflater.inflate(R.layout.dialog_reader_menu_more_layout, null);
+        mMoreView = mInflater.inflate(R.layout.menu_more_view, null);
         mRotationView = mInflater.inflate(R.layout.menu_rotation_settings, null);
         mZoomSettings = mInflater.inflate(R.layout.menu_zoom_settings, null);
         mCurrentPageTextView = (TextView)findViewById(R.id.textview_current_page);
@@ -128,7 +130,38 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
         mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
         mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
         mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
-
+        
+        mEditTextSearchContent = (EditText) findViewById(R.id.edittext_search_box);
+        
+        mImageViewSearch = (ImageView) findViewById(R.id.imageview_search_icon);
+        mImageViewSearch.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				System.out.println("mEditTextSearchContent.getText() = " + mEditTextSearchContent.getText());
+				mMenuHandler.searchContent(mEditTextSearchContent.getText().toString());
+				DialogReaderMenuPhone.this.dismiss();
+			}
+		});
+        
+        mImageViewBookMark = (ImageView) findViewById(R.id.imageview_bookmark);
+        mImageViewBookMark.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogReaderMenuPhone.this.dismiss();
+                menuHandler.showBookMarks();
+			}
+		});
+        
+        mReaderMenuCenterArea = (LinearLayout) findViewById(R.id.reader_menu_center_area);
+        mReaderMenuCenterArea.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogReaderMenuPhone.this.dismiss();
+			}
+		});
         mMenuHandler = menuHandler;
 
         mLayoutRotation_0.setOnClickListener(new View.OnClickListener()
@@ -139,7 +172,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_0);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_0);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -153,7 +186,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_90);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_90);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -167,7 +200,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_180);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_180);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
@@ -181,13 +214,24 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             {
                 DialogReaderMenuPhone.this.dismiss();
 
-                int orientation = getOrientation(RotationScreenProperty.rotation_270);
+                int orientation = getOrientation(IReaderMenuHandler.RotationScreenProperty.rotation_270);
                 if (orientation != -1) {
                     mMenuHandler.changeRotationScreen(orientation);
                 }
             }
         });
 
+        RelativeLayout layout_dictionary_footer = (RelativeLayout)findViewById(R.id.layout_dictionary_footer);
+        layout_dictionary_footer.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                showChildMenu(R.drawable.phone_item_selected_3, mShowDirectory);
+            }
+        });
+        
         mLayoutFontDecrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_decrease);
         mLayoutFontIncrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_increase);
         mLayoutFontEmbolden = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_embolden);
@@ -244,7 +288,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.normal);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.normal);
             }
         });
         mLayoutLineSpacingBig.setOnClickListener(new View.OnClickListener()
@@ -253,7 +297,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.big);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.big);
             }
         });
         mLayoutLineSpacingSmall.setOnClickListener(new View.OnClickListener()
@@ -262,7 +306,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.small);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.small);
             }
         });
         RelativeLayout lineSpacingEnlarge = (RelativeLayout) mLineSpacingSettings.findViewById(R.id.layout_spacing_enlarge);
@@ -272,7 +316,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.enlarge);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.enlarge);
             }
         });
         RelativeLayout lineSpacingDecreases = (RelativeLayout) mLineSpacingSettings.findViewById(R.id.layout_spacing_decreases);
@@ -282,7 +326,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-                mMenuHandler.setLineSpacing(LineSpacingProperty.decreases);
+                mMenuHandler.setLineSpacing(IReaderMenuHandler.LineSpacingProperty.decreases);
             }
         });
 
@@ -316,10 +360,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-            	if (mMoreDialog == null) {
-            		mMoreDialog = new DialogReaderMenuMore(mActivity, mMoreView);
-            	}
-            	mMoreDialog.show();
+            	showChildMenu(R.drawable.phone_item_selected_5, mMoreView);
             }
         });
 
@@ -509,75 +550,47 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
         	});
         }
         
-        Button button_fonts = (Button) mMoreView.findViewById(R.id.button_fonts);
-        button_fonts.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_refash = (RelativeLayout) mMoreView.findViewById(R.id.layout_refresh);
+        layout_refash.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
-                showChildMenu(mFontSettings);
-            }
-        });
-        
-        Button button_spacing = (Button) mMoreView.findViewById(R.id.button_spacing);
-        button_spacing.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-            	mMoreDialog.dismiss();
-				showChildMenu(mLineSpacingSettings);
-            }
-        });
-        
-        Button button_refash = (Button) mMoreView.findViewById(R.id.button_refash);
-        button_refash.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-            	mMoreDialog.dismiss();
                 mMenuHandler.setScreenRefresh();
             }
         });
         
         
-        Button button_dictionary = (Button) mMoreView.findViewById(R.id.button_dictionary);
-        button_dictionary.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_dictionary = (RelativeLayout) mMoreView.findViewById(R.id.layout_dictionary);
+        layout_dictionary.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
                 mMenuHandler.startDictionary();
             }
         });
         
-        Button button_search = (Button) mMoreView.findViewById(R.id.button_search);
-        button_search.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_search = (RelativeLayout) mMoreView.findViewById(R.id.layout_search);
+        layout_search.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
                 mMenuHandler.searchContent();
             }
         });
         
-        Button button_settings = (Button) mMoreView.findViewById(R.id.button_settings);
-        button_settings.setOnClickListener(new View.OnClickListener()
+        RelativeLayout layout_settings = (RelativeLayout) mMoreView.findViewById(R.id.layout_settings);
+        layout_settings.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-            	mMoreDialog.dismiss();
                 mMenuHandler.showReaderSettings();
             }
         });
@@ -590,7 +603,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             @Override
             public void onClick(View v)
             {
-            	showChildMenu(mTTsView);
+            	showChildMenu(R.drawable.phone_item_selected_1 , mTTsView);
                 menuHandler.ttsInit();
                 setTtsState(menuHandler.ttsIsSpeaking());
             }
@@ -670,7 +683,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             public void onClick(View v)
             {
                 mButtonFontFace.setText(mMenuHandler.getFontFace());
-                showChildMenu(R.drawable.item_selected_4, mFontSettings);
+                showChildMenu(R.drawable.phone_item_selected_4, mFontSettings);
             }
         });
 
@@ -715,15 +728,24 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
             public void onClick(View v)
             {
                 if (mMenuHandler.showZoomSettings()) {
-                    showChildMenu(R.drawable.item_selected_2, mZoomSettings);
+                    showChildMenu(R.drawable.phone_item_selected_2, mZoomSettings);
                 }
                 else {
-                    showChildMenu(R.drawable.item_selected_2, mLineSpacingSettings);
+                    showChildMenu(R.drawable.phone_item_selected_2, mLineSpacingSettings);
                 }
             }
         });
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
+        if (mIsInitReaderMenu) {
+            showChildMenu(R.drawable.phone_item_selected_5, mMoreView);
+            mIsInitReaderMenu = false;
+        }
+    }
+    
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -779,14 +801,6 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
         super.dismiss();
-    }
-    
-    private void showChildMenu(View contentView) {
-    	PopupWindow popup_window = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		popup_window.setFocusable(true);
-		popup_window.setBackgroundDrawable(new BitmapDrawable());
-		popup_window.showAtLocation(mLayoutSecondaryMenu, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -120);
     }
     
     private void showChildMenu(int backgroundresoruce, View childView)
@@ -970,11 +984,11 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    private int getOrientation(RotationScreenProperty property)
+    private int getOrientation(IReaderMenuHandler.RotationScreenProperty property)
     {
         int orientation = -1;
         int current_orientation = mActivity.getRequestedOrientation();
-        if (property == RotationScreenProperty.rotation_90) {
+        if (property == IReaderMenuHandler.RotationScreenProperty.rotation_90) {
             if (current_orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
             }
@@ -991,7 +1005,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
             }
         }
-        else if (property == RotationScreenProperty.rotation_180) {
+        else if (property == IReaderMenuHandler.RotationScreenProperty.rotation_180) {
             if (current_orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
             }
@@ -1008,7 +1022,7 @@ public class DialogReaderMenuPhone extends OnyxDialogBase
                 orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
             }
         }
-        else if (property == RotationScreenProperty.rotation_270) {
+        else if (property == IReaderMenuHandler.RotationScreenProperty.rotation_270) {
             if (current_orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
             }

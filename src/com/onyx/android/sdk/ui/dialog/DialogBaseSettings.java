@@ -23,7 +23,7 @@ import com.onyx.android.sdk.ui.data.SelectionAdapter;
  * @author joy
  *
  */
-public class DialogBaseSettings extends OnyxDialogBase
+public class DialogBaseSettings extends DialogBaseOnyx
 {
     private Button mButtonPreviousPage = null;
     private Button mButtonNextPage = null;

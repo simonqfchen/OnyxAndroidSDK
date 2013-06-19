@@ -13,7 +13,7 @@ import com.onyx.android.sdk.reader.TOCItem;
 import com.onyx.android.sdk.ui.GridViewTOC;
 import com.onyx.android.sdk.ui.data.GridViewTOCAdapter;
 
-public class DialogTOC extends OnyxDialogBase
+public class DialogTOC extends DialogBaseOnyx
 {
     public interface onGoToPageListener
     {

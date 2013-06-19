@@ -29,7 +29,7 @@ import com.onyx.android.sdk.ui.data.GridViewPaginator.OnStateChangedListener;
  * @author dxwts
  * 
  */
-public class DialogFileBrowserList extends OnyxDialogBase
+public class DialogFileBrowserList extends DialogBaseOnyx
 {
 
     private ImageView mDirBack;

@@ -115,6 +115,10 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             if (mIsActive && UTTERANCE_ID.equals(uttId)) {
                 try {
                     String wave_file = this.getTempWaveFile().getAbsolutePath();
+                    
+                    if(mPlayer != null) {
+                        mPlayer.release();
+                    }
 
                     mPlayer = new MediaPlayer();
                     mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
@@ -127,10 +131,14 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
                         }
                     });
                     
-                    mPlayer.setDataSource(wave_file);
-                    mPlayer.prepare();
-                    if (!mTtsPaused) {
-                        mPlayer.start();
+                    if(new File(wave_file).exists()) {
+                        mPlayer.setDataSource(wave_file);
+                        mPlayer.prepare();
+                        if (!mTtsPaused) {
+                            mPlayer.start();
+                        }
+                    } else {
+                        onPlayerCompletion();
                     }
                 }
                 catch (IllegalArgumentException e) {
@@ -201,6 +209,10 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
     {
         synchronized (mTtsLocker) {
             if (mTtsSpeaking) {
+                return;
+            }
+            
+            if (text == null || text.trim().length() == 0) {
                 return;
             }
 

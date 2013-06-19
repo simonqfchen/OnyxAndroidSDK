@@ -9,9 +9,9 @@ import android.widget.EditText;
 
 import com.onyx.android.sdk.R;
 
-public class DialogAnnotation extends OnyxDialogBase
+public class DialogAnnotation extends DialogBaseOnyx
 {
-    public enum AnnotationAction{add, update}
+    public enum AnnotationAction{add, update, onlyUpdate}
 
     public interface onAddAnnotationListener
     {
@@ -25,7 +25,7 @@ public class DialogAnnotation extends OnyxDialogBase
         {
             //do nothing
         }
-    }; 
+    };
     public void setOnAddAnnotationListener(onAddAnnotationListener l)
     {
         mOnAddAnnotationListener = l;
@@ -130,14 +130,33 @@ public class DialogAnnotation extends OnyxDialogBase
             }
         });
 
+        Button buttonCancel = (Button) findViewById(R.id.button_cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                DialogAnnotation.this.dismiss();
+            }
+        });
+
+
         if (a == AnnotationAction.add) {
             buttonAdd.setVisibility(View.VISIBLE);
+            buttonCancel.setVisibility(View.VISIBLE);
             buttonRemove.setVisibility(View.GONE);
             buttonUpdate.setVisibility(View.GONE);
         }
         else if (a == AnnotationAction.update) {
             buttonAdd.setVisibility(View.GONE);
+            buttonCancel.setVisibility(View.GONE);
             buttonRemove.setVisibility(View.VISIBLE);
+            buttonUpdate.setVisibility(View.VISIBLE);
+        } else {
+            buttonAdd.setVisibility(View.GONE);
+            buttonCancel.setVisibility(View.GONE);
+            buttonRemove.setVisibility(View.GONE);
             buttonUpdate.setVisibility(View.VISIBLE);
         }
 

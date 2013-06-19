@@ -5,16 +5,16 @@ import android.content.Context;
 
 import com.onyx.android.sdk.R;
 
-public class OnyxDialogBase extends Dialog
+public class DialogBaseOnyx extends Dialog
 {
-    public OnyxDialogBase(Context context)
+    public DialogBaseOnyx(Context context)
     {
         super(context, R.style.dialog_no_title);
 
         setCanceledOnTouchOutside(true);
     }
 
-    public OnyxDialogBase(Context context, int style)
+    public DialogBaseOnyx(Context context, int style)
     {
         super(context, style);
 

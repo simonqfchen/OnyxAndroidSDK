@@ -19,50 +19,17 @@
         android:id="@+id/textview_child_lines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_selected_6"
         android:layout_marginBottom="-4dp"
-        android:visibility="gone"
-         />
+        android:background="@drawable/item_selected_6"
+        android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/layout_menu_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
-        <RelativeLayout
-            android:id="@+id/layout_dictionary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1.0"
-            android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true"
-            android:visibility="gone"
-            android:padding="0dp"
-             >
-            <TextView
-                android:id="@+id/textview_dictionary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:gravity="center_horizontal"
-                android:text="@string/menu_item_dictionary"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/imageview_dictionary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/textview_dictionary"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/menu_dictionary"
-                android:background="@color/read_menu_item_background_color"
-                android:scaleType="fitCenter"
-                android:src="@drawable/menu_dictionary" />
-        </RelativeLayout>
-        
         <RelativeLayout
             android:id="@+id/layout_tts"
             android:layout_width="match_parent"
@@ -70,10 +37,10 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
             android:focusable="true"
-            android:padding="0dp"
-             >
+            android:gravity="center"
+            android:padding="0dp" >
+
             <TextView
                 android:id="@+id/textview_tts"
                 android:layout_width="match_parent"
@@ -89,8 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_tts"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/tts"
                 android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/tts"
                 android:scaleType="fitCenter"
                 android:src="@drawable/tts" />
         </RelativeLayout>
@@ -102,8 +69,8 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true" >
+            android:focusable="true"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/textview_line_spacing"
@@ -120,8 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_line_spacing"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/line_spacing"
                 android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/line_spacing"
                 android:scaleType="fitCenter"
                 android:src="@drawable/line_spacing" />
         </RelativeLayout>
@@ -133,8 +100,8 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true" >
+            android:focusable="true"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/textview_toc"
@@ -151,8 +118,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_toc"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/directory"
                 android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/directory"
                 android:scaleType="fitCenter"
                 android:src="@drawable/directory" />
         </RelativeLayout>
@@ -164,8 +131,8 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true" >
+            android:focusable="true"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/textview_font"
@@ -182,8 +149,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_font"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/font"
                 android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/font"
                 android:scaleType="fitCenter"
                 android:src="@drawable/font" />
         </RelativeLayout>
@@ -195,8 +162,8 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true" >
+            android:focusable="true"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/textview_rotation"
@@ -213,10 +180,106 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_rotation"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/rotation"
                 android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/rotation"
                 android:scaleType="fitCenter"
                 android:src="@drawable/rotation" />
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/layout_dictionary_footer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="0dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/textview_dictionary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:text="@string/menu_item_dictionary"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/imageview_dictionary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_dictionary"
+                android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/menu_dictionary"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu_dictionary" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_search_footer"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/textview_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:text="@string/menu_item_search"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/imageview_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_search"
+                android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/search"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_refresh_footer"
+            android:layout_width="115dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/reader_menu_item_background"
+            android:focusable="true"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/textview_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_horizontal"
+                android:text="@string/menu_item_refresh"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/imageview_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/textview_refresh"
+                android:layout_centerHorizontal="true"
+                android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/menu_screen_refresh"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu_screen_refresh" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -227,8 +290,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1.0"
             android:background="@drawable/reader_menu_item_background"
-            android:gravity="center"
-            android:focusable="true" >
+            android:focusable="true"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/textview_more"
@@ -245,8 +308,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/textview_more"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@drawable/more"
                 android:background="@color/read_menu_item_background_color"
+                android:contentDescription="@drawable/more"
                 android:scaleType="fitCenter"
                 android:src="@drawable/more" />
         </RelativeLayout>

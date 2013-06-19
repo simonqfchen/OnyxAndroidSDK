@@ -80,6 +80,7 @@ public interface IDocumentModel
     boolean previousScreen();
     boolean nextScreen();
 
+    int compareLocation(String loc1, String loc2);
     boolean isLocationInCurrentScreen(String location);
     String getScreenBeginningLocation();
     String getScreenEndLocation();
@@ -87,6 +88,7 @@ public interface IDocumentModel
     Size getPageNaturalSize();
     Rect getPageContentArea();
     
+    String getDocumentText(String locationBegin, String locationEnd);
     String getScreenText();
     
     /**
@@ -130,6 +132,8 @@ public interface IDocumentModel
     DocTextSelection moveSelectionEnd(int x, int y);
     
     DocTextSelection measureSelection(String locationBegin, String locationEnd);
+    
+    DocTextSelection hitTestSentence(String sentenceBegin);
     
     /**
      * return null if failed

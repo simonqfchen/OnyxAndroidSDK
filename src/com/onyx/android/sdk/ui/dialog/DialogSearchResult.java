@@ -20,7 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author joy
  *
  */
-public class DialogSearchResult extends OnyxDialogBase
+public class DialogSearchResult extends DialogBaseOnyx
 {
     public static class SearchResultItem {
         private String mTitle = null;
