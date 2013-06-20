@@ -26,7 +26,7 @@ public class GridViewPageLayout
      */
     public enum GridViewMode
     {
-        Thumbnail, Detail,
+        Thumbnail, Detail, List,
     }
     
     public interface OnStateChangedListener
@@ -57,6 +57,7 @@ public class GridViewPageLayout
     private int mItemMinHeight = 100;
     private int mItemThumbnailMinHeight = 100;
     private int mItemDetailMinHeight = 70;
+    private int mItemListMinHeight = 40;
     private int mHorizontalSpacing = 0;
     private int mVerticalSpacing = 0;
     
@@ -127,6 +128,15 @@ public class GridViewPageLayout
         mItemDetailMinHeight = value;
     }
     
+    public int getItemListMinHeight()
+    {
+        return mItemListMinHeight;
+    }
+    public void setItemListMinHeight(int value)
+    {
+        mItemListMinHeight = value;
+    }
+    
     public int getHorizontalSpacing()
     {
         return mHorizontalSpacing;
@@ -182,6 +192,8 @@ public class GridViewPageLayout
         }
         else if (mViewMode == GridViewMode.Detail) {
             mItemMinHeight = mItemDetailMinHeight;
+        } else if(mViewMode == GridViewMode.List){
+            mItemMinHeight = mItemListMinHeight; 
         }
         else {
             assert(false);
@@ -206,7 +218,7 @@ public class GridViewPageLayout
         if (mViewMode == GridViewMode.Thumbnail) {
         	gridView.setNumColumns(GridView.AUTO_FIT);
         } else {
-            assert (mViewMode == GridViewMode.Detail);
+            assert (mViewMode == GridViewMode.Detail || mViewMode == GridViewMode.List);
             gridView.setNumColumns(1);
         }
 
@@ -216,6 +228,9 @@ public class GridViewPageLayout
         if (mViewMode == GridViewMode.Detail) {
             mLayoutColumnCount = 1;
             mItemMinHeight = mItemDetailMinHeight;
+        } else if (mViewMode == GridViewMode.List) {
+            mLayoutColumnCount = 1;
+            mItemMinHeight = mItemListMinHeight;
         }
         else {
             assert(mViewMode == GridViewMode.Thumbnail);

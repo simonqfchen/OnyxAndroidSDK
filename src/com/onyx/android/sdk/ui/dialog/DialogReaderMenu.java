@@ -841,6 +841,8 @@ public class DialogReaderMenu extends DialogBaseOnyx
         mFontSettings.findViewById(R.id.layout_font_increase).setVisibility(View.GONE);
         mFontSettings.findViewById(R.id.relativelayout_font_face).setVisibility(View.GONE);
         mFontSettings.findViewById(R.id.relativelayout_font_type).setVisibility(View.GONE);
+        mShowDirectory.findViewById(R.id.layout_toc).setVisibility(View.GONE);
+        mShowDirectory.findViewById(R.id.layout_annotation).setVisibility(View.GONE);
     }
 
     public void setButtonFontFaceText(String text)

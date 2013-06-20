@@ -63,10 +63,12 @@ public class DialogFontFaceSettings extends DialogBaseSettings
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                
                 if (mAdapter.getSelection() != position) {
-                    mAdapter.setSelection(mAdapter.getPaginator().getPageSize() * mAdapter.getPaginator().getPageIndex() + position);
+                    int selectedItem = mAdapter.getPaginator().getPageSize() * mAdapter.getPaginator().getPageIndex() + position;
+                    mAdapter.setSelection(selectedItem);
                     mAdapter.notifyDataSetChanged();
-                    mOnSettingsFontFaceLinstener.settingfontFace(position);
+                    mOnSettingsFontFaceLinstener.settingfontFace(selectedItem);
                 }
             }
         });
