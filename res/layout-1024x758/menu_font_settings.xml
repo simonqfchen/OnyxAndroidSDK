@@ -134,7 +134,9 @@
             android:paddingLeft="5dp"
             android:paddingRight="50dp"
             android:singleLine="true"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:clickable="false"
+             />
     </RelativeLayout>
 
 </LinearLayout>
