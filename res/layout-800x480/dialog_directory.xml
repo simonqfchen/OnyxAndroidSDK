@@ -90,6 +90,7 @@
                     android:id="@+id/listview_toc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:cacheColorHint="#00000000"
                     android:background="#FFFFFF" />
             </LinearLayout>
 
@@ -125,6 +126,7 @@
                     android:id="@+id/listview_bookmark"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:cacheColorHint="#00000000"
                     android:background="#FFFFFF" />
             </LinearLayout>
 
@@ -160,6 +162,7 @@
                     android:id="@+id/listview_annotation"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:cacheColorHint="#00000000"
                     android:background="#FFFFFF" />
             </LinearLayout>
         </FrameLayout>
