@@ -257,6 +257,69 @@ public class OnyxCmsCenter
         assert (count == 1);
         return true;
     }
+    
+    public static boolean getRecentReading(Context context, String fileTypes,
+            int limitNumber, AscDescOrder ascOrder, Collection<OnyxMetadata> result)
+    {
+        Cursor c = null;
+        try {
+            String selection = null;
+            String[] selection_args = null;
+            
+            if (fileTypes != null) {
+                selection_args = fileTypes.split(",");
+                if (selection_args != null && selection_args.length > 0) {
+                    selection = "type=?";
+                    for(int i = 0; i < selection_args.length - 1; i++) {
+                        selection = selection.concat(" OR type=?");   
+                    }
+                }
+            }
+            if (selection == null) {
+                selection = "(" + OnyxMetadata.Columns.LAST_ACCESS + " IS NOT NULL) AND ("
+                        + OnyxMetadata.Columns.LAST_ACCESS + "!='') AND ("
+                        + OnyxMetadata.Columns.LAST_ACCESS + "!=0)";
+            }
+            else {
+                selection += " AND (" + OnyxMetadata.Columns.LAST_ACCESS + " IS NOT NULL) AND ("
+                        + OnyxMetadata.Columns.LAST_ACCESS + "!='') AND ("
+                        + OnyxMetadata.Columns.LAST_ACCESS + "!=0)";
+            }
+
+            String sort_order = null;
+            if(ascOrder == AscDescOrder.Asc) {
+                sort_order = OnyxMetadata.Columns.LAST_ACCESS + " ASC";
+            }
+            else {
+                sort_order = OnyxMetadata.Columns.LAST_ACCESS + " DESC";
+            }
+            if (limitNumber != -1) {
+                sort_order += (" LIMIT " + limitNumber);
+            }
+            
+            ProfileUtil.start(TAG, "query recent readings");
+            c = context.getContentResolver().query( OnyxMetadata.CONTENT_URI, null,
+                    selection, selection_args, sort_order);
+            ProfileUtil.end(TAG, "query recent readings");
+
+            if (c == null) {
+                Log.d(TAG, "query database failed");
+                return false;
+            }
+
+            ProfileUtil.start(TAG, "read db result");
+            readMetadataCursor(c, result);
+            ProfileUtil.end(TAG, "read db result");
+
+            Log.d(TAG, "items loaded, count: " + result.size());
+
+            return true;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
 
     public static boolean getRecentReadings(Context context,
             Collection<OnyxMetadata> result)
