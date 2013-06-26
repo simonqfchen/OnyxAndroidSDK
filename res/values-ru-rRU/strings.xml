@@ -88,5 +88,6 @@
     <string name="every_5_pages">Каждые 5 страниц</string>
     <string name="every_7_pages">Каждые 7 страниц</string>
     <string name="every_9_pages">Каждые 9 страниц</string>
+    <string name="never">Никогда</string>
     <string name="automatic">Автоматически</string>
 </resources>

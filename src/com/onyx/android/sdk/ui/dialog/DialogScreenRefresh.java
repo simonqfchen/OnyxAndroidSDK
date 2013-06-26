@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.dialog;
 
@@ -15,7 +15,7 @@ import com.onyx.android.sdk.data.sys.OnyxSysCenter;
 import com.onyx.android.sdk.ui.data.SelectionAdapter;
 
 /**
- * 
+ *
  * @author qingyue
  *
  */
@@ -40,15 +40,15 @@ public class DialogScreenRefresh extends DialogBaseSettings
     {
         mOnScreenRefreshListener = l;
     }
-    
+
     /**
      * times to reset display to eliminate ghost pixels
      */
     public static int RENDER_RESET_MAX_TIME = 5;
-    
+
     private SelectionAdapter mAdapter = null;
     final ArrayList<Pair<String, Object>> mItems = new ArrayList<Pair<String, Object>>();
-    
+
     public DialogScreenRefresh(final Activity hostActivity, int pageTurning)
     {
         super(hostActivity);
@@ -58,12 +58,12 @@ public class DialogScreenRefresh extends DialogBaseSettings
         mItems.add(new Pair<String, Object>(this.getContext().getString(R.string.every_5_pages), Integer.valueOf(5)));
         mItems.add(new Pair<String, Object>(this.getContext().getString(R.string.every_7_pages), Integer.valueOf(7)));
         mItems.add(new Pair<String, Object>(this.getContext().getString(R.string.every_9_pages), Integer.valueOf(9)));
-        mItems.add(new Pair<String, Object>(this.getContext().getString(R.string.automatic), Integer.valueOf(Integer.MAX_VALUE)));
+        mItems.add(new Pair<String, Object>(this.getContext().getString(R.string.never), Integer.valueOf(Integer.MAX_VALUE)));
         RENDER_RESET_MAX_TIME = OnyxSysCenter.getScreenUpdateGCInterval();
         if (RENDER_RESET_MAX_TIME == -1) {
         	RENDER_RESET_MAX_TIME = 5;
         }
-        
+
         mAdapter = new SelectionAdapter(hostActivity, this.getGridView(), mItems, 0);
         for (int i = 0; i < mItems.size(); i++) {
             if ((Integer)mItems.get(i).second == RENDER_RESET_MAX_TIME) {
@@ -72,15 +72,15 @@ public class DialogScreenRefresh extends DialogBaseSettings
             }
         }
         this.getGridView().setAdapter(mAdapter);
-        
+
         this.getButtonSet().setOnClickListener(new View.OnClickListener()
         {
-            
+
             @Override
             public void onClick(View v)
             {
                 DialogScreenRefresh.this.dismiss();
-                
+
                 int sel = mAdapter.getSelection();
                 if (sel >= 0) {
                     RENDER_RESET_MAX_TIME = (Integer)mItems.get(sel).second;
@@ -91,11 +91,11 @@ public class DialogScreenRefresh extends DialogBaseSettings
 
                 OnyxSysCenter.setScreenUpdateGCInterval(hostActivity , RENDER_RESET_MAX_TIME);
                 mOnScreenRefreshListener.screenFefresh(RENDER_RESET_MAX_TIME);
-                
+
                 Log.d(TAG, "render reset time: " + RENDER_RESET_MAX_TIME);
             }
         });
-        
+
         this.getButtonCancel().setOnClickListener(new View.OnClickListener()
         {
 
