@@ -79,6 +79,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
     private TextView mTotalPageTextView = null;
     private Activity mActivity = null;
 
+    int mWindowFlags = 0;
     WindowManager.LayoutParams mParams = null;
     Window mWindow = null;
 
@@ -757,6 +758,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         EpdController.setMode(this.getContext(), EPDMode.AUTO);
 
         if (WindowUtil.isFullScreen(mActivity.getWindow())) {
+            mWindowFlags = mActivity.getWindow().getAttributes().flags;
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -777,6 +779,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            mActivity.getWindow().setFlags(mWindowFlags, mWindowFlags);
         }
         super.dismiss();
     }
