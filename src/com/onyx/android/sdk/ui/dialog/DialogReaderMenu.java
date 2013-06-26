@@ -1045,32 +1045,32 @@ public class DialogReaderMenu extends DialogBaseOnyx
             if (mMenuHandler.showZoomSettings()) {
                 imageView.setImageResource(R.drawable.zoom);
                 textView.setText(R.string.menu_item_zoom);
+                layout_spacing.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        showChildMenu(layout_spacing, mZoomSettings);
+                    }
+                });
             }
             else if (mMenuHandler.showSpacingSettings()) {
                 imageView.setImageResource(R.drawable.line_spacing);
                 textView.setText(R.string.menu_item_line_spacing);
+                layout_spacing.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        showChildMenu(layout_spacing, mLineSpacingSettings);
+                    }
+                });
             }
             else {
                 assert(false);
             }
-
-            layout_spacing.setOnClickListener(new View.OnClickListener()
-            {
-
-                @Override
-                public void onClick(View v)
-                {
-                    if (mMenuHandler.showZoomSettings()) {
-                        showChildMenu(layout_spacing, mZoomSettings);
-                    }
-                    else if (mMenuHandler.showSpacingSettings()) {
-                        showChildMenu(layout_spacing, mLineSpacingSettings);
-                    } else {
-                        DialogReaderMenu.this.dismiss();
-                        mMenuHandler.searchContent();
-                    }
-                }
-            });
         }
     }
 
