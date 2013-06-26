@@ -106,7 +106,7 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
     {
         super(activity, R.style.dialog_menu);
 
-        setContentView(R.layout.dialog_menu);
+        setContentView(R.layout.dialog_reader_menu);
         mActivity = activity;
         mThreadId = Thread.currentThread().getId();
 
