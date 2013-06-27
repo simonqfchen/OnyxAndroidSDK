@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="app_name">OnyxSDK</string>
     <string name="title">tytuł</string>
@@ -21,7 +21,7 @@
     <string name="SD_card_has_been_removed">Karta SD została usunięta</string>
     <string name="file_not_exist">plik nie istnieje</string>
     <string name="dialogpaged_skip">pomiń:</string>
-    <string name="edittext_hint" />
+    <string name="edittext_hint"/>
     <string name="page">strona</string>
     <string name="go">Idź</string>
     <string name="Exceed_the_total_number_of_pages">Przekroczono całkowitą liczbę stron</string>
@@ -34,7 +34,7 @@
     <string name="toc">Spis Treści</string>
     <string name="font_face">Krój czcionki</string>
     <string name="delete">Usuń</string>
-    <string name="hint" />
+    <string name="hint"/>
     <string name="page_initial_value">1</string>
     <string name="go_to_page">Idź Do Strony</string>
     <string name="the_number_is_too_large">Numer jest za duży</string>
@@ -89,6 +89,6 @@
     <string name="every_5_pages">Co 5 stron</string>
     <string name="every_7_pages">Co 7 stron</string>
     <string name="every_9_pages">Co 9 stron</string>
+    <string name="never">nigdy</string>
     <string name="automatic">Automatyczne</string>
 </resources>
-
