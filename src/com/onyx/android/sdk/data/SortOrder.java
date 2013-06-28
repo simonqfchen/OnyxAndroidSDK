@@ -9,5 +9,5 @@ package com.onyx.android.sdk.data;
  */
 public enum SortOrder
 {
-    None, Name, FileType, Size, CreationTime, BookTitle, Author, Publisher;
+    None, Name, FileType, Size, CreationTime, BookTitle, Author, Publisher, RecentlyRead;
 }
