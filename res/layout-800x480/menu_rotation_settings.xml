@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_rotation_90"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="12dp"
         android:layout_weight="1"
         android:background="@drawable/reader_menu_item_background"
@@ -29,8 +29,8 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_rotation_0"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="12dp"
         android:layout_weight="1"
         android:background="@drawable/reader_menu_item_background"
@@ -49,8 +49,8 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_rotation_270"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="12dp"
         android:layout_weight="1"
         android:background="@drawable/reader_menu_item_background"
@@ -69,8 +69,8 @@
 
     <LinearLayout
         android:id="@+id/linearlayout_rotation_180"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="12dp"
         android:layout_weight="1"
         android:background="@drawable/reader_menu_item_background"
