@@ -807,22 +807,19 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
         int selection_drawable = 0;
         switch (selection_count) {
         case 0:
-            selection_drawable = R.drawable.item_selected_1;
+            selection_drawable = R.drawable.phone_item_selected_1;
             break;
         case 1:
-            selection_drawable = R.drawable.item_selected_2;
+            selection_drawable = R.drawable.phone_item_selected_2;
             break;
         case 2:
-            selection_drawable = R.drawable.item_selected_3;
+            selection_drawable = R.drawable.phone_item_selected_3;
             break;
         case 3:
-            selection_drawable = R.drawable.item_selected_4;
+            selection_drawable = R.drawable.phone_item_selected_4;
             break;
         case 4:
-            selection_drawable = R.drawable.item_selected_5;
-            break;
-        case 5:
-            selection_drawable = R.drawable.item_selected_6;
+            selection_drawable = R.drawable.phone_item_selected_5;
             break;
         default:
             assert(false);
