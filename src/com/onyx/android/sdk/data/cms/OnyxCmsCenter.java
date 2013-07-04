@@ -127,6 +127,13 @@ public class OnyxCmsCenter
         return getLibraryItems(context, SortOrder.None, AscDescOrder.Asc, null, -1, result);
     }
 
+    public static boolean deleteLibraryItem(Context context , String path ) {
+    	int result_code = context.getContentResolver().delete(
+    			OnyxLibraryItem.CONTENT_URI , OnyxLibraryItem.Columns.PATH + " = ?" ,
+    			new String[]{path});
+    	return result_code == 1 ? true : false;
+    }
+    
     /**
      * reading data from DB to metadata, old data in metadata will be overwritten 
      * 
