@@ -75,7 +75,8 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
         mTtsService.setOnUtteranceCompletedListener(this);
         
         Locale locale = null;
-        final String languageCode = mTtsService.getLanguage().getLanguage();
+        final String languageCode = mContext.getResources().getConfiguration().locale.getISO3Language();
+        Log.v(TAG,"languageCode = " + languageCode);
         if ("other".equals(languageCode)) {
             locale = Locale.getDefault();
             if (mTtsService.isLanguageAvailable(locale) < 0) {
