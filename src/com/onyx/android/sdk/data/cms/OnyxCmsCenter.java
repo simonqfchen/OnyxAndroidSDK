@@ -120,6 +120,12 @@ public class OnyxCmsCenter
             }
         }
     }
+    
+	public static boolean deleteLibraryItem(Context context , String where, String[] selectionArgs) {
+		int result_code = context.getContentResolver().delete(
+				OnyxLibraryItem.CONTENT_URI , where , selectionArgs);
+		return result_code == 1 ? true : false;
+	}
 
     public static boolean getLibraryItems(Context context,
             Collection<OnyxLibraryItem> result)
