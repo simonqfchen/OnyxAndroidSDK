@@ -6,7 +6,6 @@ package com.onyx.android.sdk.device;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
 import com.onyx.android.sdk.device.EpdController.UpdateMode;
 import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
-import com.onyx.android.sdk.device.IMX508Factory.IMX508Controller;
 
 import android.content.Context;
 import android.os.Build;
@@ -362,8 +361,8 @@ public class IMX6Factory implements IDeviceFactory
     @Override
     public boolean isPresent()
     {
-        return Build.MANUFACTURER.contentEquals("unknown") &&
-                Build.MODEL.contentEquals("ONYX_BOOX ") &&
+        return Build.MANUFACTURER.contentEquals("ONYX") &&
+                Build.MODEL.contentEquals("ONYX_BOOX") &&
                 Build.DEVICE.contentEquals("M96");
     }
 
@@ -373,7 +372,7 @@ public class IMX6Factory implements IDeviceFactory
     @Override
     public IDeviceController createController()
     {
-        return IMX508Controller.createController();
+        return IMX6Controller.createController();
     }
 
 }
