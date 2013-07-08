@@ -311,6 +311,7 @@ public class IMX6Factory implements IDeviceFactory
             case DW:
                 dst_mode = sModeDW;
                 break;
+            case GU_FAST:
             case GU:
                 dst_mode = sModeGU;
                 break;
