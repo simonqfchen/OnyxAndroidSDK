@@ -1105,12 +1105,12 @@ public class DialogReaderMenu extends DialogBaseOnyx
         if (audioManager != null) {
             if (opition) {
                 audioManager.adjustSuggestedStreamVolume(AudioManager.ADJUST_RAISE,
-                        AudioManager.USE_DEFAULT_STREAM_TYPE,
-                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                                AudioManager.STREAM_MUSIC,
+                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE );
             } else {
                 audioManager.adjustSuggestedStreamVolume(AudioManager.ADJUST_LOWER,
-                        AudioManager.USE_DEFAULT_STREAM_TYPE,
-                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                                AudioManager.STREAM_MUSIC,
+                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE );
             }
         }
         updateVolumeSeekBar();
