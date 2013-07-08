@@ -581,7 +581,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
 				&& event.getAction() == KeyEvent.ACTION_DOWN) {
 			return this.onKeyDown(keyCode, event);
 		}
-    	return true;
+    	return super.dispatchKeyEvent(event);
     }
     
     @Override
