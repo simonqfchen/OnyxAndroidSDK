@@ -371,10 +371,6 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         }
     }
     
-    public boolean getInterceptVolumeKey() {
-        return mIsInterceptVolumeKey;
-    }
-    
     public void setInterceptVolumeKey(boolean isInterceptVolumeKey) {
     	this.mIsInterceptVolumeKey = isInterceptVolumeKey;
     }
@@ -599,16 +595,16 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         try {
 //            Log.d(sTag, "onKeyDown");
-            if (mIsInterceptVolumeKey && (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                    keyCode == KeyEvent.KEYCODE_PAGE_UP)) {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+                    keyCode == KeyEvent.KEYCODE_PAGE_UP) {
                 if (mAdapter.getPaginator().canPrevPage()) {
                     EpdController.invalidate(this, UpdateMode.GU);
                     mAdapter.getPaginator().prevPage();
                 }
                 return true;
             }
-            else if (mIsInterceptVolumeKey && (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
-                    keyCode == KeyEvent.KEYCODE_PAGE_DOWN)) {
+            else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+                    keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
                 if (mAdapter.getPaginator().canNextPage()) {
                     EpdController.invalidate(this, UpdateMode.GU);
                     mAdapter.getPaginator().nextPage();
