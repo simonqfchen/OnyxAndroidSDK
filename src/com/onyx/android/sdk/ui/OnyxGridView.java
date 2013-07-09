@@ -574,10 +574,22 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     }
 
     @Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+    	int keyCode = event.getKeyCode();
+		if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP 
+				|| keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+			if (this.onKeyDown(keyCode, event)) {
+				return true;
+			}
+		}
+    	return super.dispatchKeyEvent(event);
+    }
+    
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         try {
 //            Log.d(sTag, "onKeyDown");
-            
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
                     keyCode == KeyEvent.KEYCODE_PAGE_UP) {
                 if (mAdapter.getPaginator().canPrevPage()) {
