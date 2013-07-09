@@ -96,6 +96,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     private float mUpXLength = 0;
     private long mDownTime = 0;
     private boolean enableOnFling = true;
+    private boolean mIsInterceptVolumeKey = false;
 
     public OnyxGridView(Context context) {
         this(context, null);
@@ -370,6 +371,10 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         }
     }
     
+    public void setInterceptVolumeKey(boolean isInterceptVolumeKey) {
+    	this.mIsInterceptVolumeKey = isInterceptVolumeKey;
+    }
+    
     // ========================= GestureDetector.OnGestureListener ======================
     @Override
     public boolean onDown(MotionEvent e)
@@ -575,16 +580,16 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
 
     @Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
-    	int keyCode = event.getKeyCode();
-		if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP 
-				|| keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
-				&& event.getAction() == KeyEvent.ACTION_DOWN) {
-			if (this.onKeyDown(keyCode, event)) {
-				return true;
+		int keyCode = event.getKeyCode();
+		if (mIsInterceptVolumeKey
+				&& (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				this.onKeyDown(keyCode, event);
 			}
+			return true;
 		}
-    	return super.dispatchKeyEvent(event);
-    }
+		return super.dispatchKeyEvent(event);
+	}
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
