@@ -133,8 +133,15 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
                     });
                     
                     if(new File(wave_file).exists()) {
-                        mPlayer.setDataSource(wave_file);
-                        mPlayer.prepare();
+                        try {
+                            mPlayer.setDataSource(wave_file);
+                            mPlayer.prepare();
+                        }
+                        catch (IOException e) {
+                            Log.e(TAG, "exception", e);
+                            onPlayerCompletion();
+                        }
+
                         if (!mTtsPaused) {
                             mPlayer.start();
                         }
@@ -146,9 +153,6 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
                     Log.e(TAG, "exception", e);
                 }
                 catch (IllegalStateException e) {
-                    Log.e(TAG, "exception", e);
-                }
-                catch (IOException e) {
                     Log.e(TAG, "exception", e);
                 }
             }
