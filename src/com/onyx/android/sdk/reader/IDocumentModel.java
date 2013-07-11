@@ -82,6 +82,10 @@ public interface IDocumentModel
 
     int compareLocation(String loc1, String loc2);
     boolean isLocationInCurrentScreen(String location);
+    
+    String getDocumentBeginningLocation();
+    String getDocumentEndLocation();
+    
     String getScreenBeginningLocation();
     String getScreenEndLocation();
     
