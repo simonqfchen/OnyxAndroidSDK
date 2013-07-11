@@ -678,6 +678,9 @@ public class DialogReaderMenuPhone extends DialogBaseOnyx
             layout_spacing.setVisibility(View.GONE);
             this.findViewById(R.id.layout_margin_footer).setVisibility(View.VISIBLE);
             mMoreView.findViewById(R.id.layout_margin).setVisibility(View.GONE);
+            
+            this.findViewById(R.id.layout_dictionary_footer).setVisibility(View.VISIBLE);
+            mMoreView.findViewById(R.id.layout_dictionary).setVisibility(View.GONE);
         }
         else {
             ImageView imageView = (ImageView) mLayoutSecondaryMenu.findViewById(R.id.imageview_line_spacing);
