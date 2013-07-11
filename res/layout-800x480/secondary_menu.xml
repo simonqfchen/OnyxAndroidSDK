@@ -155,6 +155,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_weight="1.0"
+            android:visibility="gone"
             android:background="@drawable/reader_menu_item_background"
             android:focusable="true"
             android:gravity="center" >
@@ -187,7 +188,7 @@
             android:background="@drawable/reader_menu_item_background"
             android:focusable="true"
             android:gravity="center"
-            android:visibility="gone" >
+            >
 
             <TextView
                 android:id="@+id/textview_margin"
