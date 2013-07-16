@@ -60,12 +60,9 @@ public class RK2906Factory implements IDeviceFactory
         private static Method sMethodHasAudio;
         private static Method sMethodHasFrontLight;
 
-        @SuppressWarnings("unused")
         private static int sTouchTypeUnknown = 0;
-        @SuppressWarnings("unused")
-        private static int sTouchTypeIR = 0;
-        @SuppressWarnings("unused")
-        private static int sTouchTypeCapacitive = 0;
+        private static int sTouchTypeIR = 1;
+        private static int sTouchTypeCapacitive = 2;
 
         private RK2906Controller()
         {
@@ -167,22 +164,20 @@ public class RK2906Factory implements IDeviceFactory
                     return TouchType.None;
                 }
 
-                return TouchType.IR;
-
-//                Integer n = (Integer)sMethodGetTouchType.invoke(instance);
-//                if (n.intValue() == sTouchTypeUnknown) {
-//                    return TouchType.Unknown;
-//                }
-//                else if (n.intValue() == sTouchTypeIR) {
-//                    return TouchType.IR;
-//                }
-//                else if (n.intValue() == sTouchTypeCapacitive) {
-//                    return TouchType.Capacitive;
-//                }
-//                else {
-//                    assert(false);
-//                    return TouchType.Unknown;
-//                }
+                Integer n = (Integer)sMethodGetTouchType.invoke(instance);
+                if (n.intValue() == sTouchTypeUnknown) {
+                    return TouchType.Unknown;
+                }
+                else if (n.intValue() == sTouchTypeIR) {
+                    return TouchType.IR;
+                }
+                else if (n.intValue() == sTouchTypeCapacitive) {
+                    return TouchType.Capacitive;
+                }
+                else {
+                    assert(false);
+                    return TouchType.Unknown;
+                }
             }
             catch (IllegalArgumentException e) {
                 Log.e(TAG, "exception", e);
