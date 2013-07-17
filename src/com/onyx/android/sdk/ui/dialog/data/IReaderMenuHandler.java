@@ -17,9 +17,17 @@ public interface IReaderMenuHandler
 
     int getPageIndex();
     int getPageCount();
+    
+    boolean canPreviousNavigation();
+    void previousNavigation();
+    boolean canNextNavigation();
+    void nextNavigation();
 
+    boolean canNextPage();
     void nextPage();
+    boolean canPreviousPage();
     void previousPage();
+
     void gotoPage(int i);
 
     void updateCurrentPage(LinearLayout l);
