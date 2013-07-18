@@ -44,7 +44,7 @@ public class DialogLoading extends DialogBaseOnyx
 
     public DialogLoading(Context context, String msg)
     {
-        super(context);
+        super(context,  R.style.dialog_progress);
 
         setContentView(R.layout.dialog_loading);
 
