@@ -131,6 +131,14 @@ public interface IDocumentModel
     boolean isGlyphEmboldenEnabled();
     boolean setGlyphEmboldenEnabled(boolean enable);
     
+    /**
+     * find all links in current screen,
+     * return empty list when none, return null when failed
+     * 
+     * @return
+     */
+    List<DocLinkInfo> getScreenLinkList();
+    
     DocTextSelection hitTestWord(int x, int y);
     DocTextSelection moveSelectionBegin(int x, int y);
     DocTextSelection moveSelectionEnd(int x, int y);

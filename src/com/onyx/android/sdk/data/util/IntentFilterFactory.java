@@ -17,6 +17,7 @@ public class IntentFilterFactory
     private static final IntentFilter SDCARD_UNMOUNTED_FILTER;
     private static final IntentFilter MEDIA_MOUNTED_FILTER;
     private static final IntentFilter MEDIA_SCANNED_FILTER;
+    private static final IntentFilter BOOT_COMPLETED_FILTER;
     
     private static IntentFilter mIntentFilter = null;
     
@@ -36,6 +37,8 @@ public class IntentFilterFactory
         MEDIA_SCANNED_FILTER = new IntentFilter();
         MEDIA_SCANNED_FILTER.addAction(ACTION_MEDIA_SCANNED);
         
+        BOOT_COMPLETED_FILTER = new IntentFilter();
+        BOOT_COMPLETED_FILTER.addAction(Intent.ACTION_BOOT_COMPLETED);
     }
     
     public static IntentFilter getSDCardUnmountedFilter()
@@ -53,6 +56,11 @@ public class IntentFilterFactory
         return MEDIA_SCANNED_FILTER;
     }
     
+    public static IntentFilter getBootCompletedFilter()
+    {
+        return BOOT_COMPLETED_FILTER;
+    }
+
     public static IntentFilter getIntentFilterFrontPreferredApplications()
     {
         mIntentFilter = new IntentFilter();

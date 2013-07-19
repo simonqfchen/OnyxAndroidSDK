@@ -75,6 +75,18 @@
             android:layout_weight="2.0"
             android:visibility="gone"
             android:gravity="center_vertical" >
+            
+            <ImageButton
+                android:id="@+id/button_previous_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/reader_menu_item_background"
+                android:contentDescription="@drawable/toolbar_backward"
+                android:scaleType="fitCenter"
+                android:src="@drawable/toolbar_backward"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
 
             <ImageButton
                 android:id="@+id/button_previous"
@@ -122,9 +134,10 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
             android:layout_marginRight="10dp"
             android:layout_weight="2.0"
             android:visibility="gone"
@@ -134,13 +147,26 @@
                 android:id="@+id/button_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:background="@drawable/reader_menu_item_background"
                 android:contentDescription="@drawable/next"
                 android:scaleType="fitCenter"
                 android:src="@drawable/next"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp" />
-        </LinearLayout>
+            
+            <ImageButton
+                android:id="@+id/button_next_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/reader_menu_item_background"
+                android:contentDescription="@drawable/toolbar_forward"
+                android:scaleType="fitCenter"
+                android:src="@drawable/toolbar_forward"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0dp"
