@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class OnyxReadingHistoryEntry
+public class OnyxHistoryEntry
 {
     public static final String DB_TABLE_NAME = "library_history";
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
@@ -33,7 +33,7 @@ public class OnyxReadingHistoryEntry
         private static int sColumnEndTime = -1;
         private static int sColumnExtraAttributes = -1;
         
-        public static ContentValues createColumnData(OnyxReadingHistoryEntry entry)
+        public static ContentValues createColumnData(OnyxHistoryEntry entry)
         {
             ContentValues values = new ContentValues();
             values.put(MD5, entry.getMD5());
@@ -43,7 +43,7 @@ public class OnyxReadingHistoryEntry
             return values;
         }
         
-        public static OnyxReadingHistoryEntry readColumnsData(Cursor c)
+        public static OnyxHistoryEntry readColumnsData(Cursor c)
         {
             if (!sColumnIndexesInitialized) {
                 sColumnID = c.getColumnIndex(_ID);
@@ -61,7 +61,7 @@ public class OnyxReadingHistoryEntry
             long end_time = c.getLong(sColumnEndTime);
             String extra_attributes = c.getString(sColumnExtraAttributes);
             
-            OnyxReadingHistoryEntry entry = new OnyxReadingHistoryEntry();
+            OnyxHistoryEntry entry = new OnyxHistoryEntry();
             entry.setId(id);
             entry.setMD5(md5);
             assert(start_time > 0);
