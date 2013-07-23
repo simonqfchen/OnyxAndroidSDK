@@ -83,19 +83,6 @@ public class OnyxHistoryEntry
      */
     private String mExtraAttributes = null; 
     
-    private static OnyxHistoryEntry mOnyxHistoryEntry = null;
-    
-    private OnyxHistoryEntry() {
-    	
-    }
-    
-    public static OnyxHistoryEntry getInstance() {
-    	if (mOnyxHistoryEntry == null) {
-    		mOnyxHistoryEntry = new OnyxHistoryEntry();
-    	}
-    	return mOnyxHistoryEntry;
-    }
-    
     public long getId()
     {
         return mId;
