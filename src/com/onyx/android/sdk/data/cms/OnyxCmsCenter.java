@@ -498,6 +498,37 @@ public class OnyxCmsCenter
         return true;
     }
 
+    public static boolean insertHistory(Context context, OnyxHistoryEntry historyEntry)
+    {
+        Uri result = context.getContentResolver().insert(
+        		OnyxHistoryEntry.CONTENT_URI,
+        		OnyxHistoryEntry.Columns.createColumnData(historyEntry));
+        if (result == null) {
+            return false;
+        }
+
+        String id = result.getLastPathSegment();
+        if (id == null) {
+            return false;
+        }
+
+        historyEntry.setId(Long.parseLong(id));
+        return true;
+    }
+    
+    public static boolean updateHistory(Context context, OnyxHistoryEntry onyxHistoryEntry)
+    {
+        Uri row = Uri.withAppendedPath(OnyxHistoryEntry.CONTENT_URI,
+                String.valueOf(onyxHistoryEntry.getId()));
+        int count = context.getContentResolver().update(row,
+        		OnyxHistoryEntry.Columns.createColumnData(onyxHistoryEntry), null, null);
+        if (count <= 0) {
+            return false;
+        }
+        assert (count == 1);
+        return true;
+    }
+
     public static boolean getThumbnail(Context context, OnyxMetadata metadata, 
             OnyxThumbnail.ThumbnailKind thumbnailKind, RefValue<Bitmap> result)
     {
