@@ -31,6 +31,7 @@ public class OnyxSysCenter
     private static final String KEY_SHUTDOWN_INTERVAL = "sys.shutdown_interval";
     private static final String KEY_TIMEZONE = "sys.timezone";
     private static final String KEY_DICT = "sys.dict";
+    private static final String KEY_DICT_RESOURCES_PATH = "sys.dict_resources_path";
     
     private static boolean sInitialized = false;
     private static Map<String, OnyxKeyValueItem> sItemMap = new HashMap<String, OnyxKeyValueItem>();
@@ -207,7 +208,7 @@ public class OnyxSysCenter
         
         return OnyxDictionaryInfo.findDict(dict_id);
     }
-    
+
     public static boolean setDictionary(Context context, OnyxDictionaryInfo dict)
     {
         if (!sInitialized) {
@@ -215,7 +216,27 @@ public class OnyxSysCenter
         }
         return setStringValue(context, KEY_DICT, dict.id);
     }
-    
+
+    public static OnyxKeyValueItem getDictionaryResourcesPath(Context context)
+    {
+        if (!sInitialized) {
+            return null;
+        }
+
+        OnyxKeyValueItem item = sItemMap.get(KEY_DICT_RESOURCES_PATH);
+        if (item == null) {
+            return null;
+        }
+        return item;
+    }
+
+    public static boolean setDictionaryResourcesPath(Context context, String path) {
+        if (!sInitialized) {
+            return false;
+        }
+        return setStringValue(context, KEY_DICT_RESOURCES_PATH, path);
+    }
+
     public static boolean setFileType(Context context, String key, String value)
     {
         key = key.toLowerCase(Locale.getDefault());
@@ -225,7 +246,7 @@ public class OnyxSysCenter
 
         return setStringValue(context, key, value);
     }
-    
+
     public static String getFileType(String key)
     {
         key = key.toLowerCase(Locale.getDefault());
@@ -279,7 +300,6 @@ public class OnyxSysCenter
                 item.setValue(old);
                 return false;
             }
-            
             return true;
         }
     }
@@ -390,5 +410,16 @@ public class OnyxSysCenter
         assert(count == 1);
         return true;
     }
-    
+
+    /*
+     * When multiple applications call
+     */
+    public static String getStringValueFromDB(Context context, OnyxKeyValueItem item) {
+        Uri row = Uri.withAppendedPath(OnyxKeyValueItem.CONTENT_URI, String.valueOf(item.getId()));
+        Cursor cursor = context.getContentResolver().query(row, null, null, null, null);
+        cursor.moveToFirst();
+        String str = cursor.getString(0);
+        cursor.close();
+        return str;
+    }
 }

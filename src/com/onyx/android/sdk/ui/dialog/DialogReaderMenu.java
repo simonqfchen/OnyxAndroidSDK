@@ -401,6 +401,27 @@ public class DialogReaderMenu extends DialogBaseOnyx
                 mMenuHandler.decreaseFontSize();
             }
         });
+        
+        ImageButton prevNavigationButton = (ImageButton)findViewById(R.id.button_previous_navigation);
+        prevNavigationButton.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                mMenuHandler.previousNavigation();
+            }
+        });
+        ImageButton nextNavigationButton = (ImageButton)findViewById(R.id.button_next_navigation);
+        nextNavigationButton.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                mMenuHandler.nextNavigation();
+            }
+        });
 
         ImageButton prevPageButton = (ImageButton)findViewById(R.id.button_previous);
         prevPageButton.setOnClickListener(new View.OnClickListener()
@@ -807,6 +828,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
         }
 
         this.setTtsState(mMenuHandler.ttsIsSpeaking());
+        this.updateNavigationBar();
 
         super.show();
     }
@@ -973,6 +995,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
     public void setPageIndex(final int current) {
         if (Thread.currentThread().getId() == mThreadId) {
             mCurrentPageTextView.setText(String.valueOf(current));
+            this.updateNavigationBar();
         }
         else {
             mHandler.post(new Runnable()
@@ -982,6 +1005,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
                 public void run()
                 {
                     mCurrentPageTextView.setText(String.valueOf(current));
+                    DialogReaderMenu.this.updateNavigationBar();
                 }
             });
         }
@@ -1073,6 +1097,49 @@ public class DialogReaderMenu extends DialogBaseOnyx
             }
         }
     }
+    
+    private void updateNavigationBar()
+    {
+        ImageButton prevNavigationButton = (ImageButton)findViewById(R.id.button_previous_navigation);
+        if (!mMenuHandler.canPreviousNavigation()) {
+            prevNavigationButton.setImageResource(R.drawable.toolbar_backward_disabled);
+            prevNavigationButton.setEnabled(false);
+            prevNavigationButton.invalidate();
+        }
+        else {
+            prevNavigationButton.setImageResource(R.drawable.toolbar_backward);
+            prevNavigationButton.setEnabled(true);
+            prevNavigationButton.invalidate();
+        }
+        
+        ImageButton nextNavigationButton = (ImageButton)findViewById(R.id.button_next_navigation);
+        if (!mMenuHandler.canNextNavigation()) {
+            nextNavigationButton.setImageResource(R.drawable.toolbar_forward_disabled);
+            nextNavigationButton.setEnabled(false);
+            nextNavigationButton.invalidate();
+        }
+        else {
+            nextNavigationButton.setImageResource(R.drawable.toolbar_forward);
+            nextNavigationButton.setEnabled(true);
+            nextNavigationButton.invalidate();
+        }
+        
+        ImageButton prevPageButton = (ImageButton)findViewById(R.id.button_previous);
+        if (!mMenuHandler.canPreviousPage()) {
+            prevPageButton.setEnabled(false);
+        }
+        else {
+            prevPageButton.setEnabled(true);
+        }
+        
+        ImageButton nextPageButton = (ImageButton)findViewById(R.id.button_next);
+        if (!mMenuHandler.canNextPage()) {
+            nextPageButton.setEnabled(false);
+        }
+        else {
+            nextPageButton.setEnabled(true);
+        }
+    }
 
     private AudioManager getAudioManager() {
         if ( mAudioManager==null ) {
@@ -1105,12 +1172,12 @@ public class DialogReaderMenu extends DialogBaseOnyx
         if (audioManager != null) {
             if (opition) {
                 audioManager.adjustSuggestedStreamVolume(AudioManager.ADJUST_RAISE,
-                        AudioManager.USE_DEFAULT_STREAM_TYPE,
-                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                                AudioManager.STREAM_MUSIC,
+                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE );
             } else {
                 audioManager.adjustSuggestedStreamVolume(AudioManager.ADJUST_LOWER,
-                        AudioManager.USE_DEFAULT_STREAM_TYPE,
-                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                                AudioManager.STREAM_MUSIC,
+                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE );
             }
         }
         updateVolumeSeekBar();

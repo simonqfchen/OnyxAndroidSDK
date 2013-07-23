@@ -75,7 +75,8 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
         mTtsService.setOnUtteranceCompletedListener(this);
         
         Locale locale = null;
-        final String languageCode = mTtsService.getLanguage().getLanguage();
+        final String languageCode = mContext.getResources().getConfiguration().locale.getISO3Language();
+        Log.v(TAG,"languageCode = " + languageCode);
         if ("other".equals(languageCode)) {
             locale = Locale.getDefault();
             if (mTtsService.isLanguageAvailable(locale) < 0) {
@@ -132,8 +133,15 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
                     });
                     
                     if(new File(wave_file).exists()) {
-                        mPlayer.setDataSource(wave_file);
-                        mPlayer.prepare();
+                        try {
+                            mPlayer.setDataSource(wave_file);
+                            mPlayer.prepare();
+                        }
+                        catch (IOException e) {
+                            Log.e(TAG, "exception", e);
+                            onPlayerCompletion();
+                        }
+
                         if (!mTtsPaused) {
                             mPlayer.start();
                         }
@@ -145,9 +153,6 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
                     Log.e(TAG, "exception", e);
                 }
                 catch (IllegalStateException e) {
-                    Log.e(TAG, "exception", e);
-                }
-                catch (IOException e) {
                     Log.e(TAG, "exception", e);
                 }
             }

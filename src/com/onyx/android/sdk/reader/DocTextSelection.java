@@ -58,6 +58,21 @@ public class DocTextSelection implements Parcelable
     {
         return mSelectionEnd;
     }
+    
+    public boolean hitTest(int x, int y)
+    {
+        if (mBoxes == null) {
+            return false;
+        }
+        
+        for (Rect r : mBoxes) {
+            if (r.contains(x, y)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public static final Parcelable.Creator<DocTextSelection> CREATOR = new Parcelable.Creator<DocTextSelection>() {
 

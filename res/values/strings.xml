@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="app_name">OnyxSDK</string>
     <string name="title">title</string>
     <string name="previous">previous</string>
     <string name="paged_init_text">1/1</string>
@@ -57,6 +56,7 @@
     <string name="menu_item_bookmark">Bookmark</string>
     <string name="menu_item_annotation">Annotation</string>
     <string name="menu_item_dictionary">Dictionary</string>
+    <string name="menu_item_startup_options">Startup Options</string>
     <string name="menu_item_screen_full">Full</string>
     <string name="menu_item_screen_exit_full">Exit Full</string>
     <string name="menu_item_line_spacing">Spacing</string>

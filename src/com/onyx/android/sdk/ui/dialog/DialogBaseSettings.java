@@ -53,6 +53,10 @@ public class DialogBaseSettings extends DialogBaseOnyx
         mTextViewTitle = (TextView) this.findViewById(R.id.textview_title);
         mGridView = (OnyxGridView) this.findViewById(R.id.gridview_dialogpaged);
 
+        mButtonNextPage.setVisibility(View.GONE);
+        mButtonPreviousPage.setVisibility(View.GONE);
+        mTextViewProgress.setVisibility(View.GONE);
+
         mButtonPreviousPage.setOnClickListener(new View.OnClickListener()
         {
 
@@ -176,6 +180,11 @@ public class DialogBaseSettings extends DialogBaseOnyx
                 mGridView.getPagedAdapter().getPaginator().getPageCount() : 1;
 
                 mTextViewProgress.setText(String.valueOf(current_page) + this.getContext().getResources().getString(R.string.slash) + String.valueOf(page_count));
+        if (page_count >= 2) {
+            mButtonNextPage.setVisibility(View.VISIBLE);
+            mButtonPreviousPage.setVisibility(View.VISIBLE);
+            mTextViewProgress.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setSelection(int position)

@@ -85,6 +85,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
 
     private OnyxPagedAdapter mAdapter = null;
 
+    private boolean mIsClickEvent = false;
     private boolean mCrossVertical = false;
     private boolean mCrossHorizon = false;
     private int mSelectionInTouchMode = AdapterView.INVALID_POSITION;
@@ -95,6 +96,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     private float mUpXLength = 0;
     private long mDownTime = 0;
     private boolean enableOnFling = true;
+    private boolean mIsInterceptVolumeKey = false;
 
     public OnyxGridView(Context context) {
         this(context, null);
@@ -369,6 +371,14 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         }
     }
     
+    public boolean getInterceptVolumeKey() {
+        return mIsInterceptVolumeKey;
+    }
+    
+    public void setInterceptVolumeKey(boolean isInterceptVolumeKey) {
+    	this.mIsInterceptVolumeKey = isInterceptVolumeKey;
+    }
+    
     // ========================= GestureDetector.OnGestureListener ======================
     @Override
     public boolean onDown(MotionEvent e)
@@ -399,7 +409,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public boolean onSingleTapUp(MotionEvent e)
     {
         Log.v(TAG, "onSingleTapUp");
-        
+        if (mIsClickEvent) {
         Rect r = new Rect();
         for (int i = 0; i < this.getChildCount(); i++) {
             View v = this.getChildAt(i);
@@ -419,6 +429,9 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         }
         
         return false;
+        } else {
+           return true;
+        }
     }
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
@@ -509,6 +522,12 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                     long currentTime = event.getEventTime();
                     long time = currentTime - mDownTime;
 
+                    if (Math.abs(mUpXLength - mDownXLength) >= sMinFlingLength) {
+                        mIsClickEvent = false;
+                    } else {
+                        mIsClickEvent = true;
+                    }
+                    
                     if (time >= 300 && mDownXLength != mUpXLength) {
                         return true;
                     }
@@ -564,11 +583,23 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     }
 
     @Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		int keyCode = event.getKeyCode();
+		if (mIsInterceptVolumeKey
+				&& (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				this.onKeyDown(keyCode, event);
+			}
+			return true;
+		}
+		return super.dispatchKeyEvent(event);
+	}
+    
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         try {
 //            Log.d(sTag, "onKeyDown");
-            
-            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+            if ((mIsInterceptVolumeKey && keyCode == KeyEvent.KEYCODE_VOLUME_UP) ||
                     keyCode == KeyEvent.KEYCODE_PAGE_UP) {
                 if (mAdapter.getPaginator().canPrevPage()) {
                     EpdController.invalidate(this, UpdateMode.GU);
@@ -576,7 +607,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                 }
                 return true;
             }
-            else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+            else if ((mIsInterceptVolumeKey && keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) ||
                     keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
                 if (mAdapter.getPaginator().canNextPage()) {
                     EpdController.invalidate(this, UpdateMode.GU);

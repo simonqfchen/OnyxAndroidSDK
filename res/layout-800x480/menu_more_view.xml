@@ -13,6 +13,7 @@
         android:layout_height="60dp"
         android:background="@drawable/reader_menu_item_background"
         android:focusable="true"
+        android:visibility="gone"
         android:gravity="center" >
 
         <TextView
