@@ -32,6 +32,7 @@ public class OnyxSysCenter
     private static final String KEY_TIMEZONE = "sys.timezone";
     private static final String KEY_DICT = "sys.dict";
     private static final String KEY_DICT_RESOURCES_PATH = "sys.dict_resources_path";
+    private static final String KEY_OPEN_LAST_READING_DOCUMENT = "sys.open_last_reading";
     
     private static boolean sInitialized = false;
     private static Map<String, OnyxKeyValueItem> sItemMap = new HashMap<String, OnyxKeyValueItem>();
@@ -255,7 +256,14 @@ public class OnyxSysCenter
         }
         return getStringValue(key);
     }
-    
+
+    public static void setOpenLastReadDocument(Context context, boolean b) {
+        setStringValue(context, KEY_OPEN_LAST_READING_DOCUMENT, "" + b);
+    }
+
+    public static String getOpenLastReadDocument() {
+        return getStringValue(KEY_OPEN_LAST_READING_DOCUMENT);
+    }
     /**
      * return null when fail
      * @param key
