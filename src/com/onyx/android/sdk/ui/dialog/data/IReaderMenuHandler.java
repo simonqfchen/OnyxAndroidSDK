@@ -3,6 +3,10 @@
  */
 package com.onyx.android.sdk.ui.dialog.data;
 
+import java.util.ArrayList;
+
+import com.onyx.android.sdk.reader.DocPagingMode;
+
 import android.widget.LinearLayout;
 
 /**
@@ -57,6 +61,10 @@ public interface IReaderMenuHandler
     void searchContent(String query);
     void startDictionary();
     void showGoToPageDialog();
+    
+    ArrayList<DocPagingMode> getReadingModeSupportList();
+    DocPagingMode getReadingMode();
+    void setReadingMode(DocPagingMode mode);
 
     void zoomToPage();
     void zoomToWidth();

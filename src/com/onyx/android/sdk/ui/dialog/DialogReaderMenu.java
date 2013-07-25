@@ -572,6 +572,23 @@ public class DialogReaderMenu extends DialogBaseOnyx
                 mMenuHandler.toggleFullscreen();
             }
         });
+        
+        RelativeLayout layout_reading_mode = (RelativeLayout) mMoreView.findViewById(R.id.layout_reading_mode);
+        layout_reading_mode.setOnClickListener(new View.OnClickListener()
+        {
+            
+            @Override
+            public void onClick(View v)
+            {
+                DialogReaderMenu.this.dismiss();
+
+                DialogReaderReadingMode dlg = new DialogReaderReadingMode(mActivity, 
+                        mMenuHandler.getReadingModeSupportList(),
+                        mMenuHandler.getReadingMode(), 
+                        mMenuHandler);
+                dlg.show();
+            }
+        });
 
         RelativeLayout layout_settings = (RelativeLayout) mMoreView.findViewById(R.id.layout_settings);
         layout_settings.setOnClickListener(new View.OnClickListener()
