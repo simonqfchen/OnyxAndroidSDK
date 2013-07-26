@@ -59,6 +59,7 @@
     <string name="menu_item_screen_exit_full">Wyłącz Pełny Ekran</string>
     <string name="menu_item_line_spacing">Odstępy</string>
     <string name="menu_item_refresh">Odśwież</string>
+    <string name="menu_item_reading_mode">stronicowanie</string>
     <string name="menu_item_settings">Ustawienia</string>
     <string name="menu_item_font_increase">Zwiększ</string>
     <string name="menu_item_font_decrease">Zmniejsz</string>
@@ -90,4 +91,6 @@
     <string name="every_9_pages">Co 9 stron</string>
     <string name="never">Nigdy</string>
     <string name="automatic">Automatyczne</string>
+    <string name="reading_mode_single_page">jedna strona</string>
+    <string name="reading_mode_scroll">przewijać</string>
 </resources>
