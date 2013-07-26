@@ -4,6 +4,7 @@
 package com.onyx.android.sdk.data.cms;
 
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
@@ -34,5 +35,9 @@ public class OnyxHistoryEntryHelper
 		Log.d(Tag, "update id is " + sHistoryEntry.getId());
 		Log.d(Tag, "update MD5 is " + sHistoryEntry.getMD5());
 	}
-
+	
+	public static List<OnyxHistoryEntry> getHistorysByMD5(Context context, String md5)
+	{
+		return OnyxCmsCenter.getHistorysByMD5(context, md5);
+	}
 }
