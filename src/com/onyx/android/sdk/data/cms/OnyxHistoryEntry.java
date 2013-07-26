@@ -1,5 +1,6 @@
 package com.onyx.android.sdk.data.cms;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import android.content.ContentValues;
@@ -7,9 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class OnyxHistoryEntry
+public class OnyxHistoryEntry implements Serializable
 {
     public static final String DB_TABLE_NAME = "library_history";
+    private static final long serialVersionUID = 1L;
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
     
     /**
