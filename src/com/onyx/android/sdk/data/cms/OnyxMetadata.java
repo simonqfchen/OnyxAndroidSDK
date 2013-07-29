@@ -175,8 +175,8 @@ public class OnyxMetadata
     }
     
     public static class SerializationUtil {
-        private static final String AUTHOR_SEPERATOR = "!";
-    
+        private static final String AUTHOR_SEPERATOR = ",";
+
         public static String authorsToString(ArrayList<String> authors)
         {
             if ((authors == null) || (authors.size() <= 0)) {
