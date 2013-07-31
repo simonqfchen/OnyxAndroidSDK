@@ -31,14 +31,14 @@ public class DateTimeUtil
         return DateFormat.getTimeFormat(context).format(new Date());
     }
     
-    public static String formatDate(Date endTime) {
-		return DATE_FORMAT_YYYYMMDD_HHMMSS.format(endTime);
+    public static String formatDate(Date date) {
+		return DATE_FORMAT_YYYYMMDD_HHMMSS.format(date);
 	}
     
-    public static String formatTime(Context context, int all_second) {
-		int hour_value = all_second / 3600;
-		int minute_value = all_second % 3600 / 60;
-		int second_value = all_second % 3600 % 60;
+    public static String formatTime(Context context, int allSecond) {
+		int hour_value = allSecond / 3600;
+		int minute_value = allSecond % 3600 / 60;
+		int second_value = allSecond % 3600 % 60;
 		
 		String hour_symbol = context.getResources().getString(R.string.hour_symbol);
 		String minute_symbol = context.getResources().getString(R.string.minute_symbol);
