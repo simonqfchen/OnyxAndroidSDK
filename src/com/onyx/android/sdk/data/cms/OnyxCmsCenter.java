@@ -537,7 +537,7 @@ public class OnyxCmsCenter
         try {
             ProfileUtil.start(TAG, "query historyentry");
             c = context.getContentResolver().query(OnyxHistoryEntry.CONTENT_URI,
-                    null, OnyxHistoryEntry.Columns.MD5 + "= ?", new String[]{String.valueOf(md5)}, null);
+                    null, OnyxHistoryEntry.Columns.MD5 + "= ?", new String[]{md5}, null);
             ProfileUtil.end(TAG, "query historyentry");
 
             if (c == null) {
