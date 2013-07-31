@@ -22,6 +22,7 @@ public class OnyxHistoryEntryHelper
 	public static void recordStartReading(Context context , String md5)
 	{
 		sHistoryEntry.setStartTime(new Date());
+		sHistoryEntry.setEndTime(new Date());
 		sHistoryEntry.setMD5(md5);
 		OnyxCmsCenter.insertHistory(context, sHistoryEntry);
 		Log.d(Tag, "insert id is " + sHistoryEntry.getId());
