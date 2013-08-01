@@ -25,6 +25,8 @@ public class OnyxHistoryEntry implements Serializable
         public static String MD5 = "MD5";
         public static final String START_TIME = "StartTime";
         public static final String END_TIME = "EndTime";
+        public static final String CURRENT_PAGE = "CurrentPage";
+        public static final String TOTAL_PAGE = "TotalPage";
         public static String EXTRA_ATTRIBUTES = "ExtraAttributes";
 
         // need read at runtime
@@ -33,6 +35,8 @@ public class OnyxHistoryEntry implements Serializable
         private static int sColumnMD5 = -1;
         private static int sColumnStartTime = -1;
         private static int sColumnEndTime = -1;
+        private static int sColumnCurrentPage = -1;
+        private static int sColumnTotalPage = -1;
         private static int sColumnExtraAttributes = -1;
         
         public static ContentValues createColumnData(OnyxHistoryEntry entry)
@@ -41,6 +45,8 @@ public class OnyxHistoryEntry implements Serializable
             values.put(MD5, entry.getMD5());
             values.put(START_TIME, entry.getStartTime() == null ? 0 : entry.getStartTime().getTime());
             values.put(END_TIME, entry.getEndTime() == null ? 0 : entry.getEndTime().getTime());
+            values.put(CURRENT_PAGE, entry.getCurrentPage() == null ? 0 : entry.getCurrentPage());
+            values.put(TOTAL_PAGE, entry.getTotalPage() == null ? 0 : entry.getTotalPage());
 
             return values;
         }
@@ -52,6 +58,8 @@ public class OnyxHistoryEntry implements Serializable
                 sColumnMD5 = c.getColumnIndex(MD5);
                 sColumnStartTime = c.getColumnIndex(START_TIME);
                 sColumnEndTime = c.getColumnIndex(END_TIME);
+                sColumnCurrentPage = c.getColumnIndex(CURRENT_PAGE);
+                sColumnTotalPage = c.getColumnIndex(TOTAL_PAGE);
                 sColumnExtraAttributes = c.getColumnIndex(EXTRA_ATTRIBUTES);
                 
                 sColumnIndexesInitialized = true;
@@ -61,6 +69,8 @@ public class OnyxHistoryEntry implements Serializable
             String md5 = c.getString(sColumnMD5);
             long start_time = c.getLong(sColumnStartTime);
             long end_time = c.getLong(sColumnEndTime);
+            Integer current_page = c.getInt(sColumnCurrentPage);
+            Integer total_page = c.getInt(sColumnTotalPage);
             String extra_attributes = c.getString(sColumnExtraAttributes);
             
             OnyxHistoryEntry entry = new OnyxHistoryEntry();
@@ -70,6 +80,8 @@ public class OnyxHistoryEntry implements Serializable
             entry.setStartTime(new Date(start_time));
             assert(end_time > 0);
             entry.setEndTime(new Date(end_time));
+            entry.setCurrentPage(current_page);
+            entry.setTotalPage(total_page);
             entry.setExtraAttributes(extra_attributes);
 
             return entry;
@@ -80,6 +92,9 @@ public class OnyxHistoryEntry implements Serializable
     private String mMD5 = null;
     private Date mStartTime = null;
     private Date mEndTime = null;
+    private Integer mCurrentPage = null;
+    private Integer mTotalPage = null;
+    
     /**
      * Additional attributes for flexibility
      */
@@ -117,6 +132,18 @@ public class OnyxHistoryEntry implements Serializable
     {
         this.mEndTime = time;
     }
+    public Integer getCurrentPage() {
+		return mCurrentPage;
+	}
+	public void setCurrentPage(Integer mCurrentPage) {
+		this.mCurrentPage = mCurrentPage;
+	}
+	public Integer getTotalPage() {
+		return mTotalPage;
+	}
+	public void setTotalPage(Integer mTotalPage) {
+		this.mTotalPage = mTotalPage;
+	}
     /**
      * may return null
      * 
