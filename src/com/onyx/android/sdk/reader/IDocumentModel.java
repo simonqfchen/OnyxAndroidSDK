@@ -36,6 +36,19 @@ public interface IDocumentModel
     void setDocumentCallbackListener(DocumentCallbackListener l);
     
     boolean canOpen(String path);
+
+    boolean openFile(String path);
+    boolean close();
+    void setDocumentPassword(String password);
+    
+    /**
+     * interrupt model to prevent any task from being processed
+     */
+    void interrupt();
+    /**
+     * resume model to run
+     */
+    void resume();
     
     boolean isOpened();
     /**
@@ -44,16 +57,10 @@ public interface IDocumentModel
      */
     String getFilePath();
     
-    boolean openFile(String path);
-    boolean close();
+    PageLayout getPageLayout();
     
-    void setDocumentPassword(String password);
-    
-    /**
-     * interrupt all task being processed until resume() being called
-     */
-    void interrupt();
-    void resume();
+    PagingMode getPagingMode();
+    boolean setPagingMode(PagingMode mode);
     
     /**
      * return null if failed
@@ -64,22 +71,15 @@ public interface IDocumentModel
     
     int getPageCount();
     
-    PageLayout getPageLayout();
-    PagingMode getPagingMode();
-    boolean setPagingMode(PagingMode mode);
+    boolean isAtDocumentBeginning();
+    boolean isAtDocumentEnd();
     
-    double getPagePosition();
-    double getPagePositionOfLocation(String location);
+    String getCurrentLocation();
+    boolean gotoLocation(String location);
+
+    double getCurrentPagePosition();
+    double getPagePositionFromLocation(String location);
     boolean gotoPagePosition(double page);
-    boolean gotoDocLocation(String location);
-    
-    /**
-     * reflowable document can be navigated by screen
-     * 
-     * @return
-     */
-    boolean previousScreen();
-    boolean nextScreen();
 
     int compareLocation(String loc1, String loc2);
     boolean isLocationInCurrentScreen(String location);
@@ -95,8 +95,19 @@ public interface IDocumentModel
     
     Point getPageScroll();
     
-    String getDocumentText(String locationBegin, String locationEnd);
-    String getScreenText();
+    double getFontSize();
+    boolean setFontSize(double size);
+    
+    boolean isGlyphEmboldenEnabled();
+    boolean setGlyphEmboldenEnabled(boolean enable);
+
+    /**
+     * reflowed document can be navigated by screen
+     * 
+     * @return
+     */
+    boolean previousScreen();
+    boolean nextScreen();
     
     /**
      * navigate the page using specified navigation arguments, but no rendering
@@ -111,7 +122,6 @@ public interface IDocumentModel
     /**
      * return null when failed
      * 
-     * @param page
      * @param zoom
      * @param left
      * @param top
@@ -119,7 +129,10 @@ public interface IDocumentModel
      * @param height
      * @return
      */
-    Bitmap renderPage(double zoom, int left, int top, int width, int height, Bitmap.Config conf, boolean isPrefetch);
+    Bitmap renderPage(double zoom, int left, int top, int width, int height);
+    
+    String getText(String locationBegin, String locationEnd);
+    String getScreenText();
     
     boolean hasTOC();
     /**
@@ -128,11 +141,6 @@ public interface IDocumentModel
      * @return
      */
     TOCItem[] getTOC();
-    
-    boolean setFontSize(double size);
-    
-    boolean isGlyphEmboldenEnabled();
-    boolean setGlyphEmboldenEnabled(boolean enable);
     
     /**
      * find all links in current screen,
