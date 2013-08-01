@@ -71,9 +71,6 @@ public interface IDocumentModel
     
     int getPageCount();
     
-    boolean isAtDocumentBeginning();
-    boolean isAtDocumentEnd();
-    
     String getCurrentLocation();
     boolean gotoLocation(String location);
 
@@ -82,8 +79,11 @@ public interface IDocumentModel
     boolean gotoPagePosition(double page);
 
     int compareLocation(String loc1, String loc2);
-    boolean isLocationInCurrentScreen(String location);
     
+    boolean isAtDocumentBeginning();
+    boolean isAtDocumentEnd();
+    boolean isLocationInCurrentScreen(String location);
+
     String getDocumentBeginningLocation();
     String getDocumentEndLocation();
     
@@ -159,13 +159,15 @@ public interface IDocumentModel
     TextSelection hitTestSentence(String sentenceBegin);
     
     /**
-     * return null if failed
+     * return all occurrences of pattern in current screen,
+     * return empty array when none, return null when failed
      * 
      * @param pattern
      * @return
      */
     List<TextSelection> searchInCurrentScreen(String pattern);
     /**
+     * find document location of next occurrence of pattern after current screen,
      * return null if failed
      * 
      * @param pattern
@@ -173,6 +175,7 @@ public interface IDocumentModel
      */
     String searchForwardAfterCurrentScreen(String pattern);
     /**
+     * find document location of previous occurrence of pattern before current screen,
      * return null if failed
      * 
      * @param pattern
@@ -180,7 +183,8 @@ public interface IDocumentModel
      */
     String searchBackwardBeforeCurrentScreen(String pattern);
     /**
-     * return null if failed
+     * find all occurrences of pattern in document,
+     * return corresponding document location, return null if failed
      * 
      * @param pattern
      * @return
