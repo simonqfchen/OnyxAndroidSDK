@@ -10,7 +10,7 @@ import android.os.Parcelable;
  * @author joy
  *
  */
-public enum DocPagingMode implements Parcelable
+public enum PagingMode implements Parcelable
 {
     None, 
     Hard_Pages, // single-page-based view that only shows a single page at a time 
@@ -19,18 +19,18 @@ public enum DocPagingMode implements Parcelable
     Scroll_Pages, // scrollable page-based view showing a sequence of pages
     Scroll,; // HTML-browser-like view that can be scrolled and does not have pages
     
-    public static final Parcelable.Creator<DocPagingMode> CREATOR = new Parcelable.Creator<DocPagingMode>() {
+    public static final Parcelable.Creator<PagingMode> CREATOR = new Parcelable.Creator<PagingMode>() {
 
         @Override
-        public DocPagingMode createFromParcel(Parcel source)
+        public PagingMode createFromParcel(Parcel source)
         {
-            return DocPagingMode.values()[source.readInt()];
+            return PagingMode.values()[source.readInt()];
         }
 
         @Override
-        public DocPagingMode[] newArray(int size)
+        public PagingMode[] newArray(int size)
         {
-            return new DocPagingMode[size];
+            return new PagingMode[size];
         }
     };
 

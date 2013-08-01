@@ -2,7 +2,7 @@ package com.onyx.android.sdk.reader;
 
 import android.os.ParcelFileDescriptor;
 
-import com.onyx.android.sdk.reader.DocPagingMode;
+import com.onyx.android.sdk.reader.PagingMode;
 import com.onyx.android.sdk.reader.RenderParameter;
 
 /**
@@ -15,7 +15,7 @@ interface IRemoteRenderService
             String deviceName, String deviceSerial, String appStorage);
     void close();
 
-    ParcelFileDescriptor renderPage(in DocPagingMode pagingMode, in RenderParameter param,
+    ParcelFileDescriptor renderPage(in PagingMode pagingMode, in RenderParameter param,
             boolean isPrecache, out RenderParameter resultParam);
             
     /**

@@ -7,13 +7,13 @@ package com.onyx.android.sdk.reader;
  * @author joy
  *
  */
-public class DocLinkInfo
+public class LinkInfo
 {
     private boolean mIsInternalLink = true;
     private String mTarget = null;
-    private DocTextSelection mSelection = null;
+    private TextSelection mSelection = null;
     
-    public DocLinkInfo(boolean isInternal, String target, DocTextSelection selection)
+    public LinkInfo(boolean isInternal, String target, TextSelection selection)
     {
         mIsInternalLink = isInternal;
         mTarget = target;
@@ -28,7 +28,7 @@ public class DocLinkInfo
     {
         return mTarget;
     }
-    public DocTextSelection getSelection()
+    public TextSelection getSelection()
     {
         return mSelection;
     }

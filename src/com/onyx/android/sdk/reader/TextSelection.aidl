@@ -1,3 +1,3 @@
 package com.onyx.android.sdk.reader;
 
-parcelable DocPageLayout;
+parcelable TextSelection;

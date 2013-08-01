@@ -64,9 +64,9 @@ public interface IDocumentModel
     
     int getPageCount();
     
-    DocPageLayout getPageLayout();
-    DocPagingMode getPagingMode();
-    boolean setPagingMode(DocPagingMode mode);
+    PageLayout getPageLayout();
+    PagingMode getPagingMode();
+    boolean setPagingMode(PagingMode mode);
     
     double getPagePosition();
     double getPagePositionOfLocation(String location);
@@ -140,15 +140,15 @@ public interface IDocumentModel
      * 
      * @return
      */
-    List<DocLinkInfo> getScreenLinkList();
+    List<LinkInfo> getScreenLinkList();
     
-    DocTextSelection hitTestWord(int x, int y);
-    DocTextSelection moveSelectionBegin(int x, int y);
-    DocTextSelection moveSelectionEnd(int x, int y);
+    TextSelection hitTestWord(int x, int y);
+    TextSelection moveSelectionBegin(int x, int y);
+    TextSelection moveSelectionEnd(int x, int y);
     
-    DocTextSelection measureSelection(String locationBegin, String locationEnd);
+    TextSelection measureSelection(String locationBegin, String locationEnd);
     
-    DocTextSelection hitTestSentence(String sentenceBegin);
+    TextSelection hitTestSentence(String sentenceBegin);
     
     /**
      * return null if failed
@@ -156,7 +156,7 @@ public interface IDocumentModel
      * @param pattern
      * @return
      */
-    List<DocTextSelection> searchInCurrentScreen(String pattern);
+    List<TextSelection> searchInCurrentScreen(String pattern);
     /**
      * return null if failed
      * 

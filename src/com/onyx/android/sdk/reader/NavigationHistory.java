@@ -9,12 +9,12 @@ import java.util.ArrayList;
  * @author joy
  *
  */
-public class DocNavigationHistory
+public class NavigationHistory
 {
     private ArrayList<String> mHistories = new ArrayList<String>();
     private int mCurrentIndex = -1;
     
-    public DocNavigationHistory()
+    public NavigationHistory()
     {
     }
     
