@@ -49,6 +49,11 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     {
         void onLongPress();
     }
+    public interface OnGridViewChangeListener
+    {
+        void nextPage();
+        void prevPage();
+    }
 
     private ArrayList<OnAdapterChangedListener> mOnAdapterChangedListenerList = new ArrayList<OnAdapterChangedListener>();
     public void registerOnAdapterChangedListener(OnAdapterChangedListener l)
@@ -78,6 +83,11 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public void unregisterOnLongPressListener(OnLongPressListener l)
     {
         mOnLongPressListenerList.remove(l);
+    }
+
+    private OnGridViewChangeListener listener;
+    public void setOnGridViewChangeListener(OnGridViewChangeListener l) {
+        listener = l;
     }
 
     // TODO should use "dp" as unit
@@ -457,12 +467,14 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     	    if (e1.getX() - e2.getX() > sMinFlingLength) {
     	        if (mAdapter.getPaginator().canNextPage()) {
     	            mAdapter.getPaginator().nextPage();
+    	            listener.nextPage();
     	        }
     	        return true;
     	    }
     	    else if (e2.getX() - e1.getX() > sMinFlingLength) {
     	        if (mAdapter.getPaginator().canPrevPage()) {
     	            mAdapter.getPaginator().prevPage();
+    	            listener.prevPage();
     	        }
     	        return true;
     	    }
@@ -604,6 +616,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                 if (mAdapter.getPaginator().canPrevPage()) {
                     EpdController.invalidate(this, UpdateMode.GU);
                     mAdapter.getPaginator().prevPage();
+                    listener.prevPage();
                 }
                 return true;
             }
@@ -612,6 +625,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                 if (mAdapter.getPaginator().canNextPage()) {
                     EpdController.invalidate(this, UpdateMode.GU);
                     mAdapter.getPaginator().nextPage();
+                    listener.nextPage();
                 }
                 return true;
             }
