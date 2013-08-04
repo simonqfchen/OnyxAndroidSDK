@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.data;
 
@@ -14,16 +14,16 @@ import android.util.Log;
 public class GridViewPaginator
 {
     private static final String TAG = "OnyxPagedAdapter";
-    
+
     public interface OnStateChangedListener
     {
         void onStateChanged();
     }
     public interface OnPageIndexChangedListener
     {
-        void onPageIndexChanged();
+        void onPageIndexChanged(int oldIndex, int newIndex);
     }
-    
+
     private ArrayList<OnStateChangedListener> mOnStateChangedListenerList = new ArrayList<OnStateChangedListener>();
     private void notifyStateChanged()
     {
@@ -39,12 +39,12 @@ public class GridViewPaginator
     {
         mOnStateChangedListenerList.remove(l);
     }
-    
+
     private ArrayList<OnPageIndexChangedListener> mOnPageIndexChangedListenerList = new ArrayList<OnPageIndexChangedListener>();
-    private void notifyPageIndexChanged()
+    private void notifyPageIndexChanged(int oldIndex, int newIndex)
     {
         for (OnPageIndexChangedListener l : mOnPageIndexChangedListenerList) {
-            l.onPageIndexChanged();
+            l.onPageIndexChanged(oldIndex, newIndex);
         }
     }
     public void registerOnPageIndexChangedListener(OnPageIndexChangedListener l)
@@ -55,17 +55,17 @@ public class GridViewPaginator
     {
         mOnPageIndexChangedListenerList.remove(l);
     }
-    
+
     // total item count
     private int mItemCount = 0;
     // number of children in a page
     private int mPageSize = 0;
     private int mPageIndex = -1;
-    
+
     public GridViewPaginator()
     {
     }
-    
+
     public int getItemCount()
     {
         return mItemCount;
@@ -75,26 +75,27 @@ public class GridViewPaginator
         if (value == mItemCount) {
             return;
         }
-        
+
         mItemCount = value;
         this.notifyStateChanged();
     }
-    
+
     public int getPageSize()
     {
         return mPageSize;
     }
-    public void setPageSize(int value) 
+    public void setPageSize(int value)
     {
         Log.d(TAG, "setPageSize: " + value);
         if (value < 0) {
             throw new IllegalArgumentException();
         }
-        
+
         if (value == mPageSize) {
             return;
         }
-        
+
+        int oldIndex = mPageIndex;
         if (value == 0) {
             mPageIndex = 0;
         }
@@ -102,15 +103,15 @@ public class GridViewPaginator
             int first_item_index = mPageSize * mPageIndex;
             mPageIndex = first_item_index / value;
         }
-        
-        mPageSize = value;        
+
+        mPageSize = value;
         this.notifyStateChanged();
-        this.notifyPageIndexChanged();
+        this.notifyPageIndexChanged(oldIndex, mPageIndex);
     }
-    
+
     /**
      * page count never return 0, at least return 1
-     * 
+     *
      * @return
      */
     public int getPageCount()
@@ -119,23 +120,23 @@ public class GridViewPaginator
         if (this.getPageSize() <= 0) {
             return 1;
         }
-        
+
         int page_count = this.getItemCount() / this.getPageSize();
         int mod = this.getItemCount() % this.getPageSize();
         if (mod != 0) {
             page_count++;
         }
-        
+
         return page_count != 0 ? page_count : 1;
     }
-    
+
     public int getPageIndex()
     {
         return mPageIndex;
     }
     /**
      * caller must be sure new index is in the page count range
-     * 
+     *
      * @param value
      */
     public void setPageIndex(int value)
@@ -143,20 +144,21 @@ public class GridViewPaginator
         if ((value < 0) || (value >= this.getPageCount())) {
             throw new IndexOutOfBoundsException();
         }
-        
+
+        int oldIndex = mPageIndex;
         if (mPageIndex != value) {
             mPageIndex = value;
             this.notifyStateChanged();
-            this.notifyPageIndexChanged();
+            this.notifyPageIndexChanged(oldIndex, mPageIndex);
         }
     }
-    
+
     public int getItemCountInCurrentPage()
     {
         if (this.getPageSize() <= 0) {
             return 0;
         }
-        
+
         if (this.canNextPage()) {
             return this.getPageSize();
         }
@@ -172,12 +174,12 @@ public class GridViewPaginator
             return mod;
         }
     }
-    
+
     public boolean canNextPage()
     {
         return mPageIndex < (this.getPageCount() - 1);
     }
-    
+
     /**
      * return next page's index
      * @return
@@ -187,16 +189,17 @@ public class GridViewPaginator
         if (!this.canNextPage()) {
             return mPageIndex;
         }
-        
+
         this.setPageIndex(mPageIndex + 1);
+
         return mPageIndex;
     }
-    
+
     public boolean canPrevPage()
     {
         return mPageIndex > 0;
     }
-    
+
     /**
      * return prev page's index
      * @return
@@ -206,23 +209,24 @@ public class GridViewPaginator
         if (!this.canPrevPage()) {
             return mPageIndex;
         }
-        
+
         this.setPageIndex(mPageIndex - 1);
         return mPageIndex;
     }
-    
+
     public void initializePageData(int itemCount, int pageSize)
     {
         mPageSize = pageSize;
         mItemCount = itemCount;
+        int oldIndex = mPageIndex;
         mPageIndex = 0;
-        
+
         this.notifyStateChanged();
-        this.notifyPageIndexChanged();
+        this.notifyPageIndexChanged(oldIndex, mPageIndex);
     }
 
     /**
-     * translating index in specified page to the index in total items 
+     * translating index in specified page to the index in total items
      * @param itemIndexInPage
      * @param pageIndex
      * @return
@@ -231,10 +235,10 @@ public class GridViewPaginator
     {
         return itemIndexInPage + (this.getPageSize() * pageIndex);
     }
-    
+
     /**
      * get index in total items
-     * 
+     *
      * @param itemIndexInCurrentPage
      * @return
      */

@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Copy"
+            android:textStyle="bold"
             android:textSize="@dimen/control_panel_floating_button_name_text_size" />
     </LinearLayout>
 
@@ -58,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Dictionary"
+            android:textStyle="bold"
             android:textSize="@dimen/control_panel_floating_button_name_text_size" />
     </LinearLayout>
 
@@ -83,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Annotation"
+            android:textStyle="bold"
             android:textSize="@dimen/control_panel_floating_button_name_text_size" />
     </LinearLayout>
 
@@ -108,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Cancel"
+            android:textStyle="bold"
             android:textSize="@dimen/control_panel_floating_button_name_text_size" />
     </LinearLayout>
 

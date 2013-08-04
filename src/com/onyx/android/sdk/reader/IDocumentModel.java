@@ -6,6 +6,7 @@ package com.onyx.android.sdk.reader;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Rect;
 
 import com.onyx.android.sdk.data.cms.OnyxMetadata;
@@ -91,6 +92,8 @@ public interface IDocumentModel
     
     Size getPageNaturalSize();
     Rect getPageContentArea();
+    
+    Point getPageScroll();
     
     String getDocumentText(String locationBegin, String locationEnd);
     String getScreenText();

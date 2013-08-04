@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -496,6 +497,64 @@ public class OnyxCmsCenter
         
         assert(count == 1);
         return true;
+    }
+
+    public static boolean insertHistory(Context context, OnyxHistoryEntry historyEntry)
+    {
+        Uri result = context.getContentResolver().insert(
+        		OnyxHistoryEntry.CONTENT_URI,
+        		OnyxHistoryEntry.Columns.createColumnData(historyEntry));
+        if (result == null) {
+            return false;
+        }
+
+        String id = result.getLastPathSegment();
+        if (id == null) {
+            return false;
+        }
+
+        historyEntry.setId(Long.parseLong(id));
+        return true;
+    }
+    
+    public static boolean updateHistory(Context context, OnyxHistoryEntry onyxHistoryEntry)
+    {
+        Uri row = Uri.withAppendedPath(OnyxHistoryEntry.CONTENT_URI,
+                String.valueOf(onyxHistoryEntry.getId()));
+        int count = context.getContentResolver().update(row,
+        		OnyxHistoryEntry.Columns.createColumnData(onyxHistoryEntry), null, null);
+        if (count <= 0) {
+            return false;
+        }
+        assert (count == 1);
+        return true;
+    }
+    
+    public static List<OnyxHistoryEntry> getHistorysByMD5(Context context, String md5)
+    {
+        Cursor c = null;
+        List<OnyxHistoryEntry> historyEntries = new ArrayList<OnyxHistoryEntry>();
+        try {
+            ProfileUtil.start(TAG, "query historyentry");
+            c = context.getContentResolver().query(OnyxHistoryEntry.CONTENT_URI,
+                    null, OnyxHistoryEntry.Columns.MD5 + "= ?", new String[]{md5}, null);
+            ProfileUtil.end(TAG, "query historyentry");
+
+            if (c == null) {
+                Log.d(TAG, "query database failed");
+                return null;
+            }
+            
+            for (c.moveToFirst();!c.isAfterLast();c.moveToNext()) {
+                OnyxHistoryEntry history_entry = OnyxHistoryEntry.Columns.readColumnsData(c);
+                historyEntries.add(history_entry);
+			}
+            return historyEntries;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
     }
 
     public static boolean getThumbnail(Context context, OnyxMetadata metadata, 
