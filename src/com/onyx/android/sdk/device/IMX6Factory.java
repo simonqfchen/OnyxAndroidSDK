@@ -270,6 +270,7 @@ public class IMX6Factory implements IDeviceFactory
                     sModeDW = value_mode_regional | value_mode_nowait | value_mode_waveform_du | value_mode_update_partial;
                     sModeGU = value_mode_regional | value_mode_nowait | value_mode_waveform_gc16 | value_mode_update_partial;
                     sModeGC = value_mode_regional | value_mode_wait | value_mode_waveform_gc16 | value_mode_update_full;
+                    
 
                     // signature of "public void setUpdatePolicy(int updatePolicy, int guInterval)"
                     sMethodSetUpdatePolicy = cls.getMethod("setUpdatePolicy", int.class, int.class);
@@ -308,10 +309,10 @@ public class IMX6Factory implements IDeviceFactory
             int dst_mode = sModeGC;
 
             switch (mode) {
+            case GU_FAST:
             case DW:
                 dst_mode = sModeDW;
                 break;
-            case GU_FAST:
             case GU:
                 dst_mode = sModeGU;
                 break;
