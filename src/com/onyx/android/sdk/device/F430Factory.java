@@ -124,8 +124,8 @@ public class F430Factory implements IDeviceFactory
                 view.invalidate();
                 break;
             case GC:
+                epdControlApi.epdfulldraw();
                 view.invalidate();
-                epdControlApi.epdRedraw();
                 break;
             case DW:
                 view.invalidate();

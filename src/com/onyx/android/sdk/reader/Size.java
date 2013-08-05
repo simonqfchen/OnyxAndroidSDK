@@ -20,9 +20,35 @@ public class Size implements Parcelable
     {
         return mWidth;
     }
+    public void setWidth(int w)
+    {
+        mWidth = w;
+    }
+    
     public int getHeight()
     {
         return mHeight;
+    }
+    public void setHeight(int h)
+    {
+        mHeight = h;
+    }
+    
+    public void set(Size size)
+    {
+        this.set(size.mWidth, size.mHeight);
+    }
+    
+    public void set(int w, int h)
+    {
+        mWidth = w;
+        mHeight = h;
+    }
+    
+    public Size()
+    {
+        mWidth = 0;
+        mHeight = 0;
     }
     
     public Size(int w, int h)
@@ -35,6 +61,14 @@ public class Size implements Parcelable
     {
         mWidth = p.readInt();
         mHeight = p.readInt();
+    }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(").append(mWidth).append(", ").append(mHeight).append(")");
+        return sb.toString();
     }
     
     @Override

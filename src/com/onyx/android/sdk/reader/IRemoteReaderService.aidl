@@ -5,9 +5,9 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import com.onyx.android.sdk.reader.DocPageLayout;
-import com.onyx.android.sdk.reader.DocPagingMode;
-import com.onyx.android.sdk.reader.DocTextSelection;
+import com.onyx.android.sdk.reader.PageLayout;
+import com.onyx.android.sdk.reader.PagingMode;
+import com.onyx.android.sdk.reader.TextSelection;
 import com.onyx.android.sdk.reader.Size;
 import com.onyx.android.sdk.reader.TOCItem;
 
@@ -36,9 +36,9 @@ interface IRemoteReaderService
     
     int getPageCount();
     
-    DocPageLayout getPageLayout();
-    DocPagingMode getPagingMode();
-    boolean setPagingMode(in DocPagingMode mode);
+    PageLayout getPageLayout();
+    PagingMode getPagingMode();
+    boolean setPagingMode(in PagingMode mode);
         
     double getPagePosition();
     double getPagePositionOfLocation(String location);
@@ -98,13 +98,13 @@ interface IRemoteReaderService
     boolean isGlyphEmboldenEnabled();
     boolean setGlyphEmboldenEnabled(boolean enable);
     
-    DocTextSelection hitTestWord(int x, int y);
-    DocTextSelection moveSelectionBegin(int x, int y);
-    DocTextSelection moveSelectionEnd(int x, int y);
+    TextSelection hitTestWord(int x, int y);
+    TextSelection moveSelectionBegin(int x, int y);
+    TextSelection moveSelectionEnd(int x, int y);
     
-    DocTextSelection measureSelection(String locationBegin, String locationEnd);
+    TextSelection measureSelection(String locationBegin, String locationEnd);
     
-    List<DocTextSelection> searchInCurrentScreen(String pattern);
+    List<TextSelection> searchInCurrentScreen(String pattern);
     String searchForwardAfterCurrentScreen(String pattern);
     String searchBackwardBeforeCurrentScreen(String pattern);
     String[] searchAllInDocument(String pattern);

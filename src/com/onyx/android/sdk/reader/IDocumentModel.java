@@ -36,6 +36,19 @@ public interface IDocumentModel
     void setDocumentCallbackListener(DocumentCallbackListener l);
     
     boolean canOpen(String path);
+
+    boolean openFile(String path);
+    boolean close();
+    void setDocumentPassword(String password);
+    
+    /**
+     * interrupt model to prevent any task from being processed
+     */
+    void interrupt();
+    /**
+     * resume model to run
+     */
+    void resume();
     
     boolean isOpened();
     /**
@@ -44,16 +57,10 @@ public interface IDocumentModel
      */
     String getFilePath();
     
-    boolean openFile(String path);
-    boolean close();
+    PageLayout getPageLayout();
     
-    void setDocumentPassword(String password);
-    
-    /**
-     * interrupt all task being processed until resume() being called
-     */
-    void interrupt();
-    void resume();
+    PagingMode getPagingMode();
+    boolean setPagingMode(PagingMode mode);
     
     /**
      * return null if failed
@@ -64,26 +71,19 @@ public interface IDocumentModel
     
     int getPageCount();
     
-    DocPageLayout getPageLayout();
-    DocPagingMode getPagingMode();
-    boolean setPagingMode(DocPagingMode mode);
-    
-    double getPagePosition();
-    double getPagePositionOfLocation(String location);
+    String getCurrentLocation();
+    boolean gotoLocation(String location);
+
+    double getCurrentPagePosition();
+    double getPagePositionFromLocation(String location);
     boolean gotoPagePosition(double page);
-    boolean gotoDocLocation(String location);
-    
-    /**
-     * reflowable document can be navigated by screen
-     * 
-     * @return
-     */
-    boolean previousScreen();
-    boolean nextScreen();
 
     int compareLocation(String loc1, String loc2);
-    boolean isLocationInCurrentScreen(String location);
     
+    boolean isAtDocumentBeginning();
+    boolean isAtDocumentEnd();
+    boolean isLocationInCurrentScreen(String location);
+
     String getDocumentBeginningLocation();
     String getDocumentEndLocation();
     
@@ -95,8 +95,19 @@ public interface IDocumentModel
     
     Point getPageScroll();
     
-    String getDocumentText(String locationBegin, String locationEnd);
-    String getScreenText();
+    double getFontSize();
+    boolean setFontSize(double size);
+    
+    boolean isGlyphEmboldenEnabled();
+    boolean setGlyphEmboldenEnabled(boolean enable);
+
+    /**
+     * reflowed document can be navigated by screen
+     * 
+     * @return
+     */
+    boolean previousScreen();
+    boolean nextScreen();
     
     /**
      * navigate the page using specified navigation arguments, but no rendering
@@ -111,7 +122,6 @@ public interface IDocumentModel
     /**
      * return null when failed
      * 
-     * @param page
      * @param zoom
      * @param left
      * @param top
@@ -119,7 +129,10 @@ public interface IDocumentModel
      * @param height
      * @return
      */
-    Bitmap renderPage(double zoom, int left, int top, int width, int height, Bitmap.Config conf, boolean isPrefetch);
+    Bitmap renderPage(double zoom, int left, int top, int width, int height);
+    
+    String getText(String locationBegin, String locationEnd);
+    String getScreenText();
     
     boolean hasTOC();
     /**
@@ -129,35 +142,32 @@ public interface IDocumentModel
      */
     TOCItem[] getTOC();
     
-    boolean setFontSize(double size);
-    
-    boolean isGlyphEmboldenEnabled();
-    boolean setGlyphEmboldenEnabled(boolean enable);
-    
     /**
      * find all links in current screen,
      * return empty list when none, return null when failed
      * 
      * @return
      */
-    List<DocLinkInfo> getScreenLinkList();
+    List<LinkInfo> getScreenLinkList();
     
-    DocTextSelection hitTestWord(int x, int y);
-    DocTextSelection moveSelectionBegin(int x, int y);
-    DocTextSelection moveSelectionEnd(int x, int y);
+    TextSelection hitTestWord(int x, int y);
+    TextSelection moveSelectionBegin(int x, int y);
+    TextSelection moveSelectionEnd(int x, int y);
     
-    DocTextSelection measureSelection(String locationBegin, String locationEnd);
+    TextSelection measureSelection(String locationBegin, String locationEnd);
     
-    DocTextSelection hitTestSentence(String sentenceBegin);
+    TextSelection hitTestSentence(String sentenceBegin);
     
     /**
-     * return null if failed
+     * return all occurrences of pattern in current screen,
+     * return empty array when none, return null when failed
      * 
      * @param pattern
      * @return
      */
-    List<DocTextSelection> searchInCurrentScreen(String pattern);
+    List<TextSelection> searchInCurrentScreen(String pattern);
     /**
+     * find document location of next occurrence of pattern after current screen,
      * return null if failed
      * 
      * @param pattern
@@ -165,6 +175,7 @@ public interface IDocumentModel
      */
     String searchForwardAfterCurrentScreen(String pattern);
     /**
+     * find document location of previous occurrence of pattern before current screen,
      * return null if failed
      * 
      * @param pattern
@@ -172,7 +183,8 @@ public interface IDocumentModel
      */
     String searchBackwardBeforeCurrentScreen(String pattern);
     /**
-     * return null if failed
+     * find all occurrences of pattern in document,
+     * return corresponding document location, return null if failed
      * 
      * @param pattern
      * @return

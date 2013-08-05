@@ -8,30 +8,26 @@ import java.util.List;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
  * @author joy
  *
  */
-public class DocTextSelection implements Parcelable
+public class TextSelection implements Parcelable
 {
-    private final static String TAG = "DocTextSelection";
-
     private List<Rect> mBoxes = null;
     private String mText = null;
     private String mSelectionBegin = null;
     private String mSelectionEnd = null;
 
-    public DocTextSelection(List<Rect> boxes, String text, String selectionBegin, String selectionEnd)
+    public TextSelection(List<Rect> boxes, String text, String selectionBegin, String selectionEnd)
     {
         mBoxes = boxes;
         mText = text;
         mSelectionBegin = selectionBegin;
         mSelectionEnd = selectionEnd;
-        Log.d(TAG, "selection text: " + text);
     }
-    public DocTextSelection(Parcel p)
+    public TextSelection(Parcel p)
     {
         p.readList(mBoxes, null);
         mText = p.readString();
@@ -74,18 +70,18 @@ public class DocTextSelection implements Parcelable
         return false;
     }
 
-    public static final Parcelable.Creator<DocTextSelection> CREATOR = new Parcelable.Creator<DocTextSelection>() {
+    public static final Parcelable.Creator<TextSelection> CREATOR = new Parcelable.Creator<TextSelection>() {
 
         @Override
-        public DocTextSelection createFromParcel(Parcel source)
+        public TextSelection createFromParcel(Parcel source)
         {
-            return new DocTextSelection(source);
+            return new TextSelection(source);
         }
 
         @Override
-        public DocTextSelection[] newArray(int size)
+        public TextSelection[] newArray(int size)
         {
-            return new DocTextSelection[size];
+            return new TextSelection[size];
         }
     };
 

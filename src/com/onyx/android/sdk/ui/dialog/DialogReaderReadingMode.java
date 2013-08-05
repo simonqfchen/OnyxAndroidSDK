@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.onyx.android.sdk.R;
-import com.onyx.android.sdk.reader.DocPagingMode;
+import com.onyx.android.sdk.reader.PagingMode;
 import com.onyx.android.sdk.ui.data.SelectionAdapter;
 import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler;
 
@@ -22,11 +22,11 @@ import android.view.View;
  */
 public class DialogReaderReadingMode extends DialogBaseSettings
 {
-    private final static HashMap<DocPagingMode, Integer> MODE_STRING_MAP = new HashMap<DocPagingMode, Integer>(); 
+    private final static HashMap<PagingMode, Integer> MODE_STRING_MAP = new HashMap<PagingMode, Integer>(); 
     
     static {
-        MODE_STRING_MAP.put(DocPagingMode.Hard_Pages, R.string.reading_mode_single_page);
-        MODE_STRING_MAP.put(DocPagingMode.Scroll_Pages, R.string.reading_mode_scroll);
+        MODE_STRING_MAP.put(PagingMode.Hard_Pages, R.string.reading_mode_single_page);
+        MODE_STRING_MAP.put(PagingMode.Scroll_Pages, R.string.reading_mode_scroll);
     }
     
     private IReaderMenuHandler mMenuHandler = null;
@@ -34,14 +34,14 @@ public class DialogReaderReadingMode extends DialogBaseSettings
     private final ArrayList<Pair<String, Object>> mItems = new ArrayList<Pair<String, Object>>();
     private SelectionAdapter mAdapter = null;
 
-    public DialogReaderReadingMode(Context context, List<DocPagingMode> pagingModes,
-            DocPagingMode currentMode, IReaderMenuHandler menuHandler)
+    public DialogReaderReadingMode(Context context, List<PagingMode> pagingModes,
+            PagingMode currentMode, IReaderMenuHandler menuHandler)
     {
         super(context);
         
         mMenuHandler = menuHandler;
         
-        for (DocPagingMode m : pagingModes) {
+        for (PagingMode m : pagingModes) {
             if (MODE_STRING_MAP.containsKey(m)) {
                 String text = context.getString(MODE_STRING_MAP.get(m));
                 mItems.add(new Pair<String, Object>(text, m));
@@ -67,7 +67,7 @@ public class DialogReaderReadingMode extends DialogBaseSettings
             {
                 int sel = mAdapter.getSelection();
                 if (sel >= 0) {
-                    mMenuHandler.setReadingMode((DocPagingMode)mItems.get(sel).second);
+                    mMenuHandler.setReadingMode((PagingMode)mItems.get(sel).second);
                 }
                 
                 DialogReaderReadingMode.this.dismiss();
