@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui;
 
@@ -27,9 +27,9 @@ import com.onyx.android.sdk.ui.util.OnyxFocusFinder;
 
 /**
  * base class for pagination grid view
- * 
+ *
  * tighten coupled with OnyxPagedAdapter
- * 
+ *
  * @author joy
  *
  */
@@ -58,7 +58,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public void unregisterOnAdapterChangedListener(OnAdapterChangedListener l)
     {
         mOnAdapterChangedListenerList.remove(l);
-    } 
+    }
 
     private ArrayList<OnSizeChangedListener> mOnSizeChangedListenerList = new ArrayList<OnSizeChangedListener>();
     public void registerOnSizeChangedListener(OnSizeChangedListener l)
@@ -130,10 +130,10 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         throw new IllegalArgumentException();
     }
 
-    public void setAdapter(OnyxPagedAdapter adapter) 
+    public void setAdapter(OnyxPagedAdapter adapter)
     {
         if (mAdapter != adapter) {
-            super.setAdapter(adapter); 
+            super.setAdapter(adapter);
 
             mAdapter = adapter;
             adapter.getPageLayout().setupLayout(this);
@@ -164,7 +164,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         mCrossVertical = value;
     }
 
-    public void setCrossHorizon(boolean value) 
+    public void setCrossHorizon(boolean value)
     {
         mCrossHorizon = value;
     }
@@ -208,7 +208,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
 
     // ========================= IBoundaryItemLocator ======================
     /**
-     *  
+     *
      * @param srcRect
      * @param boundarySide
      */
@@ -225,12 +225,12 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
             return;
         }
         else {
-            final int columns = Math.min(this.getCount(), mAdapter.getPageLayout().getLayoutColumnCount()); 
+            final int columns = Math.min(this.getCount(), mAdapter.getPageLayout().getLayoutColumnCount());
             if (columns <= 0) {
                 return;
             }
 
-            final int column_mod = item_count % columns; 
+            final int column_mod = item_count % columns;
             final int rows = (this.getCount() / columns) + ((column_mod > 0) ? 1 : 0);
 
             if (srcRect == null) {
@@ -370,15 +370,15 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
             }
         }
     }
-    
+
     public boolean getInterceptVolumeKey() {
         return mIsInterceptVolumeKey;
     }
-    
+
     public void setInterceptVolumeKey(boolean isInterceptVolumeKey) {
     	this.mIsInterceptVolumeKey = isInterceptVolumeKey;
     }
-    
+
     // ========================= GestureDetector.OnGestureListener ======================
     @Override
     public boolean onDown(MotionEvent e)
@@ -386,7 +386,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
         Log.v(TAG, "onDown");
         return false;
     }
-    
+
     @Override
     public void onShowPress(MotionEvent e)
     {
@@ -402,7 +402,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                 return;
             }
         }
-        
+
         this.setSelectionInTouchMode(AdapterView.INVALID_POSITION);
     }
     @Override
@@ -420,14 +420,14 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                     Log.d(TAG, "child view is already selected");
                     return false;
                 }
-                
+
                 this.setSelectionInTouchMode(i);
                 EpdController.invalidate(v, UpdateMode.GU_FAST);
 //                v.invalidate();
                 return false;
             }
         }
-        
+
         return false;
         } else {
            return true;
@@ -437,13 +437,13 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
             float distanceY)
     {
-        Log.v(TAG, "onScroll"); 
+        Log.v(TAG, "onScroll");
         return false;
     }
     @Override
     public void onLongPress(MotionEvent e)
     {
-        Log.v(TAG, "onLongPress"); 
+        Log.v(TAG, "onLongPress");
         for (OnLongPressListener l : mOnLongPressListenerList) {
             l.onLongPress();
         }
@@ -452,7 +452,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY)
     {
-        Log.v(TAG, "onFling"); 
+        Log.v(TAG, "onFling");
     	if(enableOnFling){
     	    if (e1.getX() - e2.getX() > sMinFlingLength) {
     	        if (mAdapter.getPaginator().canNextPage()) {
@@ -467,18 +467,18 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     	        return true;
     	    }
     	}
-        
+
 
         return false;
     }
-    
+
     public void enableOnFling(boolean value){
     	enableOnFling = value;
     }
-    
+
     /**
      * special focusable search method to select GridView's corresponding item
-     * 
+     *
      * @param direction
      * @param previouslyFocusedRect
      * @return
@@ -527,7 +527,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                     } else {
                         mIsClickEvent = true;
                     }
-                    
+
                     if (time >= 300 && mDownXLength != mUpXLength) {
                         return true;
                     }
@@ -594,7 +594,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
 		}
 		return super.dispatchKeyEvent(event);
 	}
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         try {
@@ -615,15 +615,15 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                 }
                 return true;
             }
-            
+
             if (mCrossVertical && ((keyCode == KeyEvent.KEYCODE_DPAD_UP) ||
-                    (keyCode == KeyEvent.KEYCODE_DPAD_DOWN))) { 
+                    (keyCode == KeyEvent.KEYCODE_DPAD_DOWN))) {
                 EpdController.invalidate(this, UpdateMode.GU_FAST);
                 return super.onKeyDown(keyCode, event);
             }
 
             if (mCrossHorizon && ((keyCode == KeyEvent.KEYCODE_DPAD_LEFT) ||
-                    (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT))) { 
+                    (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT))) {
                 EpdController.invalidate(this, UpdateMode.GU_FAST);
                 return super.onKeyDown(keyCode, event);
             }
@@ -704,13 +704,13 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
                 }
             }
 
-            if ((keyCode == KeyEvent.KEYCODE_DPAD_UP) || 
+            if ((keyCode == KeyEvent.KEYCODE_DPAD_UP) ||
                     (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) ||
                     (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) ||
                     (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)) {
                 EpdController.invalidate(this, UpdateMode.GU_FAST);
             }
-            
+
             return super.onKeyDown(keyCode, event);
         }
         finally {

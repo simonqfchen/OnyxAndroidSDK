@@ -1,5 +1,6 @@
 package com.onyx.android.sdk.data.cms;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import android.content.ContentValues;
@@ -7,9 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class OnyxHistoryEntry
+public class OnyxHistoryEntry implements Serializable
 {
     public static final String DB_TABLE_NAME = "library_history";
+    private static final long serialVersionUID = 1L;
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
     
     /**
@@ -23,6 +25,7 @@ public class OnyxHistoryEntry
         public static String MD5 = "MD5";
         public static final String START_TIME = "StartTime";
         public static final String END_TIME = "EndTime";
+        public static final String PROGRESS = "Progress";
         public static String EXTRA_ATTRIBUTES = "ExtraAttributes";
 
         // need read at runtime
@@ -31,6 +34,7 @@ public class OnyxHistoryEntry
         private static int sColumnMD5 = -1;
         private static int sColumnStartTime = -1;
         private static int sColumnEndTime = -1;
+        private static int sColumnProgress = -1;
         private static int sColumnExtraAttributes = -1;
         
         public static ContentValues createColumnData(OnyxHistoryEntry entry)
@@ -39,6 +43,7 @@ public class OnyxHistoryEntry
             values.put(MD5, entry.getMD5());
             values.put(START_TIME, entry.getStartTime() == null ? 0 : entry.getStartTime().getTime());
             values.put(END_TIME, entry.getEndTime() == null ? 0 : entry.getEndTime().getTime());
+            values.put(PROGRESS, entry.getProgress() == null ? "" : entry.getProgress().toString());
 
             return values;
         }
@@ -50,6 +55,7 @@ public class OnyxHistoryEntry
                 sColumnMD5 = c.getColumnIndex(MD5);
                 sColumnStartTime = c.getColumnIndex(START_TIME);
                 sColumnEndTime = c.getColumnIndex(END_TIME);
+                sColumnProgress = c.getColumnIndex(PROGRESS);
                 sColumnExtraAttributes = c.getColumnIndex(EXTRA_ATTRIBUTES);
                 
                 sColumnIndexesInitialized = true;
@@ -59,6 +65,7 @@ public class OnyxHistoryEntry
             String md5 = c.getString(sColumnMD5);
             long start_time = c.getLong(sColumnStartTime);
             long end_time = c.getLong(sColumnEndTime);
+            OnyxBookProgress progress = OnyxBookProgress.fromString(c.getString(sColumnProgress));
             String extra_attributes = c.getString(sColumnExtraAttributes);
             
             OnyxHistoryEntry entry = new OnyxHistoryEntry();
@@ -68,6 +75,7 @@ public class OnyxHistoryEntry
             entry.setStartTime(new Date(start_time));
             assert(end_time > 0);
             entry.setEndTime(new Date(end_time));
+            entry.setProgress(progress);
             entry.setExtraAttributes(extra_attributes);
 
             return entry;
@@ -78,6 +86,8 @@ public class OnyxHistoryEntry
     private String mMD5 = null;
     private Date mStartTime = null;
     private Date mEndTime = null;
+    private OnyxBookProgress mProgress = null;
+    
     /**
      * Additional attributes for flexibility
      */
@@ -114,6 +124,19 @@ public class OnyxHistoryEntry
     public void setEndTime(Date time)
     {
         this.mEndTime = time;
+    }
+    /**
+     * may return null
+     * 
+     * @return
+     */
+    public OnyxBookProgress getProgress()
+    {
+        return mProgress;
+    }
+    public void setProgress(OnyxBookProgress progress)
+    {
+        this.mProgress = progress;
     }
     /**
      * may return null

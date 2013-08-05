@@ -96,4 +96,7 @@
     <string name="automatic">Automatic</string>
     <string name="reading_mode_single_page">Single Page</string>
     <string name="reading_mode_scroll">Scroll</string>
+    <string name="hour_symbol">H</string>
+    <string name="minute_symbol">M</string>
+    <string name="second_symbol">S</string>
 </resources>
