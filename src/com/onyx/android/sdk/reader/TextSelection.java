@@ -8,7 +8,6 @@ import java.util.List;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
  * @author joy
@@ -16,8 +15,6 @@ import android.util.Log;
  */
 public class TextSelection implements Parcelable
 {
-    private final static String TAG = "DocTextSelection";
-
     private List<Rect> mBoxes = null;
     private String mText = null;
     private String mSelectionBegin = null;
@@ -29,7 +26,6 @@ public class TextSelection implements Parcelable
         mText = text;
         mSelectionBegin = selectionBegin;
         mSelectionEnd = selectionEnd;
-        Log.d(TAG, "selection text: " + text);
     }
     public TextSelection(Parcel p)
     {
