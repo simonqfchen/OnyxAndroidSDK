@@ -62,7 +62,7 @@ public abstract class OnyxPagedAdapter extends BaseAdapter
         {
 
             @Override
-            public void onPageIndexChanged()
+            public void onPageIndexChanged(int oldIndex, int newIndex)
             {
                 if (OnyxPagedAdapter.this.getGridView().getChildCount() > 0) {
                     OnyxPagedAdapter.this.getGridView().setSelection(0);

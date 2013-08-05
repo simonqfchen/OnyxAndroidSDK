@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.ui.dialog;
 
@@ -27,7 +27,7 @@ import com.onyx.android.sdk.ui.data.GridViewPaginator.OnStateChangedListener;
 
 /**
  * @author dxwts
- * 
+ *
  */
 public class DialogFileBrowserList extends DialogBaseOnyx
 {
@@ -79,7 +79,7 @@ public class DialogFileBrowserList extends DialogBaseOnyx
                 {
 
                     @Override
-                    public void onPageIndexChanged()
+                    public void onPageIndexChanged(int oldIndex, int newIndex)
                     {
                         EpdController.invalidate(mFileListView.getGridView(), UpdateMode.GU);
                     }
