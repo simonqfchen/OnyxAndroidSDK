@@ -556,6 +556,13 @@ public class OnyxCmsCenter
             }
         }
     }
+    
+    public static boolean deleteHistoryByMD5(Context context, String md5) {
+    	int result_code = context.getContentResolver().delete(
+    			OnyxHistoryEntry.CONTENT_URI , OnyxHistoryEntry.Columns.MD5 + " = ?" ,
+    			new String[]{md5});
+    	return result_code > 0 ? true : false;
+	}
 
     public static boolean getThumbnail(Context context, OnyxMetadata metadata, 
             OnyxThumbnail.ThumbnailKind thumbnailKind, RefValue<Bitmap> result)
