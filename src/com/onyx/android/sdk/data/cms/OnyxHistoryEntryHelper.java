@@ -43,4 +43,8 @@ public class OnyxHistoryEntryHelper
 	{
 		return OnyxCmsCenter.getHistorysByMD5(context, md5);
 	}
+
+	public static boolean deleteHistoryByMD5(Context context, String md5) {
+		return OnyxCmsCenter.deleteHistoryByMD5(context, md5);
+	}
 }
