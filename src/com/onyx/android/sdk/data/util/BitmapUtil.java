@@ -4,12 +4,16 @@
 package com.onyx.android.sdk.data.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.MemoryFile;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -22,12 +26,14 @@ public class BitmapUtil
 {
     private static final String TAG = "BitmapUtil";
     
-    public static byte[] getByteArray(Bitmap bmp)
+    public static byte[] compressToByteArray(Bitmap bmp, Bitmap.CompressFormat format)
     {
+        Log.d(TAG, "compressToByteArray: " + format);
+
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ProfileUtil.start(TAG, "compress bitmap");
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            bmp.compress(format, 100, os);
             return os.toByteArray();
         }
         finally {
@@ -49,13 +55,19 @@ public class BitmapUtil
      */
     public static int[] getPixels(Bitmap bmp)
     {
-        final int width = bmp.getWidth();
-        final int height = bmp.getHeight();
+        try {
+            ProfileUtil.start(TAG, "getPixels");
+            final int width = bmp.getWidth();
+            final int height = bmp.getHeight();
 
-        int buf[] = new int[width * height];
-        bmp.getPixels(buf, 0, width, 0, 0, width, height);  
-        
-        return buf;
+            int buf[] = new int[width * height];
+            bmp.getPixels(buf, 0, width, 0, 0, width, height);  
+
+            return buf;
+        }
+        finally {
+            ProfileUtil.end(TAG, "getPixels");
+        }
     }
     
     /**
@@ -66,19 +78,51 @@ public class BitmapUtil
      */
     public static byte[] getPixelsInByte(Bitmap bmp)
     {
-        final int width = bmp.getWidth();
-        final int height = bmp.getHeight();
-        ByteBuffer byte_buf = ByteBuffer.allocate(width * height * 4);
-        bmp.copyPixelsToBuffer(byte_buf);
-        
-        return byte_buf.array();
+        try {
+            ProfileUtil.start(TAG, "getPixelsInByte");
+            final int width = bmp.getWidth();
+            final int height = bmp.getHeight();
+            ByteBuffer byte_buf = ByteBuffer.allocate(width * height * 4);
+            bmp.copyPixelsToBuffer(byte_buf);
+
+            return byte_buf.array();
+        }
+        finally {
+            ProfileUtil.end(TAG, "getPixelsInByte");
+        }
     }
     
-    public static ParcelFileDescriptor createMemoryFile(Bitmap bmp)
+    public static Bitmap createBitmap(byte[] pixelsInByte, int width, int height)
+    {
+        Bitmap bmp = Bitmap.createBitmap(width, height, Config.RGB_565);
+        ByteBuffer byte_buf = ByteBuffer.wrap(pixelsInByte);
+        bmp.copyPixelsFromBuffer(byte_buf);
+
+        return bmp;
+    }
+    
+    public static Bitmap convert(Bitmap bitmap, Bitmap.Config config)
+    {
+        try {
+            ProfileUtil.start(TAG, "convert");
+            Bitmap converted = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), config);
+
+            Canvas canvas = new Canvas(converted);
+            Paint paint = new Paint();
+            canvas.drawBitmap(bitmap, 0, 0, paint);
+
+            return converted;
+        }
+        finally {
+            ProfileUtil.start(TAG, "convert");
+        }
+    }
+    
+    public static ParcelFileDescriptor compressMemoryFile(Bitmap bmp)
     {
         MemoryFile mf = null;
         try {
-            byte[] pixels = getByteArray(bmp);
+            byte[] pixels = BitmapUtil.compressToByteArray(bmp, Bitmap.CompressFormat.JPEG);
 
             mf = new MemoryFile(null, pixels.length);
             mf.allowPurging(false);
@@ -95,7 +139,7 @@ public class BitmapUtil
                     os.close();
                 }
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             Log.w(TAG, e);
             if (mf != null) {
                 mf.close();
@@ -103,17 +147,106 @@ public class BitmapUtil
             return null;
         }
         
-        return MemoryFileUtil.getParcelFileDescriptor(mf);
+        ParcelFileDescriptor fd = MemoryFileUtil.getParcelFileDescriptor(mf);
+        if (fd == null) {
+            mf.close();
+            return null;
+        }
+        
+        return fd;
     }
     
-    public static Bitmap readMemoryFile(ParcelFileDescriptor pfd)
+    public static Bitmap decompressMemoryFile(ParcelFileDescriptor fd)
     {
-        ProfileUtil.start(TAG, "readMemoryFile");
         try {
-            return BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+            ProfileUtil.start(TAG, "decompressMemoryFile");
+            return BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
         }
         finally {
-            ProfileUtil.end(TAG, "readMemoryFile");
+            ProfileUtil.end(TAG, "decompressMemoryFile");
         }
+    }
+    
+    public static ParcelFileDescriptor createLosslessMemoryFile(Bitmap bmp)
+    {
+        MemoryFile mf = null;
+        try {
+            byte[] pixels = BitmapUtil.getPixelsInByte(bmp);
+            
+            ByteBuffer buf = ByteBuffer.allocate(8 + pixels.length);
+            buf.putInt(bmp.getWidth());
+            buf.putInt(bmp.getHeight());
+            buf.put(pixels);
+
+            mf = new MemoryFile(null, buf.capacity());
+            mf.allowPurging(false);
+
+            ProfileUtil.start(TAG, "write MemoryFile");
+            OutputStream os = null;
+            try {
+                os = mf.getOutputStream();
+                os.write(buf.array());
+            }
+            finally {
+                ProfileUtil.end(TAG, "write MemoryFile");
+                if (os != null) {
+                    os.close();
+                }
+            }
+        } catch (Throwable e) {
+            Log.w(TAG, e);
+            if (mf != null) {
+                mf.close();
+            }
+            return null;
+        }
+
+        
+        ParcelFileDescriptor fd = MemoryFileUtil.getParcelFileDescriptor(mf);
+        if (fd == null) {
+            mf.close();
+            return null;
+        }
+        
+        return fd;
+    }
+    
+    public static Bitmap readLosslessMemoryFile(ParcelFileDescriptor fd)
+    {
+        FileInputStream fis = null;
+        try {
+            ProfileUtil.start(TAG, "readLosslessMemoryFile");
+            fis = new FileInputStream(fd.getFileDescriptor());
+            
+            byte[] head = new byte[8];
+            int n = fis.read(head);
+            Log.d(TAG, "read head: " + n);
+            assert(n == 8);
+
+            ByteBuffer buf = ByteBuffer.wrap(head);
+            int width = buf.getInt(0);
+            int height = buf.getInt(4);
+            Log.d(TAG, "width: " + width + ", height: " + height);
+            
+            byte [] data = new byte [width * height * 4];
+            n = fis.read(data);
+            Log.d(TAG, "data length: " + n);
+            
+            return BitmapUtil.createBitmap(data, width, height);
+        } catch (IOException e){
+            Log.e(TAG, "Exception", e);
+        }
+        finally {
+            ProfileUtil.end(TAG, "readLosslessMemoryFile");
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "Exception", e);
+                }
+            }
+        }
+        
+        return null;
     }
 }

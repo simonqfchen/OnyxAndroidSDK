@@ -60,6 +60,35 @@
             android:contentDescription="@drawable/font_decrease"
             android:src="@drawable/font_decrease" />
     </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/layout_smart_reflow"
+        android:layout_width="115dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/reader_menu_item_background"
+        android:focusable="true"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textview_smart_reflow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/menu_item_smart_reflow"
+            android:singleLine="true"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textview_smart_reflow"
+            android:layout_centerHorizontal="true"
+            android:background="@color/read_menu_item_background_color"
+            android:contentDescription="@drawable/font_type"
+            android:src="@drawable/font_type" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_font_embolden"

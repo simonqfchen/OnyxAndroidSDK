@@ -35,6 +35,10 @@ public interface IReaderMenuHandler
     void gotoPage(int i);
 
     void updateCurrentPage(LinearLayout l);
+    
+    boolean canSmartReflow();
+    boolean isSmartReflow();
+    void setSmartReflow(boolean enable);
 
     void increaseFontSize();
     void decreaseFontSize();

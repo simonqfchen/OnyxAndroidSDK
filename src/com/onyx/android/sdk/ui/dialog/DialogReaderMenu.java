@@ -67,6 +67,8 @@ public class DialogReaderMenu extends DialogBaseOnyx
     private LinearLayout mLayoutRotation_180 = null;
     private LinearLayout mLayoutRotation_270 = null;
     private LinearLayout mLayoutRotation_0 = null;
+    
+    private RelativeLayout mLayoutSmartReflow = null;
 
     private RelativeLayout mLayoutFontIncrease = null;
     private RelativeLayout mLayoutFontDecrease = null;
@@ -191,6 +193,20 @@ public class DialogReaderMenu extends DialogBaseOnyx
                 }
             }
         });
+        
+        mLayoutSmartReflow = (RelativeLayout)mFontSettings.findViewById(R.id.layout_smart_reflow);
+        if (menuHandler.canSmartReflow()) {
+            mLayoutSmartReflow.setVisibility(View.VISIBLE);
+            mLayoutSmartReflow.setOnClickListener(new View.OnClickListener()
+            {
+                
+                @Override
+                public void onClick(View v)
+                {
+                    menuHandler.setSmartReflow(!menuHandler.isSmartReflow());
+                }
+            });
+        }
 
         mLayoutFontDecrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_decrease);
         mLayoutFontIncrease = (RelativeLayout) mFontSettings.findViewById(R.id.layout_font_increase);
