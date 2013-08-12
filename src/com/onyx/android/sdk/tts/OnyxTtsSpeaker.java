@@ -11,7 +11,9 @@ import java.util.Locale;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
+import android.os.RemoteException;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
@@ -19,13 +21,13 @@ import com.onyx.android.sdk.data.util.ProfileUtil;
 
 /**
  * @author dxwts
- * 
+ *
  */
 public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
 {
 
     private static final String TAG = "OnyxTtsSpeaker";
-    
+
     public static interface OnSpeakerCompletionListener
     {
         void onSpeakerCompletion();
@@ -59,7 +61,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
         mContext = context;
         mTtsService = new TextToSpeech(mContext, new TextToSpeech.OnInitListener()
         {
-            
+
             @Override
             public void onInit(int status)
             {
@@ -71,9 +73,9 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
     private void onInitializationCompleted()
     {
         Log.d(TAG, "onInitializationCompleted");
-        
+
         mTtsService.setOnUtteranceCompletedListener(this);
-        
+
         Locale locale = null;
         final String languageCode = mContext.getResources().getConfiguration().locale.getISO3Language();
         Log.v(TAG,"languageCode = " + languageCode);
@@ -106,47 +108,67 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             OnyxTtsSpeaker.this.notifyOnSpeakerCompletionListener();
         }
     }
-    
+
     @Override
     public void onUtteranceCompleted(String uttId)
     {
         Log.d(TAG, "onUtteranceCompleted");
 
         synchronized (mTtsLocker) {
+            Log.d(TAG, "after synchronized");
             if (mIsActive && UTTERANCE_ID.equals(uttId)) {
                 try {
-                    String wave_file = this.getTempWaveFile().getAbsolutePath();
-                    
+//                    String wave_file = this.getTempWaveFile().getAbsolutePath();
+
                     if(mPlayer != null) {
                         mPlayer.release();
                     }
+                    Log.d(TAG, "after second if");
 
                     mPlayer = new MediaPlayer();
                     mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
                     {
-                        
+
                         @Override
                         public void onCompletion(MediaPlayer mp)
                         {
                             onPlayerCompletion();
                         }
                     });
-                    
-                    if(new File(wave_file).exists()) {
-                        try {
-                            mPlayer.setDataSource(wave_file);
-                            mPlayer.prepare();
-                        }
-                        catch (IOException e) {
-                            Log.e(TAG, "exception", e);
-                            onPlayerCompletion();
-                        }
 
-                        if (!mTtsPaused) {
-                            mPlayer.start();
-                        }
-                    } else {
+                    Log.d(TAG, "ready to go");
+                    ParcelFileDescriptor fileDescriptor;
+                    try {
+                        Log.d(TAG, "first line");
+                        fileDescriptor = mTtsService.getSynthesizedFileDescriptor();
+                        Log.d(TAG, "second line, descriptor null? "+(fileDescriptor == null));
+                        Log.i(TAG, "file size by parcel file descriptor: "+fileDescriptor.getStatSize());
+                        Log.d(TAG, "after get stat size");
+                        mPlayer.setDataSource(fileDescriptor.getFileDescriptor());
+                        mPlayer.prepare();
+                        Log.d(TAG, "after prepare");
+                    }
+                    catch (RemoteException e1) {
+                        Log.e(TAG, "jim remote exception occurred.");
+                        e1.printStackTrace();
                         onPlayerCompletion();
+                    }
+                    catch (IOException e) {
+                        Log.e(TAG, "jim exception 2", e);
+                        onPlayerCompletion();
+                    }
+                    catch (IllegalStateException e) {
+                        Log.e(TAG, "jim exception 3", e);
+                        onPlayerCompletion();
+                    }
+                    catch (IllegalArgumentException  e) {
+                        Log.e(TAG, "jim exception 4", e);
+                        onPlayerCompletion();
+                    }
+                    Log.d(TAG, "after second try");
+
+                    if (!mTtsPaused) {
+                        mPlayer.start();
                     }
                 }
                 catch (IllegalArgumentException e) {
@@ -158,7 +180,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             }
         }
     }
-    
+
     public boolean isOpened()
     {
         return this.isActive() || this.isPaused();
@@ -166,7 +188,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
 
     /**
      * both stopped and paused will cause active to be false
-     * 
+     *
      * @return
      */
     public boolean isActive()
@@ -175,7 +197,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             return mIsActive;
         }
     }
-    
+
     @SuppressLint("Wakelock")
     private void setActive(boolean active)
     {
@@ -198,7 +220,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             }
         }
     }
-    
+
     public boolean isPaused()
     {
         synchronized (mTtsLocker) {
@@ -208,7 +230,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
 
     /**
      * stop or wait current playing finished to start a new play
-     * 
+     *
      * @param text
      */
     public void startTts(String text)
@@ -217,7 +239,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             if (mTtsSpeaking) {
                 return;
             }
-            
+
             if (text == null || text.trim().length() == 0) {
                 return;
             }
@@ -254,7 +276,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             mTtsPaused = true;
         }
     }
-    
+
     public void resume()
     {
         synchronized (mTtsLocker) {
@@ -276,7 +298,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
                 mPlayer.release();
                 mPlayer.setOnCompletionListener(null);
                 mPlayer = null;
-                
+
                 mTtsPaused = false;
             }
             mTtsService.stop();
@@ -284,7 +306,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
             mTtsPaused = false;
         }
     }
-    
+
     public void shutdown()
     {
         assert(mTtsService != null);
