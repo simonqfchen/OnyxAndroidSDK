@@ -73,9 +73,8 @@ public abstract class OnyxPagedAdapter extends BaseAdapter
 
     public Boolean locatePageByItemIndex(int index)
     {
-
         if (this.getPaginator().getPageSize() > 0) {
-            this.getPaginator().setPageIndex(index / this.getPaginator().getPageSize());
+            this.getPaginator().setPageIndex(index / this.getPaginator().getPageSize() < 0 ? 0:index / this.getPaginator().getPageSize());
             this.getGridView().setSelection(index % this.getPaginator().getPageSize());
             return true;
         }

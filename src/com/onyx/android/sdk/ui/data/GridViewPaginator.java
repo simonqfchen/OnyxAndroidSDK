@@ -61,6 +61,7 @@ public class GridViewPaginator
     // number of children in a page
     private int mPageSize = 0;
     private int mPageIndex = -1;
+    private int maxSize = -1;
 
     public GridViewPaginator()
     {
@@ -126,8 +127,15 @@ public class GridViewPaginator
         if (mod != 0) {
             page_count++;
         }
+        if (maxSize > 0 && page_count > maxSize) {
+            return maxSize;
+        }
 
         return page_count != 0 ? page_count : 1;
+    }
+
+    public void setMaxPageCount(int size) {
+        maxSize = size;
     }
 
     public int getPageIndex()
