@@ -3,9 +3,13 @@
  */
 package com.onyx.android.sdk.data.cms;
 
-import java.util.Collection;
-
+import com.onyx.android.sync.IOnyxSyncService;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.RemoteException;
 
 /**
  * @author joy
@@ -13,95 +17,118 @@ import android.content.Context;
  */
 public class OnyxCmsRemote 
 {
-	public static String ACTION_REMOTE_CMS_DATA_DOWNLOADING = "com.onyx.android.intent.action.ACTION_LOCAL_CMS_DATA_UPLOADING";
-	public static String ACTION_LOCAL_CMS_DATA_UPLOADING = "com.onyx.android.intent.action.ACTION_LOCAL_CMS_DATA_UPLOADING";
-	
-	public static String CMS_DATA_DIFF_CONTENT_URI = "";
-	public static String CMS_DATA_COMPLETE_CONTENT_URI = "";
-	
-	public static String ACTION_REMOTE_CMS_DATA_DOWNLOADED = "com.onyx.android.intent.action.ACTION_LOCAL_CMS_DATA_UPLOADED";
-	public static String ACTION_LOCAL_CMS_DATA_UPLOADED = "com.onyx.android.intent.action.ACTION_LOCAL_CMS_DATA_UPLOADED";
-	
-	public static class CmsAggregatedData 
+    private static IOnyxSyncService mService = null;
+    
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private static ServiceConnection mConnection = new ServiceConnection()
+    {
+        public void onServiceConnected(ComponentName className,
+                IBinder service)
+        {
+            mService = IOnyxSyncService.Stub.asInterface(service);
+        }
+
+        public void onServiceDisconnected(ComponentName className)
+        {
+            mService = null;
+        }
+    };
+    
+	public static void initSyncService(Context context)
 	{
-		private OnyxMetadata mBook = null;
-		private OnyxBookProgress mProgress = null;
-		private Collection<OnyxBookmark> mBookmarks = null;
-		private Collection<OnyxAnnotation> mAnnotations = null;
-		
-		public CmsAggregatedData(OnyxMetadata book, OnyxBookProgress progress, 
-			Collection<OnyxBookmark> bookmarks, Collection<OnyxAnnotation> annotations)
-		{
-			mBook = book;
-			mProgress = progress;
-			mBookmarks = bookmarks;
-			mAnnotations = annotations;
-		}
-		
-		/**
-		 * 
-		 * @return data of the book
-		 */
-		public OnyxMetadata getBook()
-		{
-			return mBook;
-		}
-		
-		/**
-		 * 
-		 * @return null standing for nothing
-		 */
-		public OnyxBookProgress getProgress()
-		{
-			return mProgress;
-		}
-		
-		/**
-		 * 
-		 * @return null standing for nothing
-		 */
-		public Collection<OnyxBookmark> getBookmarks()
-		{
-			return mBookmarks;
-		}
-		
-		/**
-		 * 
-		 * @return null standing for nothing
-		 */
-		public Collection<OnyxAnnotation> getAnnotations()
-		{
-			return mAnnotations;
+		if (mService == null) {
+			context.startService(new Intent("com.onyx.android.sync.OnyxSyncService"));
+			context.bindService(new Intent("com.onyx.android.sync.OnyxSyncService"), 
+					mConnection, Context.BIND_AUTO_CREATE);
 		}
 	}
 	
-	public static boolean getDownloadedData(Context context, Collection<CmsAggregatedData> data)
+	public static void unbindSyncService(Context context)
 	{
+		context.unbindService(mConnection);
+	}
+	
+	public static boolean sync(Context context, OnyxCmsAggregatedData localData, 
+					OnyxCmsAggregatedData updates, OnyxCmsAggregatedData removes)
+	{
+		if (mService == null) {
+			return false;
+		}
+
+		try {
+			mService.sync(localData, updates, removes);
+			return true;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
-	public static boolean getUploadingData(Context context, Collection<CmsAggregatedData> data)
+	public static boolean test_position(Context context, OnyxPosition inPosition, OnyxPosition outPosition)
 	{
+		if (mService == null) {
+			return false;
+		}
+
+		try {
+			mService.test_position(inPosition, outPosition);
+			return true;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
-	public static boolean downloadRemoteData(Context context)
+	public static boolean test_bookmark(Context context, OnyxBookmark inPosition, OnyxBookmark outPosition)
 	{
+		if (mService == null) {
+			return false;
+		}
+
+		try {
+			mService.test_bookmark(inPosition, outPosition);
+			return true;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
-	public static boolean notifyRemoteDataDownloaded(Context context, boolean succ, Collection<CmsAggregatedData> data, int errCode, String errMsg)
+	public static boolean test_metadata(Context context, OnyxMetadata inMetadata, OnyxMetadata outMetadata)
 	{
+		if (mService == null) {
+			return false;
+		}
+
+		try {
+			mService.test_metadata(inMetadata, outMetadata);
+			return true;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
-	public static boolean uploadLocalData(Context context, Collection<CmsAggregatedData> data)
+	public static boolean test_annotation(Context context, OnyxAnnotation inPosition, OnyxAnnotation outPosition)
 	{
+		if (mService == null) {
+			return false;
+		}
+
+		try {
+			mService.test_annotation(inPosition, outPosition);
+			return true;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
-	public static boolean notifyLocalDataUploaded(Context context, boolean succ, int errCode, String errMsg)
-	{
-		return false;
-	}
 }

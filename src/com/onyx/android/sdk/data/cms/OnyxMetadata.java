@@ -3,19 +3,23 @@ package com.onyx.android.sdk.data.cms;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.onyx.android.sdk.data.util.FileUtil;
 import com.onyx.android.sdk.data.util.NotImplementedException;
 
-public class OnyxMetadata
+public class OnyxMetadata implements Parcelable
 {
     private final static String TAG = "OnyxMetadata";
     
@@ -30,6 +34,7 @@ public class OnyxMetadata
         public static String AUTHORS = "Authors";
         public static String PUBLISHER = "Publisher";
         public static String LANGUAGE = "Language";
+        public static String ISBN = "ISBN";
         public static String DESCRIPTION = "Description";
         public static String LOCATION = "Location";
         public static String NATIVE_ABSOLUTE_PATH = "NativeAbsolutePath";
@@ -52,6 +57,7 @@ public class OnyxMetadata
         private static int sColumnAuthors = -1;
         private static int sColumnPublisher = -1;
         private static int sColumnLanguage = -1;
+        private static int sColumnISBN = -1;
         private static int sColumnDescription = -1;
         private static int sColumnLocation = -1;
         private static int sColumnNativeAbsolutePath = -1;
@@ -74,6 +80,7 @@ public class OnyxMetadata
             values.put(AUTHORS, SerializationUtil.authorsToString(data.getAuthors()));
             values.put(PUBLISHER, data.getPublisher());
             values.put(LANGUAGE, data.getLanguage());
+            values.put(ISBN, data.getISBN());
             values.put(DESCRIPTION, data.getDescription());
             values.put(LOCATION, data.getLocation());
             values.put(NATIVE_ABSOLUTE_PATH, data.getNativeAbsolutePath());
@@ -105,6 +112,7 @@ public class OnyxMetadata
                 sColumnAuthors = c.getColumnIndex(AUTHORS);
                 sColumnPublisher = c.getColumnIndex(PUBLISHER);
                 sColumnLanguage = c.getColumnIndex(LANGUAGE);
+                sColumnISBN = c.getColumnIndex(ISBN);
                 sColumnDescription = c.getColumnIndex(DESCRIPTION);
                 sColumnLocation = c.getColumnIndex(LOCATION);
                 sColumnNativeAbsolutePath = c.getColumnIndex(NATIVE_ABSOLUTE_PATH);
@@ -128,6 +136,7 @@ public class OnyxMetadata
             String authors = c.getString(sColumnAuthors);
             String publisher = c.getString(sColumnPublisher);
             String language = c.getString(sColumnLanguage);
+            String isbn = c.getString(sColumnISBN);
             String description = c.getString(sColumnDescription);
             String location = c.getString(sColumnLocation);
             String native_absolute_path = c.getString(sColumnNativeAbsolutePath);
@@ -148,6 +157,7 @@ public class OnyxMetadata
             data.setAuthors(SerializationUtil.authorsFromString(authors));
             data.setPublisher(publisher);
             data.setLanguage(language);
+            data.setISBN(isbn);
             data.setDescription(description);
             data.setLocation(location);
             data.setNativeAbsolutePath(native_absolute_path);
@@ -237,6 +247,30 @@ public class OnyxMetadata
             }
             return result;
         }
+        
+        public static String dateToString(Date d)
+        {
+        	if (d == null) {
+        		return "null";
+        	} else {
+        		return SimpleDateFormat.getDateTimeInstance().format(d);
+        	}
+        }
+        public static Date dateFromString(String str)
+        {
+        	if ("null".equals(str)) {
+        		return null;
+        	} else {
+	            try {
+	                return SimpleDateFormat.getDateTimeInstance().parse(str);
+	            }
+	            catch (ParseException e) {
+	                Log.w(TAG, e);
+	            }
+	            return null;
+        	}
+        }
+
     }
     
     // -1 should never be valid DB value
@@ -250,6 +284,7 @@ public class OnyxMetadata
     private ArrayList<String> mAuthors = null;
     private String mPublisher = null;
     private String mLanguage = null;
+    private String mISBN = null;
     private String mDescription = null;
     private String mLocation = null;
     private String mNativeAbsolutePath = null;
@@ -268,6 +303,11 @@ public class OnyxMetadata
     
     public OnyxMetadata()
     {
+    }
+    
+    public OnyxMetadata(Parcel source)
+    {
+    	readFromParcel(source);
     }
     
     /**
@@ -314,6 +354,7 @@ public class OnyxMetadata
         data.setAuthors(mAuthors);
         data.setPublisher(mPublisher);
         data.setLanguage(mLanguage);
+        data.setISBN(mISBN);
         data.setDescription(mDescription);
         data.setLocation(mLocation);
         data.setNativeAbsolutePath(mNativeAbsolutePath);
@@ -426,6 +467,21 @@ public class OnyxMetadata
     public void setLanguage(String language)
     {
         this.mLanguage = language;
+    }
+    
+    /**
+     * may return null
+     * 
+     * @return
+     */
+    public String getISBN()
+    {
+    	return mISBN;
+    }
+    
+    public void setISBN(String isbn)
+    {
+    	mISBN = isbn;
     }
     
     /**
@@ -575,4 +631,79 @@ public class OnyxMetadata
     {
         this.mExtraAttributes = extraAttributes;
     }
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(mId);
+		dest.writeString(mMD5);
+		dest.writeString(mName);
+		dest.writeString(mTitle);
+		dest.writeStringList(mAuthors);
+		//dest.writeString(SerializationUtil.authorsToString(mAuthors));
+		dest.writeString(mPublisher);
+		dest.writeString(mLanguage);
+		dest.writeString(mISBN);
+		dest.writeString(mDescription);
+		dest.writeString(mLocation);
+		dest.writeString(mNativeAbsolutePath);
+		dest.writeLong(mSize);
+		dest.writeString(mEncoding);
+		dest.writeString(SerializationUtil.dateToString(mLastAccess));
+		dest.writeString(SerializationUtil.dateToString(mLastModified));
+		dest.writeInt(mFavorite);
+		dest.writeInt(mRating);
+		dest.writeStringList(mTags);
+		//dest.writeString(SerializationUtil.tagsToString(mTags));
+		dest.writeString(mExtraAttributes);
+	}
+	
+	public void readFromParcel(Parcel source)
+	{
+		mId = source.readLong();
+		mMD5 = source.readString();
+		mName = source.readString();
+		mTitle = source.readString();
+		mAuthors = new ArrayList<String>();
+		source.readStringList(mAuthors);
+		mPublisher = source.readString();
+		mLanguage = source.readString();
+		mISBN = source.readString();
+		mDescription = source.readString();
+		mLocation = source.readString();
+		mNativeAbsolutePath = source.readString();
+		mSize = source.readLong();
+		mEncoding = source.readString();
+		mLastAccess = SerializationUtil.dateFromString(source.readString());
+		mLastModified = SerializationUtil.dateFromString(source.readString());
+		mFavorite = source.readInt();
+		mRating = source.readInt();
+		mTags = new ArrayList<String>();
+		source.readStringList(mTags);
+		mExtraAttributes = source.readString();
+	}
+	
+	public static final Parcelable.Creator<OnyxMetadata> CREATOR 
+								= new Parcelable.Creator<OnyxMetadata>() 
+	{
+		
+		@Override
+		public OnyxMetadata createFromParcel(Parcel source) 
+		{
+			Log.i(TAG, "Create metadata from parcel!");
+			return new OnyxMetadata(source);
+		}
+		
+		@Override
+		public OnyxMetadata[] newArray(int size) 
+		{
+			return new OnyxMetadata[size];
+		}
+		
+	};
+
 }

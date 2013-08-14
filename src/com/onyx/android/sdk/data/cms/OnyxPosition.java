@@ -19,11 +19,12 @@ import android.util.Log;
  * @author joy
  *
  */
-public class OnyxBookmark implements Parcelable
+public class OnyxPosition implements Parcelable
 {
-    private static final String TAG = "OnyxBookmark";
+
+	private static final String TAG = "OnyxPosition";
     
-    public static final String DB_TABLE_NAME = "library_bookmark";
+    public static final String DB_TABLE_NAME = "library_position";
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
     
     /**
@@ -36,7 +37,6 @@ public class OnyxBookmark implements Parcelable
     public static class Columns implements BaseColumns
     {
         public static String MD5 = "MD5";
-        public static String QUOTE = "Quote";
         public static String LOCATION = "Location";
         public static String UPDATE_TIME = "UpdateTime";
         
@@ -44,27 +44,24 @@ public class OnyxBookmark implements Parcelable
         private static boolean sColumnIndexesInitialized = false; 
         private static int sColumnID = -1;
         private static int sColumnMD5 = -1;
-        private static int sColumnQuote = -1;
         private static int sColumnLocation = -1;
         private static int sColumnUpdateTime = -1;
         
-        public static ContentValues createColumnData(OnyxBookmark bookmark)
+        public static ContentValues createColumnData(OnyxPosition position)
         {
             ContentValues values = new ContentValues();
-            values.put(MD5, bookmark.getMD5());
-            values.put(QUOTE, bookmark.getQuote());
-            values.put(LOCATION, bookmark.getLocation());
-            values.put(UPDATE_TIME, SerializationUtil.dateToString(bookmark.getUpdateTime()));
+            values.put(MD5, position.getMD5());
+            values.put(LOCATION, position.getLocation());
+            values.put(UPDATE_TIME, SerializationUtil.dateToString(position.getUpdateTime()));
             
             return values;
         }
         
-        public static void readColumnData(Cursor c, OnyxBookmark bookmark)
+        public static void readColumnData(Cursor c, OnyxPosition position)
         {
             if (!sColumnIndexesInitialized) {
                 sColumnID = c.getColumnIndex(_ID);
                 sColumnMD5 = c.getColumnIndex(MD5);
-                sColumnQuote = c.getColumnIndex(QUOTE);
                 sColumnLocation = c.getColumnIndex(LOCATION);
                 sColumnUpdateTime = c.getColumnIndex(UPDATE_TIME);
                 
@@ -73,20 +70,18 @@ public class OnyxBookmark implements Parcelable
             
             long id = c.getLong(sColumnID);
             String md5 = c.getString(sColumnMD5);
-            String quote = c.getString(sColumnQuote);
             String location = c.getString(sColumnLocation);
             String update_time = c.getString(sColumnUpdateTime);
             
-            bookmark.setId(id);
-            bookmark.setMD5(md5);
-            bookmark.setQuote(quote);
-            bookmark.setLocation(location);
-            bookmark.setUpdateTime(SerializationUtil.dateFromString(update_time));
+            position.setId(id);
+            position.setMD5(md5);
+            position.setLocation(location);
+            position.setUpdateTime(SerializationUtil.dateFromString(update_time));
         }
         
-        public static OnyxBookmark readColumnData(Cursor c)
+        public static OnyxPosition readColumnData(Cursor c)
         {
-            OnyxBookmark a = new OnyxBookmark();
+            OnyxPosition a = new OnyxPosition();
             readColumnData(c, a);
             return a;
         }
@@ -123,48 +118,44 @@ public class OnyxBookmark implements Parcelable
     
     private long mId = INVALID_ID;
     private String mMD5 = null;
-    private String mQuote = null;
     private String mLocation = null;
     private Date mUpdateTime = null;
     
-    public OnyxBookmark()
+    public OnyxPosition()
     {
-    	Log.i(TAG, "OnyxBookmark");
     }
-    
-    public OnyxBookmark(Parcel source)
+
+    public OnyxPosition(Parcel source)
     {
     	readFromParcel(source);
     }
     
-    public OnyxBookmark(OnyxBookmark bookmark)
+    public OnyxPosition(OnyxPosition position)
     {
-    	mId = bookmark.getId();
-    	mMD5 = bookmark.getMD5();
-    	mQuote = bookmark.getQuote();
-    	mLocation = bookmark.getLocation();
-    	mUpdateTime = bookmark.getUpdateTime();
+    	mId = position.getId();
+    	mMD5 = position.getMD5();
+    	mLocation = position.getLocation();
+    	mUpdateTime = position.getUpdateTime();
     }
-
+    
     @Override
 	public boolean equals(Object o) {
-		if (!(o instanceof OnyxBookmark)) {
+		if (!(o instanceof OnyxPosition)) {
 			return false;
 		}
 		
-		OnyxBookmark bookmark = (OnyxBookmark) o;
+		OnyxPosition position = (OnyxPosition) o;
 		
 		try {
-			return ((mMD5 == bookmark.getMD5() || mMD5.equals(bookmark.getMD5()))
-					&& (mQuote == bookmark.getQuote() || mQuote.equals(bookmark.getQuote()))
-					&& (mLocation == bookmark.getLocation() || mLocation.equals(bookmark.getLocation()))
-					&& (mUpdateTime == bookmark.getUpdateTime() || mUpdateTime.equals(bookmark.getUpdateTime()))
+			return ((mMD5 == position.getMD5() || mMD5.equals(position.getMD5()))
+					&& (mLocation == position.getLocation() || mLocation.equals(position.getLocation()))
+					&& (mUpdateTime == position.getUpdateTime() || mUpdateTime.equals(position.getUpdateTime()))
 					);
 		} catch (Exception e) {
 			return false;
 		}
 	}
-
+    
     public long getId()
     {
         return mId;
@@ -183,16 +174,6 @@ public class OnyxBookmark implements Parcelable
     public void setMD5(String md5)
     {
         this.mMD5 = md5;
-    }
-
-    public String getQuote()
-    {
-        return mQuote;
-    }
-
-    public void setQuote(String quote)
-    {
-        this.mQuote = quote;
     }
     
     public String getLocation()
@@ -223,39 +204,36 @@ public class OnyxBookmark implements Parcelable
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-	    dest.writeLong(mId);
-	    dest.writeString(mMD5);
-	    dest.writeString(mQuote);
-	    dest.writeString(mLocation);
-    	dest.writeString(SerializationUtil.dateToString(mUpdateTime));
+		dest.writeLong(mId);
+		dest.writeString(mMD5);
+		dest.writeString(mLocation);
+		dest.writeString(SerializationUtil.dateToString(mUpdateTime));
 	}
 	
-	public void readFromParcel(Parcel source)
-	{
+	public void readFromParcel(Parcel source) {
     	mId = source.readLong();
     	mMD5 = source.readString();
-    	mQuote = source.readString();
     	mLocation = source.readString();
-    	mUpdateTime = SerializationUtil.dateFromString(source.readString());
+		mUpdateTime = SerializationUtil.dateFromString(source.readString());
 	}
 	
-	public static final Parcelable.Creator<OnyxBookmark> CREATOR 
-		= new Parcelable.Creator<OnyxBookmark>() 
+	public static final Parcelable.Creator<OnyxPosition> CREATOR 
+			= new Parcelable.Creator<OnyxPosition>() 
 	{
 		
 		@Override
-		public OnyxBookmark createFromParcel(Parcel source)
+		public OnyxPosition createFromParcel(Parcel source) 
 		{
-			Log.i(TAG, "Create bookmark from parcel!");
-			return new OnyxBookmark(source);
+			Log.i(TAG, "Create position from parcel!");
+			return new OnyxPosition(source);
 		}
 		
 		@Override
-		public OnyxBookmark[] newArray(int size) 
+		public OnyxPosition[] newArray(int size) 
 		{
-			return new OnyxBookmark[size];
+			return new OnyxPosition[size];
 		}
-
+	
 	};
 
 }

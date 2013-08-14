@@ -10,6 +10,8 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.util.Log;
 
@@ -17,9 +19,10 @@ import android.util.Log;
  * @author joy
  *
  */
-public class OnyxAnnotation
+public class OnyxAnnotation implements Parcelable
 {
-    private static final String TAG = "OnyxAnnotation";
+
+	private static final String TAG = "OnyxAnnotation";
     
     public static final String DB_TABLE_NAME = "library_annotation";
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
@@ -99,17 +102,25 @@ public class OnyxAnnotation
     public static class SerializationUtil {
         public static String dateToString(Date d)
         {
-            return SimpleDateFormat.getDateTimeInstance().format(d);
+        	if (d == null) {
+        		return "null";
+        	} else {
+        		return SimpleDateFormat.getDateTimeInstance().format(d);
+        	}
         }
         public static Date dateFromString(String str)
         {
-            try {
-                return SimpleDateFormat.getDateTimeInstance().parse(str);
-            }
-            catch (ParseException e) {
-                Log.w(TAG, e);
-            }
-            return null;
+        	if ("null".equals(str)) {
+        		return null;
+        	} else {
+	            try {
+	                return SimpleDateFormat.getDateTimeInstance().parse(str);
+	            }
+	            catch (ParseException e) {
+	                Log.w(TAG, e);
+	            }
+	            return null;
+        	}
         }
     }
     
@@ -127,6 +138,45 @@ public class OnyxAnnotation
     public OnyxAnnotation()
     {
     }
+
+
+    public OnyxAnnotation(Parcel source)
+    {
+    	readFromParcel(source);
+    }
+
+    public OnyxAnnotation(OnyxAnnotation annotation)
+    {
+    	mId = annotation.getId();
+    	mMD5 = annotation.getMD5();
+    	mQuote = annotation.getQuote();
+    	mLocationBegin = annotation.getLocationBegin();
+    	mLocationEnd = annotation.getLocationEnd();
+    	mNote = annotation.getNote();
+    	mUpdateTime = annotation.getUpdateTime();
+    }
+
+    @Override
+	public boolean equals(Object o) {
+		if (!(o instanceof OnyxAnnotation)) {
+			return false;
+		}
+		
+		OnyxAnnotation annotation = (OnyxAnnotation) o;
+				
+		try {
+			return ((mMD5 == annotation.getMD5() || mMD5.equals(annotation.getMD5()))
+					&& (mQuote == annotation.getQuote() || mQuote.equals(annotation.getQuote()))
+					&& (mNote == annotation.getNote() || mNote.equals(annotation.getNote()))
+					&& (mLocationBegin == annotation.getLocationBegin() || mLocationBegin.equals(annotation.getLocationBegin()))
+					&& (mLocationEnd == annotation.getLocationEnd() || mLocationEnd.equals(annotation.getLocationEnd()))
+					&& (mUpdateTime == annotation.getUpdateTime() || mUpdateTime.equals(annotation.getUpdateTime()))
+					);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
     public long getId()
     {
@@ -197,5 +247,52 @@ public class OnyxAnnotation
     {
         this.mUpdateTime = updateTime;
     }
-    
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeString(mMD5);
+        dest.writeString(mQuote);
+        dest.writeString(mLocationBegin);
+        dest.writeString(mLocationEnd);
+        dest.writeString(mNote);
+        dest.writeString(SerializationUtil.dateToString(mUpdateTime));
+	}
+	
+	public void readFromParcel(Parcel source)
+	{
+    	mId = source.readLong();
+    	mMD5 = source.readString();
+    	mQuote = source.readString();
+    	mLocationBegin = source.readString();
+    	mLocationEnd = source.readString();
+    	mNote = source.readString();
+    	mUpdateTime = SerializationUtil.dateFromString(source.readString());
+	}
+
+	public static final Parcelable.Creator<OnyxAnnotation> CREATOR 
+								= new Parcelable.Creator<OnyxAnnotation>() 
+	{
+	
+		@Override
+		public OnyxAnnotation createFromParcel(Parcel source) 
+		{
+			Log.i(TAG, "Create annotation from parcel!");
+			return new OnyxAnnotation(source);
+		}
+		
+		@Override
+		public OnyxAnnotation[] newArray(int size) 
+		{
+			return new OnyxAnnotation[size];
+		}
+	
+	};
+
 }
