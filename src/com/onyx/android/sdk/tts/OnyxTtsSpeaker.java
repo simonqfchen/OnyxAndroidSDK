@@ -179,13 +179,14 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
     @SuppressLint("Wakelock")
     private void setActive(boolean active)
     {
+        Log.d(TAG, "setActive: " + active);
         synchronized (mTtsLocker) {
             mIsActive = active;
 
             if (active) {
                 if (mWakeLock == null) {
                     PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE); 
-                    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+                    mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
                     mWakeLock.acquire();
                 }
             }
