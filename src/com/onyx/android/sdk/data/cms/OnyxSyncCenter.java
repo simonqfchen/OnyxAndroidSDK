@@ -364,7 +364,7 @@ public class OnyxSyncCenter {
 		{
 			// TODO: NOT implement
 			Log.i(TAG, "Merge position");
-			return false;
+			return true;
 		}
 		
 		private static boolean mergeBookmarks(Context context, List<OnyxBookmark> bookmarks)
@@ -434,29 +434,40 @@ public class OnyxSyncCenter {
 		public static boolean mergeDiff(Context context, OnyxCmsAggregatedData updates, OnyxCmsAggregatedData removes)
 		{
 			boolean updated = false;
+			boolean result = true;
 			
 			if (updates.getPosition() != null) {
-				mergePosition(context, updates.getPosition());
+				if (!mergePosition(context, updates.getPosition())) {
+					result = false;
+				}
 				updated = true;
 			}
 			
 			if (updates.getBookmarks() != null && updates.getBookmarks().size() > 0) {
-				mergeBookmarks(context, updates.getBookmarks());
+				if (!mergeBookmarks(context, updates.getBookmarks())) {
+					result = false;
+				}
 				updated = true;
 			}
 			
 			if (updates.getAnnotations() != null && updates.getAnnotations().size() > 0) {
-				mergeAnnotations(context, updates.getAnnotations());
+				if (!mergeAnnotations(context, updates.getAnnotations())) {
+					result = false;
+				}
 				updated = true;
 			}
 			
 			if (removes.getBookmarks() != null && removes.getBookmarks().size() > 0) {
-				deleteBookmarks(context, removes.getBookmarks());
+				if (!deleteBookmarks(context, removes.getBookmarks())) {
+					result = false;
+				}
 				updated = true;
 			}
 			
 			if (removes.getAnnotations() != null && removes.getAnnotations().size() > 0) {
-				deleteAnnotations(context, removes.getAnnotations());
+				if (!deleteAnnotations(context, removes.getAnnotations())) {
+					result = false;
+				}
 				updated = true;
 			}
 			
@@ -464,7 +475,7 @@ public class OnyxSyncCenter {
 				updateTime(context, updates.getBook());
 			}
 			
-			return false;
+			return result;
 		}
 		
 	}

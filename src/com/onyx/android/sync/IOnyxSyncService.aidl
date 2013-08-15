@@ -33,8 +33,4 @@ interface IOnyxSyncService {
      * the service.
      */
 	boolean sync(in OnyxCmsAggregatedData localData, out OnyxCmsAggregatedData updates, out OnyxCmsAggregatedData removes);
-	boolean test_position(in OnyxPosition inPosition, out OnyxPosition outPosition);
-	boolean test_metadata(in OnyxMetadata inMetadata, out OnyxMetadata outMetadata);
-	boolean test_bookmark(in OnyxBookmark inBookmark, out OnyxBookmark outBookmark);
-	boolean test_annotation(in OnyxAnnotation inAnnotation, out OnyxAnnotation outAnnotation);
 }

@@ -123,31 +123,6 @@ public class OnyxCmsAggregatedData implements Parcelable
 		dest.writeParcelable(mPosition, flags);
 		dest.writeTypedList(mBookmarks);
 		dest.writeTypedList(mAnnotations);
-/*
-		if (mBook == null) {
-			dest.writeParcelable(new OnyxMetadata(), flags);
-		} else {
-			dest.writeParcelable(mBook, flags);
-		}
-
-		if (mPosition == null) {
-			dest.writeParcelable(new OnyxPosition(), flags);
-		} else {
-			dest.writeParcelable(mPosition, flags);
-		}
-		
-		if (mBookmarks == null) {
-			dest.writeTypedList(new LinkedList<OnyxBookmark>());
-		} else {
-			dest.writeTypedList(mBookmarks);
-		}
-		
-		if (mAnnotations == null) {
-			dest.writeTypedList(new LinkedList<OnyxAnnotation>());
-		} else {
-			dest.writeTypedList(mAnnotations);
-		}
-		*/
 	}
 	
 	public void readFromParcel(Parcel source)
