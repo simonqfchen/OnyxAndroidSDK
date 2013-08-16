@@ -58,8 +58,7 @@ public class OnyxCmsRemote
 		}
 
 		try {
-			mService.sync(localData, updates, removes);
-			return true;
+			return mService.sync(localData, updates, removes);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
