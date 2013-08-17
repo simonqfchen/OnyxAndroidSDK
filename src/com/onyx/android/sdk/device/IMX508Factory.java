@@ -3,6 +3,8 @@
  */
 package com.onyx.android.sdk.device;
 
+import com.onyx.android.sdk.device.EpdController.UpdateMode;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -331,6 +333,34 @@ public final class IMX508Factory  implements IDeviceFactory
             }
 
             return dst_value;
+        }
+
+        @Override
+        public UpdateMode getViewDefaultUpdateMode(View view)
+        {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean setViewDefaultUpdateMode(View view, UpdateMode mode)
+        {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public UpdateMode getSystemDefaultUpdateMode()
+        {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean setSystemDefaultUpdateMode(UpdateMode mode)
+        {
+            // TODO Auto-generated method stub
+            return false;
         }
 
     }

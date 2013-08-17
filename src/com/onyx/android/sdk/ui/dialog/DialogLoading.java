@@ -6,10 +6,13 @@ package com.onyx.android.sdk.ui.dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.onyx.android.sdk.R;
+import com.onyx.android.sdk.device.EpdController;
+import com.onyx.android.sdk.device.EpdController.UpdateMode;
 
 /**
  *
@@ -79,7 +82,7 @@ public class DialogLoading extends DialogBaseOnyx
                     mWakeLock.release();
                     mWakeLock = null;
                 }
-
+//                EpdController.invalidate(DialogLoading.this.getWindow().getDecorView(), UpdateMode.GC);
             }
         });
 

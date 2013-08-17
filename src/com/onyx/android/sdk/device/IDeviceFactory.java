@@ -32,6 +32,12 @@ public interface IDeviceFactory
         EpdController.EPDMode getEpdMode();
         boolean setEpdMode(Context context, EpdController.EPDMode mode);
         
+        EpdController.UpdateMode getViewDefaultUpdateMode(View view);
+        boolean setViewDefaultUpdateMode(View view, EpdController.UpdateMode mode);
+
+        EpdController.UpdateMode getSystemDefaultUpdateMode();
+        boolean setSystemDefaultUpdateMode(EpdController.UpdateMode mode);
+        
         void invalidate(View view, EpdController.UpdateMode mode);
         void postInvalidate(View view, EpdController.UpdateMode mode);
     }

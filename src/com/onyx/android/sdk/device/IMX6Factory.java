@@ -7,6 +7,9 @@ import com.onyx.android.sdk.device.EpdController.EPDMode;
 import com.onyx.android.sdk.device.EpdController.UpdateMode;
 import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
 
+import org.apache.http.cookie.SM;
+
+import android.R.integer;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
@@ -62,6 +65,32 @@ public class IMX6Factory implements IDeviceFactory
          * View.invalidate(int updateMode)
          */
         private static Method sMethodInvalidate = null;
+        
+        /**
+         * View.getDefaultUpdateMode()
+         */
+        private static Method sMethodGetViewDefaultUpdateMode = null;
+        
+        /**
+         * View.setDefaultUpdateMode(int updateMode)
+         */
+        private static Method sMethodSetViewDefaultUpdateMode = null;
+        
+        /**
+         * View.getGlobalUpdateMode()
+         */
+        private static Method sMethodGetSystemDefaultUpdateMode = null;
+        
+        /**
+         * View.setGlobalUpdateMode(int updateMode)
+         */
+        private static Method sMethodSetSystemDefaultUpdateMode = null;
+        
+        /**
+         * View.setFirstDrawUpdateMode(int updateMode)
+         */
+        private static Method sMethodSetFirstDrawUpdateMode = null;
+        
         
         private IMX6Controller()
         {
@@ -278,7 +307,16 @@ public class IMX6Factory implements IDeviceFactory
                     sMethodPostInvalidate = cls.getMethod("postInvalidate", int.class);
                     // signature of "public void invalidate(int updateMode)"
                     sMethodInvalidate = cls.getMethod("invalidate", int.class);
-
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodSetViewDefaultUpdateMode = cls.getMethod("setDefaultUpdateMode", int.class);
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodGetViewDefaultUpdateMode = cls.getMethod("getDefaultUpdateMode");
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodGetSystemDefaultUpdateMode = cls.getMethod("getGlobalUpdateMode");
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodSetSystemDefaultUpdateMode = cls.getMethod("setGlobalUpdateMode", int.class);
+                    // signature of "public void setFirstDrawUpdateMode(int updateMode)"
+                    sMethodSetFirstDrawUpdateMode = cls.getMethod("setFirstDrawUpdateMode", int.class);
                     Log.d(TAG, "init device ok.");
 
                     sInstance = new IMX6Controller();
@@ -324,9 +362,23 @@ public class IMX6Factory implements IDeviceFactory
                 break;
             }
 
+            Log.i("########################", "value to framework: "+ dst_mode);
             return dst_mode;
         }
 
+        private EpdController.UpdateMode updateModeFromValue(int value)
+        {
+            Log.i("########################", "value from framework: "+ value);
+            if (value == sModeDW) {
+                return UpdateMode.DW;
+            } else if (value == sModeGU) {
+                return UpdateMode.GU;
+            } else if (value == sModeGC) {
+                return UpdateMode.GC;
+            }
+            return UpdateMode.GC;
+        }        
+        
         private static int getPolicyValue(EpdController.UpdatePolicy policy)
         {
             int dst_value = sModeGU;
@@ -344,6 +396,99 @@ public class IMX6Factory implements IDeviceFactory
 
             return dst_value;
         }
+
+        @Override
+        public UpdateMode getViewDefaultUpdateMode(View view)
+        {
+            if (sMethodGetViewDefaultUpdateMode != null && view != null) {
+                try {
+                    int index = (Integer) sMethodGetViewDefaultUpdateMode.invoke(view);
+                    return updateModeFromValue(index);
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            return UpdateMode.GU;
+        }
+
+        @Override
+        public boolean setViewDefaultUpdateMode(View view, UpdateMode mode)
+        {
+            if (sMethodSetViewDefaultUpdateMode != null && view != null) {
+                try {
+                    sMethodSetViewDefaultUpdateMode.invoke(view, getUpdateMode(mode));
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            return false;
+        }
+
+        @Override
+        public UpdateMode getSystemDefaultUpdateMode()
+        {
+            if (sMethodGetSystemDefaultUpdateMode != null) {
+                try {
+                    return updateModeFromValue((Integer) sMethodGetSystemDefaultUpdateMode.invoke(null));
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            return UpdateMode.GU;
+        }
+
+        @Override
+        public boolean setSystemDefaultUpdateMode(UpdateMode mode)
+        {
+            if (sMethodSetSystemDefaultUpdateMode != null) {
+                try {
+                    sMethodSetSystemDefaultUpdateMode.invoke(null, getUpdateMode(mode));
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+            return false;
+        }
+        
+        private boolean setFirstDrawUpdateMode(UpdateMode mode)
+        {
+            if (sMethodSetFirstDrawUpdateMode != null) {
+                try {
+                    sMethodSetFirstDrawUpdateMode.invoke(null, getUpdateMode(mode));
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+            return false;
+        }
+        
+        
 
         
     }
