@@ -266,12 +266,12 @@ public class OnyxSysCenter
         return getStringValue(KEY_OPEN_LAST_READING_DOCUMENT);
     }
 
-    public static void setStartupConfigurationDone(Context context, boolean b) {
+    public static void setIsStartupConfigurationDone(Context context, boolean b) {
         setIntValue(context, KEY_STARTUP_CONFIGURATION_DONE, b? 1: 0);
     }
 
-    public static int getStartupConfigurationDone() {
-        return getIntValue(KEY_STARTUP_CONFIGURATION_DONE);
+    public static boolean isStartupConfigurationDone() {
+        return getIntValue(KEY_STARTUP_CONFIGURATION_DONE) == 1;
     }
 
     /**
