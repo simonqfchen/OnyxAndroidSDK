@@ -99,18 +99,18 @@ public class OnyxCmsCenter
                 }
             }
             
-            ProfileUtil.start(TAG, "query library items");
+//            ProfileUtil.start(TAG, "query library items");
             c = context.getContentResolver().query(OnyxLibraryItem.CONTENT_URI, null, selection, selection_args, sort_order);
-            ProfileUtil.end(TAG, "query library items");
+//            ProfileUtil.end(TAG, "query library items");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.d(TAG, "getLibraryItems failed");
                 return false;
             }
 
-            ProfileUtil.start(TAG, "read db result");
+//            ProfileUtil.start(TAG, "read db result");
             readLibraryItemCursor(c, result);
-            ProfileUtil.end(TAG, "read db result");
+//            ProfileUtil.end(TAG, "read db result");
 
             Log.d(TAG, "items loaded, count: " + result.size());
 
@@ -185,13 +185,14 @@ public class OnyxCmsCenter
         data.setSize(file.length());
         data.setlastModified(new Date(file.lastModified()));
         
-        ProfileUtil.start(TAG, "getMetadata query");
-        if (OnyxCmsCenter.getMetadata(context, data)) {
-            ProfileUtil.end(TAG, "getMetadata query");
+//        ProfileUtil.start(TAG, "getMetadata query");
+        boolean succ = OnyxCmsCenter.getMetadata(context, data);
+//        ProfileUtil.end(TAG, "getMetadata query");
+        if (succ) {
             return data;
         }
-        ProfileUtil.end(TAG, "getMetadata query");
         
+        Log.w(TAG, "getMetadata failed: " + filePath);
         return null;
     }
 
@@ -200,19 +201,19 @@ public class OnyxCmsCenter
     {
         Cursor c = null;
         try {
-            ProfileUtil.start(TAG, "query metadatas");
+//            ProfileUtil.start(TAG, "query metadatas");
             c = context.getContentResolver().query(OnyxMetadata.CONTENT_URI,
                     null, null, null, null);
-            ProfileUtil.end(TAG, "query metadatas");
+//            ProfileUtil.end(TAG, "query metadatas");
 
             if (c == null) {
                 Log.d(TAG, "query database failed");
                 return false;
             }
 
-            ProfileUtil.start(TAG, "read db result");
+//            ProfileUtil.start(TAG, "read db result");
             readMetadataCursor(c, result);
-            ProfileUtil.end(TAG, "read db result");
+//            ProfileUtil.end(TAG, "read db result");
             
             return true;
         } finally {
