@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.onyx.android.sdk.data.sys;
 
@@ -22,9 +22,9 @@ import android.util.Log;
 public class OnyxSysCenter
 {
     private static final String TAG = "OnyxSysCenter";
-    
+
     public static final String PROVIDER_AUTHORITY = "com.onyx.android.sdk.OnyxSysProvider";
-    
+
     private static final String KEY_DEFAULT_FONT_FAMILY = "sys.defaut_font_family";
     private static final String KEY_SCREEN_UPDATE_GC_INTERVAL = "sys.screen_update_gc_interval";
     private static final String KEY_SUSPEND_INTERVAL = "sys.suspend_interval";
@@ -33,13 +33,14 @@ public class OnyxSysCenter
     private static final String KEY_DICT = "sys.dict";
     private static final String KEY_DICT_RESOURCES_PATH = "sys.dict_resources_path";
     private static final String KEY_OPEN_LAST_READING_DOCUMENT = "sys.open_last_reading";
-    
+    private static final String KEY_STARTUP_CONFIGURATION_DONE = "sys.startup_configuraton_done";
+
     private static boolean sInitialized = false;
     private static Map<String, OnyxKeyValueItem> sItemMap = new HashMap<String, OnyxKeyValueItem>();
-    
+
     /**
      * first to call to initializing data before using else methods
-     * 
+     *
      * @param context
      * @return
      */
@@ -49,21 +50,21 @@ public class OnyxSysCenter
             assert(false);
             return true;
         }
-        
+
         ArrayList<OnyxKeyValueItem> items = new ArrayList<OnyxKeyValueItem>();
-        
+
         if (!queryKeyValueItems(context, items)) {
-        	
+
             return false;
         }
-        
+
         for (OnyxKeyValueItem i : items) {
             sItemMap.put(i.getKey(), i);
         }
-        sInitialized = true; 
+        sInitialized = true;
         return true;
     }
-    
+
     /**
      * return null when fail
      * @return
@@ -73,7 +74,7 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return null;
         }
-        
+
         return getStringValue(KEY_DEFAULT_FONT_FAMILY);
     }
     public static boolean setDefaultFontFamily(Context context, String fontFamily)
@@ -81,10 +82,10 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         return setStringValue(context, KEY_DEFAULT_FONT_FAMILY, fontFamily);
     }
-    
+
     /**
      * return -1 when fail
      * @return
@@ -94,7 +95,7 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return -1;
         }
-        
+
         return getIntValue(KEY_SCREEN_UPDATE_GC_INTERVAL);
     }
     public static boolean setScreenUpdateGCInterval(Context context, int interval)
@@ -102,10 +103,10 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         return setIntValue(context, KEY_SCREEN_UPDATE_GC_INTERVAL, interval);
     }
-    
+
     /**
      * return -1 when fail
      * @return
@@ -115,7 +116,7 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return -1;
         }
-        
+
         return getIntValue(KEY_SUSPEND_INTERVAL);
     }
     public static boolean setSuspendInterval(Context context, int interval)
@@ -123,10 +124,10 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         return setIntValue(context, KEY_SUSPEND_INTERVAL, interval);
     }
-    
+
     /**
      * return -1 when fail
      * @return
@@ -136,7 +137,7 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return -1;
         }
-        
+
         return getIntValue(KEY_SHUTDOWN_INTERVAL);
     }
     public static boolean setShutdownInterval(Context context, int interval)
@@ -144,10 +145,10 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         return setIntValue(context, KEY_SHUTDOWN_INTERVAL, interval);
     }
-    
+
     /**
      * return null when fail
      * @return
@@ -157,7 +158,7 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return null;
         }
-        
+
         return getStringValue(KEY_TIMEZONE);
     }
     public static boolean setTimezone(Context context, String timezone)
@@ -166,34 +167,34 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         return setStringValue(context, KEY_TIMEZONE, timezone);
     }
-    
+
     /**
      * only return dicts which are available on the device
-     * 
+     *
      * @param context
      * @return
      */
     public static OnyxDictionaryInfo[] getAvailableDictionaryList(Context context)
     {
         OnyxDictionaryInfo[] array_dict = OnyxDictionaryInfo.getDictionaryList();
-        
+
         ArrayList<OnyxDictionaryInfo> dicts = new ArrayList<OnyxDictionaryInfo>();
         for (OnyxDictionaryInfo d : array_dict) {
             if (OnyxDictionaryInfo.isDictionaryAvaiable(context, d)) {
                 dicts.add(d);
             }
         }
-        
+
         OnyxDictionaryInfo[] result = new OnyxDictionaryInfo[dicts.size()];
         return dicts.toArray(result);
     }
-    
+
     /**
      * return null if not found
-     * 
+     *
      * @return
      */
     public static OnyxDictionaryInfo getDictionary()
@@ -201,12 +202,12 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return null;
         }
-        
+
         String dict_id = getStringValue(KEY_DICT);
         if (dict_id == null) {
             return OnyxDictionaryInfo.getDefaultDictionary();
         }
-        
+
         return OnyxDictionaryInfo.findDict(dict_id);
     }
 
@@ -264,6 +265,15 @@ public class OnyxSysCenter
     public static String getOpenLastReadDocument() {
         return getStringValue(KEY_OPEN_LAST_READING_DOCUMENT);
     }
+
+    public static void setStartupConfigurationDone(Context context, boolean b) {
+        setIntValue(context, KEY_STARTUP_CONFIGURATION_DONE, b? 1: 0);
+    }
+
+    public static int getStartupConfigurationDone() {
+        return getIntValue(KEY_STARTUP_CONFIGURATION_DONE);
+    }
+
     /**
      * return null when fail
      * @param key
@@ -274,12 +284,12 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return null;
         }
-        
+
         OnyxKeyValueItem item = sItemMap.get(key);
         if (item == null) {
             return null;
         }
-        
+
         return item.getValue();
     }
     private static boolean setStringValue(Context context, String key, String value)
@@ -287,17 +297,17 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         OnyxKeyValueItem item = sItemMap.get(key);
         if (item == null) {
             item = new OnyxKeyValueItem();
             item.setKey(key);
             item.setValue(value);
-            
+
             if (!insert(context, item)) {
                 return false;
             }
-            
+
             sItemMap.put(item.getKey(), item);
             return true;
         }
@@ -311,7 +321,7 @@ public class OnyxSysCenter
             return true;
         }
     }
-    
+
     /**
      * return -1 when fail
      * @param key
@@ -322,12 +332,12 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return -1;
         }
-        
+
         String value = getStringValue(key);
         if (value == null) {
             return -1;
         }
-        
+
         return Integer.parseInt(value);
     }
     private static boolean setIntValue(Context context, String key, int value)
@@ -335,41 +345,41 @@ public class OnyxSysCenter
         if (!sInitialized) {
             return false;
         }
-        
+
         return setStringValue(context, key, String.valueOf(value));
     }
-    
+
     private static boolean queryKeyValueItems(Context context, Collection<OnyxKeyValueItem> result)
     {
         Cursor c = null;
         try {
             long time_start = System.currentTimeMillis();
-            
-            long time_point = time_start; 
+
+            long time_point = time_start;
             c = context.getContentResolver().query(OnyxKeyValueItem.CONTENT_URI, null, null, null, null);
             long time_db_load = System.currentTimeMillis() - time_point;
-            
+
             if (c == null) {
                 return false;
             }
-            
+
             time_point = System.currentTimeMillis();
             if (c.moveToFirst()) {
                 result.add(OnyxKeyValueItem.Columns.readColumnData(c));
-                
+
                 while (c.moveToNext()) {
                     result.add(OnyxKeyValueItem.Columns.readColumnData(c));
                 }
             }
             long time_db_read = System.currentTimeMillis() - time_point;
-            
+
             long time_end = System.currentTimeMillis();
-            
+
             Log.d(TAG, "items loaded, count: " + result.size());
             Log.d(TAG, "db load time: " + time_db_load + "ms\n");
             Log.d(TAG, "read time: " + time_db_read + "ms\n");
             Log.d(TAG, "total time: " + (time_end - time_start) + "ms\n");
-            
+
             return true;
         }
         finally {
@@ -385,13 +395,13 @@ public class OnyxSysCenter
         if (result == null) {
             return false;
         }
-        
+
         String id = result.getLastPathSegment();
         if (id == null) {
             return false;
         }
         item.setId(Long.parseLong(id));
-        
+
         return true;
     }
     private static boolean update(Context context, OnyxKeyValueItem item)
@@ -402,7 +412,7 @@ public class OnyxSysCenter
         if (count <= 0) {
             return false;
         }
-        
+
         assert(count == 1);
         return true;
     }
@@ -414,7 +424,7 @@ public class OnyxSysCenter
         if (count <= 0) {
             return false;
         }
-        
+
         assert(count == 1);
         return true;
     }
