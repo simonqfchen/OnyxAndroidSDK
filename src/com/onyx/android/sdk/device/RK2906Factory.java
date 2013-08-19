@@ -54,7 +54,6 @@ public class RK2906Factory implements IDeviceFactory
         @SuppressWarnings("rawtypes")
         private static Constructor sDeviceControllerConstructor = null;
         private static Method sMethodIsTouchable;
-        @SuppressWarnings("unused")
         private static Method sMethodGetTouchType;
         private static Method sMethodHasWifi;
         private static Method sMethodHasAudio;
