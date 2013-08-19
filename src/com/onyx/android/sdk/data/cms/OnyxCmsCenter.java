@@ -99,18 +99,18 @@ public class OnyxCmsCenter
                 }
             }
             
-            ProfileUtil.start(TAG, "query library items");
+//            ProfileUtil.start(TAG, "query library items");
             c = context.getContentResolver().query(OnyxLibraryItem.CONTENT_URI, null, selection, selection_args, sort_order);
-            ProfileUtil.end(TAG, "query library items");
+//            ProfileUtil.end(TAG, "query library items");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.d(TAG, "getLibraryItems failed");
                 return false;
             }
 
-            ProfileUtil.start(TAG, "read db result");
+//            ProfileUtil.start(TAG, "read db result");
             readLibraryItemCursor(c, result);
-            ProfileUtil.end(TAG, "read db result");
+//            ProfileUtil.end(TAG, "read db result");
 
             Log.d(TAG, "items loaded, count: " + result.size());
 
@@ -153,7 +153,7 @@ public class OnyxCmsCenter
                             OnyxMetadata.Columns.LAST_MODIFIED + "=" + data.getLastModified().getTime(),
                     new String[] { data.getNativeAbsolutePath() }, null);
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getMetadata, query database failed");
                 return false;
             }
             if (c.moveToFirst()) {
@@ -185,12 +185,12 @@ public class OnyxCmsCenter
         data.setSize(file.length());
         data.setlastModified(new Date(file.lastModified()));
         
-        ProfileUtil.start(TAG, "getMetadata query");
-        if (OnyxCmsCenter.getMetadata(context, data)) {
-            ProfileUtil.end(TAG, "getMetadata query");
+//        ProfileUtil.start(TAG, "getMetadata query");
+        boolean succ = OnyxCmsCenter.getMetadata(context, data);
+//        ProfileUtil.end(TAG, "getMetadata query");
+        if (succ) {
             return data;
         }
-        ProfileUtil.end(TAG, "getMetadata query");
         
         return null;
     }
@@ -200,19 +200,19 @@ public class OnyxCmsCenter
     {
         Cursor c = null;
         try {
-            ProfileUtil.start(TAG, "query metadatas");
+//            ProfileUtil.start(TAG, "query metadatas");
             c = context.getContentResolver().query(OnyxMetadata.CONTENT_URI,
                     null, null, null, null);
-            ProfileUtil.end(TAG, "query metadatas");
+//            ProfileUtil.end(TAG, "query metadatas");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getMetadatas, query database failed");
                 return false;
             }
 
-            ProfileUtil.start(TAG, "read db result");
+//            ProfileUtil.start(TAG, "read db result");
             readMetadataCursor(c, result);
-            ProfileUtil.end(TAG, "read db result");
+//            ProfileUtil.end(TAG, "read db result");
             
             return true;
         } finally {
@@ -311,7 +311,7 @@ public class OnyxCmsCenter
             ProfileUtil.end(TAG, "query recent readings");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getRecentReading, query database failed");
                 return false;
             }
 
@@ -346,7 +346,7 @@ public class OnyxCmsCenter
             ProfileUtil.end(TAG, "query recent readings");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getRecentReadings, query database failed");
                 return false;
             }
 
@@ -376,7 +376,7 @@ public class OnyxCmsCenter
             ProfileUtil.end(TAG, "query bookmarks");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getBookmarks, query database failed");
                 return false;
             }
 
@@ -437,7 +437,7 @@ public class OnyxCmsCenter
             ProfileUtil.end(TAG, "query annotations");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getAnnotations, query database failed");
                 return false;
             }
 
@@ -541,7 +541,7 @@ public class OnyxCmsCenter
             ProfileUtil.end(TAG, "query historyentry");
 
             if (c == null) {
-                Log.d(TAG, "query database failed");
+                Log.w(TAG, "getHistorysByMD5, query database failed");
                 return null;
             }
             
