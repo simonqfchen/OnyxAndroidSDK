@@ -192,7 +192,6 @@ public class OnyxCmsCenter
             return data;
         }
         
-        Log.w(TAG, "getMetadata failed: " + filePath);
         return null;
     }
 
