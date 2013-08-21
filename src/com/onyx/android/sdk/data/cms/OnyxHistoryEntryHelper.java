@@ -32,7 +32,16 @@ public class OnyxHistoryEntryHelper
 	
 	public static void recordFinishReading(Context context, OnyxBookProgress bookProgress)
 	{
-		sHistoryEntry.setEndTime(new Date());
+		Date old_end_time = sHistoryEntry.getEndTime();
+		Date new_end_time = new Date();
+		int durationTime = 1;  //minute
+		if ((new_end_time.getTime() - old_end_time.getTime()) / 1000f >= durationTime * 60) {   // s
+			Log.d(Tag, "Read idle for " + durationTime +" minutes timeout");
+			recordStartReading(context, sHistoryEntry.getMD5(), bookProgress);
+			return;
+		}
+
+		sHistoryEntry.setEndTime(new_end_time);
 		sHistoryEntry.setProgress(bookProgress);
 		OnyxCmsCenter.updateHistory(context, sHistoryEntry);
 		Log.d(Tag, "update id is " + sHistoryEntry.getId());
