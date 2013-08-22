@@ -59,7 +59,7 @@
     <string name="menu_item_screen_exit_full">Обычный экран</string>
     <string name="menu_item_line_spacing">Между строк</string>
     <string name="menu_item_refresh">Экран</string>
-    <string name="menu_item_reading_mode">пейджинг</string>
+    <string name="menu_item_reading_mode">Paging</string>
     <string name="menu_item_settings">Настройки</string>
     <string name="menu_item_font_increase">Больше</string>
     <string name="menu_item_font_decrease">Меньше</string>
