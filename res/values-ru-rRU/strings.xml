@@ -59,7 +59,7 @@
     <string name="menu_item_screen_exit_full">Обычный экран</string>
     <string name="menu_item_line_spacing">Между строк</string>
     <string name="menu_item_refresh">Экран</string>
-    <string name="menu_item_reading_mode">пейджинг</string>
+    <string name="menu_item_reading_mode">Вид </string>
     <string name="menu_item_settings">Настройки</string>
     <string name="menu_item_font_increase">Больше</string>
     <string name="menu_item_font_decrease">Меньше</string>
@@ -90,6 +90,6 @@
     <string name="every_9_pages">Каждые 9 страниц</string>
     <string name="never">Никогда</string>
     <string name="automatic">Автоматически</string>
-    <string name="reading_mode_single_page">одной странице</string>
-    <string name="reading_mode_scroll">прокрутки</string>
+    <string name="reading_mode_single_page">Вид страницы</string>
+    <string name="reading_mode_scroll">Вид свитка</string>
 </resources>
