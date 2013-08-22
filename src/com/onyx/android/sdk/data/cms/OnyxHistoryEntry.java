@@ -1,15 +1,22 @@
 package com.onyx.android.sdk.data.cms;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
+import android.util.Log;
 
-public class OnyxHistoryEntry implements Serializable
+public class OnyxHistoryEntry implements Serializable, Parcelable
 {
+	private static final String TAG = "OnyxHistoryEntry";
+	
     public static final String DB_TABLE_NAME = "library_history";
     private static final long serialVersionUID = 1L;
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
@@ -26,15 +33,17 @@ public class OnyxHistoryEntry implements Serializable
         public static final String START_TIME = "StartTime";
         public static final String END_TIME = "EndTime";
         public static final String PROGRESS = "Progress";
+        public static final String APPLICATION = "Application";
         public static String EXTRA_ATTRIBUTES = "ExtraAttributes";
 
         // need read at runtime
-        private static boolean sColumnIndexesInitialized = false; 
+        private static boolean sColumnIndexesInitialized = false;
         private static int sColumnID = -1;
         private static int sColumnMD5 = -1;
         private static int sColumnStartTime = -1;
         private static int sColumnEndTime = -1;
         private static int sColumnProgress = -1;
+        private static int sColumnApplication = -1;
         private static int sColumnExtraAttributes = -1;
         
         public static ContentValues createColumnData(OnyxHistoryEntry entry)
@@ -44,6 +53,7 @@ public class OnyxHistoryEntry implements Serializable
             values.put(START_TIME, entry.getStartTime() == null ? 0 : entry.getStartTime().getTime());
             values.put(END_TIME, entry.getEndTime() == null ? 0 : entry.getEndTime().getTime());
             values.put(PROGRESS, entry.getProgress() == null ? "" : entry.getProgress().toString());
+            values.put(APPLICATION, entry.getApplication());
 
             return values;
         }
@@ -56,6 +66,7 @@ public class OnyxHistoryEntry implements Serializable
                 sColumnStartTime = c.getColumnIndex(START_TIME);
                 sColumnEndTime = c.getColumnIndex(END_TIME);
                 sColumnProgress = c.getColumnIndex(PROGRESS);
+                sColumnApplication = c.getColumnIndex(APPLICATION);
                 sColumnExtraAttributes = c.getColumnIndex(EXTRA_ATTRIBUTES);
                 
                 sColumnIndexesInitialized = true;
@@ -66,6 +77,7 @@ public class OnyxHistoryEntry implements Serializable
             long start_time = c.getLong(sColumnStartTime);
             long end_time = c.getLong(sColumnEndTime);
             OnyxBookProgress progress = OnyxBookProgress.fromString(c.getString(sColumnProgress));
+            String application = c.getString(sColumnApplication);
             String extra_attributes = c.getString(sColumnExtraAttributes);
             
             OnyxHistoryEntry entry = new OnyxHistoryEntry();
@@ -76,6 +88,7 @@ public class OnyxHistoryEntry implements Serializable
             assert(end_time > 0);
             entry.setEndTime(new Date(end_time));
             entry.setProgress(progress);
+            entry.setApplication(application);
             entry.setExtraAttributes(extra_attributes);
 
             return entry;
@@ -87,6 +100,17 @@ public class OnyxHistoryEntry implements Serializable
     private Date mStartTime = null;
     private Date mEndTime = null;
     private OnyxBookProgress mProgress = null;
+    private String mApplication = null;
+    
+    public OnyxHistoryEntry()
+    {
+    	
+    }
+    
+    public OnyxHistoryEntry(Parcel source)
+    {
+    	readFromParcel(source);
+    }
     
     /**
      * Additional attributes for flexibility
@@ -138,6 +162,17 @@ public class OnyxHistoryEntry implements Serializable
     {
         this.mProgress = progress;
     }
+    
+    public String getApplication()
+    {
+    	return mApplication;
+    }
+    
+    public void setApplication(String application)
+    {
+    	mApplication = application;
+    }
+    
     /**
      * may return null
      * 
@@ -151,5 +186,73 @@ public class OnyxHistoryEntry implements Serializable
     {
         this.mExtraAttributes = extraAttributes;
     }
+    
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static class SerializationUtil {
+        public static String dateToString(Date d)
+        {
+        	if (d == null) {
+        		return "null";
+        	} else {
+        		return SimpleDateFormat.getDateTimeInstance().format(d);
+        	}
+        }
+        public static Date dateFromString(String str)
+        {
+        	if ("null".equals(str)) {
+        		return null;
+        	} else {
+	            try {
+	                return SimpleDateFormat.getDateTimeInstance().parse(str);
+	            }
+	            catch (ParseException e) {
+	                Log.w(TAG, e);
+	            }
+	            return null;
+        	}
+        }
+    }
+    
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	    dest.writeLong(mId);
+	    dest.writeString(mMD5);
+	    dest.writeString(SerializationUtil.dateToString(mStartTime));
+	    dest.writeString(SerializationUtil.dateToString(mEndTime));
+	    dest.writeString(mApplication);
+	}
+	
+	public void readFromParcel(Parcel source)
+	{
+    	mId = source.readLong();
+    	mMD5 = source.readString();
+    	mStartTime = SerializationUtil.dateFromString(source.readString());
+    	mEndTime = SerializationUtil.dateFromString(source.readString());
+    	mApplication = source.readString();
+	}
+	
+	public static final Parcelable.Creator<OnyxHistoryEntry> CREATOR 
+		= new Parcelable.Creator<OnyxHistoryEntry>() 
+	{
+		
+		@Override
+		public OnyxHistoryEntry createFromParcel(Parcel source)
+		{
+			return new OnyxHistoryEntry(source);
+		}
+		
+		@Override
+		public OnyxHistoryEntry[] newArray(int size) 
+		{
+			return new OnyxHistoryEntry[size];
+		}
+
+	};
+
 
 }

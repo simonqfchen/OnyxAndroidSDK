@@ -35,6 +35,7 @@ public class OnyxAnnotation implements Parcelable
         public static String LOCATION_END = "LocationEnd";
         public static String NOTE = "Note";
         public static String UPDATE_TIME = "UpdateTime";
+        public static String APPLICATION = "Application";
         
         // need read at runtime
         private static boolean sColumnIndexesInitialized = false; 
@@ -45,6 +46,7 @@ public class OnyxAnnotation implements Parcelable
         private static int sColumnLocationEnd = -1;
         private static int sColumnNote = -1;
         private static int sColumnUpdateTime = -1;
+        private static int sColumnApplication = -1;
         
         public static ContentValues createColumnData(OnyxAnnotation annot)
         {
@@ -55,6 +57,7 @@ public class OnyxAnnotation implements Parcelable
             values.put(LOCATION_END, annot.getLocationEnd());
             values.put(NOTE, annot.getNote());
             values.put(UPDATE_TIME, SerializationUtil.dateToString(annot.getUpdateTime()));
+            values.put(APPLICATION, annot.getApplication());
             
             return values;
         }
@@ -69,6 +72,7 @@ public class OnyxAnnotation implements Parcelable
                 sColumnLocationEnd = c.getColumnIndex(LOCATION_END);
                 sColumnNote = c.getColumnIndex(NOTE);
                 sColumnUpdateTime = c.getColumnIndex(UPDATE_TIME);
+                sColumnApplication = c.getColumnIndex(APPLICATION);
                 
                 sColumnIndexesInitialized = true;
             }
@@ -80,6 +84,7 @@ public class OnyxAnnotation implements Parcelable
             String loc_end = c.getString(sColumnLocationEnd);
             String note = c.getString(sColumnNote);
             String update_time = c.getString(sColumnUpdateTime);
+            String application = c.getString(sColumnApplication);
             
             annot.setId(id);
             annot.setMD5(md5);
@@ -88,6 +93,7 @@ public class OnyxAnnotation implements Parcelable
             annot.setLocationEnd(loc_end);
             annot.setNote(note);
             annot.setUpdateTime(SerializationUtil.dateFromString(update_time));
+            annot.setApplication(application);
         }
         
         public static OnyxAnnotation readColumnData(Cursor c)
@@ -134,6 +140,7 @@ public class OnyxAnnotation implements Parcelable
     private String mLocationEnd = null;
     private String mNote = null;
     private Date mUpdateTime = null;
+    private String mApplication = null;
     
     public OnyxAnnotation()
     {
@@ -154,6 +161,7 @@ public class OnyxAnnotation implements Parcelable
     	mLocationEnd = annotation.getLocationEnd();
     	mNote = annotation.getNote();
     	mUpdateTime = annotation.getUpdateTime();
+    	mApplication = annotation.getApplication();
     }
 
     @Override
@@ -171,6 +179,7 @@ public class OnyxAnnotation implements Parcelable
 					&& (mLocationBegin == annotation.getLocationBegin() || mLocationBegin.equals(annotation.getLocationBegin()))
 					&& (mLocationEnd == annotation.getLocationEnd() || mLocationEnd.equals(annotation.getLocationEnd()))
 					&& (mUpdateTime == annotation.getUpdateTime() || mUpdateTime.equals(annotation.getUpdateTime()))
+					&& (mApplication == annotation.getApplication() || mApplication.equals(annotation.getApplication()))
 					);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,6 +257,16 @@ public class OnyxAnnotation implements Parcelable
         this.mUpdateTime = updateTime;
     }
 
+    public String getApplication()
+    {
+    	return mApplication;
+    }
+    
+    public void setApplication(String application)
+    {
+    	mApplication = application;
+    }
+    
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -263,6 +282,7 @@ public class OnyxAnnotation implements Parcelable
         dest.writeString(mLocationEnd);
         dest.writeString(mNote);
         dest.writeString(SerializationUtil.dateToString(mUpdateTime));
+        dest.writeString(mApplication);
 	}
 	
 	public void readFromParcel(Parcel source)
@@ -274,6 +294,7 @@ public class OnyxAnnotation implements Parcelable
     	mLocationEnd = source.readString();
     	mNote = source.readString();
     	mUpdateTime = SerializationUtil.dateFromString(source.readString());
+    	mApplication = source.readString();
 	}
 
 	public static final Parcelable.Creator<OnyxAnnotation> CREATOR 

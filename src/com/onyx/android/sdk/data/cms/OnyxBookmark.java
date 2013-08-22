@@ -39,6 +39,7 @@ public class OnyxBookmark implements Parcelable
         public static String QUOTE = "Quote";
         public static String LOCATION = "Location";
         public static String UPDATE_TIME = "UpdateTime";
+        public static String APPLICATION = "Application";
         
         // need read at runtime
         private static boolean sColumnIndexesInitialized = false; 
@@ -47,6 +48,7 @@ public class OnyxBookmark implements Parcelable
         private static int sColumnQuote = -1;
         private static int sColumnLocation = -1;
         private static int sColumnUpdateTime = -1;
+        private static int sColumnApplication = -1;
         
         public static ContentValues createColumnData(OnyxBookmark bookmark)
         {
@@ -55,6 +57,7 @@ public class OnyxBookmark implements Parcelable
             values.put(QUOTE, bookmark.getQuote());
             values.put(LOCATION, bookmark.getLocation());
             values.put(UPDATE_TIME, SerializationUtil.dateToString(bookmark.getUpdateTime()));
+            values.put(APPLICATION, bookmark.getApplication());
             
             return values;
         }
@@ -67,6 +70,7 @@ public class OnyxBookmark implements Parcelable
                 sColumnQuote = c.getColumnIndex(QUOTE);
                 sColumnLocation = c.getColumnIndex(LOCATION);
                 sColumnUpdateTime = c.getColumnIndex(UPDATE_TIME);
+                sColumnApplication = c.getColumnIndex(APPLICATION);
                 
                 sColumnIndexesInitialized = true;
             }
@@ -76,12 +80,14 @@ public class OnyxBookmark implements Parcelable
             String quote = c.getString(sColumnQuote);
             String location = c.getString(sColumnLocation);
             String update_time = c.getString(sColumnUpdateTime);
+            String application = c.getString(sColumnApplication);
             
             bookmark.setId(id);
             bookmark.setMD5(md5);
             bookmark.setQuote(quote);
             bookmark.setLocation(location);
             bookmark.setUpdateTime(SerializationUtil.dateFromString(update_time));
+            bookmark.setApplication(application);
         }
         
         public static OnyxBookmark readColumnData(Cursor c)
@@ -126,10 +132,11 @@ public class OnyxBookmark implements Parcelable
     private String mQuote = null;
     private String mLocation = null;
     private Date mUpdateTime = null;
+    private String mApplication = null;
     
     public OnyxBookmark()
     {
-    	Log.i(TAG, "OnyxBookmark");
+
     }
     
     public OnyxBookmark(Parcel source)
@@ -144,6 +151,7 @@ public class OnyxBookmark implements Parcelable
     	mQuote = bookmark.getQuote();
     	mLocation = bookmark.getLocation();
     	mUpdateTime = bookmark.getUpdateTime();
+    	mApplication = bookmark.getApplication();
     }
 
     @Override
@@ -159,6 +167,7 @@ public class OnyxBookmark implements Parcelable
 					&& (mQuote == bookmark.getQuote() || mQuote.equals(bookmark.getQuote()))
 					&& (mLocation == bookmark.getLocation() || mLocation.equals(bookmark.getLocation()))
 					&& (mUpdateTime == bookmark.getUpdateTime() || mUpdateTime.equals(bookmark.getUpdateTime()))
+					&& (mApplication == bookmark.getApplication() || mApplication.equals(bookmark.getApplication()))
 					);
 		} catch (Exception e) {
 			return false;
@@ -215,6 +224,16 @@ public class OnyxBookmark implements Parcelable
         this.mUpdateTime = updateTime;
     }
 
+    public String getApplication()
+    {
+    	return mApplication;
+    }
+    
+    public void setApplication(String application)
+    {
+    	mApplication = application;
+    }
+    
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -228,6 +247,7 @@ public class OnyxBookmark implements Parcelable
 	    dest.writeString(mQuote);
 	    dest.writeString(mLocation);
     	dest.writeString(SerializationUtil.dateToString(mUpdateTime));
+    	dest.writeString(mApplication);
 	}
 	
 	public void readFromParcel(Parcel source)
@@ -237,6 +257,7 @@ public class OnyxBookmark implements Parcelable
     	mQuote = source.readString();
     	mLocation = source.readString();
     	mUpdateTime = SerializationUtil.dateFromString(source.readString());
+    	mApplication = source.readString();
 	}
 	
 	public static final Parcelable.Creator<OnyxBookmark> CREATOR 

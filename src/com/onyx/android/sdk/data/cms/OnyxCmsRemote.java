@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -36,7 +37,7 @@ public class OnyxCmsRemote
         }
     };
     
-	public static void initSyncService(Context context)
+	private static void initSyncService(Context context)
 	{
 		if (mService == null) {
 			context.startService(new Intent("com.onyx.android.sync.OnyxSyncService"));
@@ -45,25 +46,28 @@ public class OnyxCmsRemote
 		}
 	}
 	
-	public static void unbindSyncService(Context context)
+	public static boolean sync(Context context)
 	{
-		context.unbindService(mConnection);
+		return sync(context, context.getPackageName());
 	}
 	
-	public static boolean sync(Context context, OnyxCmsAggregatedData localData, 
-					OnyxCmsAggregatedData updates, OnyxCmsAggregatedData removes)
+	public static boolean sync(Context context, String application)
 	{
-		if (mService == null) {
-			return false;
-		}
+		initSyncService(context);
 
 		try {
-			return mService.sync(localData, updates, removes);
-		} catch (RemoteException e) {
+			try {
+				return mService.sync(application);
+			} catch (DeadObjectException ex) {
+				mService = null;
+				initSyncService(context);
+				return mService.sync(application);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return false;
 	}
-		
+	
 }

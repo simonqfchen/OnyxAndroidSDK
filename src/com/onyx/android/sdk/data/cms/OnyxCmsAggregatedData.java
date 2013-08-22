@@ -22,26 +22,23 @@ public class OnyxCmsAggregatedData implements Parcelable
 	private OnyxMetadata mBook = null;
 	//private OnyxBookProgress mProgress = null;
 	private OnyxPosition mPosition = null;
+	private List<OnyxHistoryEntry> mHistoryEntries = null;
 	private List<OnyxBookmark> mBookmarks = null;
 	private List<OnyxAnnotation> mAnnotations = null;
 	
-	public OnyxCmsAggregatedData(OnyxMetadata book, OnyxPosition position, 
+	public OnyxCmsAggregatedData(OnyxMetadata book, OnyxPosition position, List<OnyxHistoryEntry> historyEntries,
 		List<OnyxBookmark> bookmarks, List<OnyxAnnotation> annotations)
 	{
 		mBook = book;
 		mPosition = position;
+		mHistoryEntries = historyEntries;
 		mBookmarks = bookmarks;
 		mAnnotations = annotations;
 	}
 	
 	public OnyxCmsAggregatedData(Parcel source)
 	{
-		mBook = source.readParcelable(OnyxMetadata.class.getClassLoader());
-		mPosition = source.readParcelable(OnyxPosition.class.getClassLoader());
-		mBookmarks = new LinkedList<OnyxBookmark>();
-		source.readTypedList(mBookmarks, OnyxBookmark.CREATOR);
-		mAnnotations = new LinkedList<OnyxAnnotation>();
-		source.readTypedList(mAnnotations, OnyxAnnotation.CREATOR);
+		readFromParcel(source);
 	}
 	
 	public OnyxCmsAggregatedData()
@@ -80,6 +77,16 @@ public class OnyxCmsAggregatedData implements Parcelable
 	public void setPosition(OnyxPosition position)
 	{
 		mPosition = position;
+	}
+	
+	public List<OnyxHistoryEntry> getHistoryEntry()
+	{
+		return mHistoryEntries;
+	}
+	
+	public void setHistoryEntry(List<OnyxHistoryEntry> historyEntries)
+	{
+		mHistoryEntries = historyEntries;
 	}
 	
 	/**
@@ -121,6 +128,7 @@ public class OnyxCmsAggregatedData implements Parcelable
 	{
 		dest.writeParcelable(mBook, flags);
 		dest.writeParcelable(mPosition, flags);
+		dest.writeTypedList(mHistoryEntries);
 		dest.writeTypedList(mBookmarks);
 		dest.writeTypedList(mAnnotations);
 	}
@@ -129,6 +137,8 @@ public class OnyxCmsAggregatedData implements Parcelable
 	{
 		mBook = source.readParcelable(OnyxMetadata.class.getClassLoader());
 		mPosition = source.readParcelable(OnyxPosition.class.getClassLoader());
+		mHistoryEntries = new LinkedList<OnyxHistoryEntry>();
+		source.readTypedList(mHistoryEntries, OnyxHistoryEntry.CREATOR);
 		mBookmarks = new LinkedList<OnyxBookmark>();
 		source.readTypedList(mBookmarks, OnyxBookmark.CREATOR);
 		mAnnotations = new LinkedList<OnyxAnnotation>();
@@ -156,6 +166,11 @@ public class OnyxCmsAggregatedData implements Parcelable
 
 	public boolean getAggregatedDataByISBN(Context context, String isbn)
 	{
+		return getAggregatedDataByISBN(context, context.getPackageName(), isbn);
+	}
+	
+	public boolean getAggregatedDataByISBN(Context context, String application, String isbn)
+	{
 		OnyxMetadata metadata = new OnyxMetadata();
 		metadata.setISBN(isbn);
 		if (!OnyxCmsCenter.getMetadata(context, metadata)) {
@@ -166,24 +181,28 @@ public class OnyxCmsAggregatedData implements Parcelable
 		String md5 = mBook.getMD5();
 		
 		List<OnyxAnnotation> annotations = new LinkedList<OnyxAnnotation>();
-		if (OnyxCmsCenter.getAnnotations(context, md5, annotations)) {
+		if (OnyxCmsCenter.getAnnotations(context, application, md5, annotations)) {
 			mAnnotations = annotations;
 		} else {
 			mAnnotations = null;
 		}
 		
 		List<OnyxBookmark> bookmarks = new LinkedList<OnyxBookmark>();
-		if (OnyxCmsCenter.getBookmarks(context, md5, bookmarks)) {
+		if (OnyxCmsCenter.getBookmarks(context, application, md5, bookmarks)) {
 			mBookmarks = bookmarks;
 		} else {
 			mBookmarks = null;
 		}
 		
-		// TODO: get OnyxPosition here
-/*
+		mHistoryEntries = OnyxCmsCenter.getHistorysByMD5(context, application, md5);
+
 		OnyxPosition position = new OnyxPosition();
-		mPosition = position;
-*/		
+		if (OnyxCmsCenter.getPosition(context, application, md5, position)) {
+			mPosition = position;
+		} else {
+			mPosition = null;
+		}
+
 		return true;
 	}
 	

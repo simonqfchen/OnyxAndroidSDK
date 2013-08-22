@@ -39,6 +39,7 @@ public class OnyxPosition implements Parcelable
         public static String MD5 = "MD5";
         public static String LOCATION = "Location";
         public static String UPDATE_TIME = "UpdateTime";
+        public static String APPLICATION = "Application";
         
         // need read at runtime
         private static boolean sColumnIndexesInitialized = false; 
@@ -46,6 +47,7 @@ public class OnyxPosition implements Parcelable
         private static int sColumnMD5 = -1;
         private static int sColumnLocation = -1;
         private static int sColumnUpdateTime = -1;
+        private static int sColumnApplication = -1;
         
         public static ContentValues createColumnData(OnyxPosition position)
         {
@@ -53,6 +55,7 @@ public class OnyxPosition implements Parcelable
             values.put(MD5, position.getMD5());
             values.put(LOCATION, position.getLocation());
             values.put(UPDATE_TIME, SerializationUtil.dateToString(position.getUpdateTime()));
+            values.put(APPLICATION, position.getApplication());
             
             return values;
         }
@@ -64,6 +67,7 @@ public class OnyxPosition implements Parcelable
                 sColumnMD5 = c.getColumnIndex(MD5);
                 sColumnLocation = c.getColumnIndex(LOCATION);
                 sColumnUpdateTime = c.getColumnIndex(UPDATE_TIME);
+                sColumnApplication = c.getColumnIndex(APPLICATION);
                 
                 sColumnIndexesInitialized = true;
             }
@@ -72,11 +76,13 @@ public class OnyxPosition implements Parcelable
             String md5 = c.getString(sColumnMD5);
             String location = c.getString(sColumnLocation);
             String update_time = c.getString(sColumnUpdateTime);
+            String application = c.getString(sColumnApplication);
             
             position.setId(id);
             position.setMD5(md5);
             position.setLocation(location);
             position.setUpdateTime(SerializationUtil.dateFromString(update_time));
+            position.setApplication(application);
         }
         
         public static OnyxPosition readColumnData(Cursor c)
@@ -120,6 +126,7 @@ public class OnyxPosition implements Parcelable
     private String mMD5 = null;
     private String mLocation = null;
     private Date mUpdateTime = null;
+    private String mApplication = null;
     
     public OnyxPosition()
     {
@@ -136,6 +143,7 @@ public class OnyxPosition implements Parcelable
     	mMD5 = position.getMD5();
     	mLocation = position.getLocation();
     	mUpdateTime = position.getUpdateTime();
+    	mApplication = position.getApplication();
     }
     
     @Override
@@ -150,6 +158,7 @@ public class OnyxPosition implements Parcelable
 			return ((mMD5 == position.getMD5() || mMD5.equals(position.getMD5()))
 					&& (mLocation == position.getLocation() || mLocation.equals(position.getLocation()))
 					&& (mUpdateTime == position.getUpdateTime() || mUpdateTime.equals(position.getUpdateTime()))
+					&& (mApplication == position.getApplication() || mApplication.equals(position.getApplication()))
 					);
 		} catch (Exception e) {
 			return false;
@@ -196,6 +205,16 @@ public class OnyxPosition implements Parcelable
         this.mUpdateTime = updateTime;
     }
 
+    public String getApplication()
+    {
+    	return mApplication;
+    }
+    
+    public void setApplication(String application)
+    {
+    	mApplication = application;
+    }
+    
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -208,6 +227,7 @@ public class OnyxPosition implements Parcelable
 		dest.writeString(mMD5);
 		dest.writeString(mLocation);
 		dest.writeString(SerializationUtil.dateToString(mUpdateTime));
+		dest.writeString(mApplication);
 	}
 	
 	public void readFromParcel(Parcel source) {
@@ -215,6 +235,7 @@ public class OnyxPosition implements Parcelable
     	mMD5 = source.readString();
     	mLocation = source.readString();
 		mUpdateTime = SerializationUtil.dateFromString(source.readString());
+		mApplication = source.readString();
 	}
 	
 	public static final Parcelable.Creator<OnyxPosition> CREATOR 

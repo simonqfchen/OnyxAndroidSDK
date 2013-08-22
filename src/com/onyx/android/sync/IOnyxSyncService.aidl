@@ -32,5 +32,5 @@ interface IOnyxSyncService {
      * This shows how to do so, by registering a callback interface with
      * the service.
      */
-	boolean sync(in OnyxCmsAggregatedData localData, out OnyxCmsAggregatedData updates, out OnyxCmsAggregatedData removes);
+	boolean sync(String application);
 }

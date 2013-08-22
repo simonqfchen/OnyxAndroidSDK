@@ -27,8 +27,7 @@ public class OnyxSyncCenter {
     public static final Uri POSITION_CONTENT_URI = Uri.parse("content://" + PROVIDER_AUTHORITY + "/" + OnyxPosition.DB_TABLE_NAME);
     public static final Uri BOOKMARK_CONTENT_URI = Uri.parse("content://" + PROVIDER_AUTHORITY + "/" + OnyxBookmark.DB_TABLE_NAME);
     public static final Uri ANNOTATION_CONTENT_URI = Uri.parse("content://" + PROVIDER_AUTHORITY + "/" + OnyxAnnotation.DB_TABLE_NAME);
-	
-    
+	public static final Uri HISTORY_ENTRY_CONTENT_URI = Uri.parse("content://" + PROVIDER_AUTHORITY + "/" + OnyxHistoryEntry.DB_TABLE_NAME);
     
 	public static boolean getBookmarks(Context context, String md5, List<OnyxBookmark> result)
 	{
@@ -292,7 +291,72 @@ public class OnyxSyncCenter {
 
         return true;
     }
+    
+	public static boolean getHistoryEntries(Context context, String md5, List<OnyxHistoryEntry> result)
+	{
+        Cursor c = null;
+        try {
+            ProfileUtil.start(TAG, "query historyEntries");
+            c = context.getContentResolver().query(HISTORY_ENTRY_CONTENT_URI,
+                    null,
+                    OnyxHistoryEntry.Columns.MD5 + "='" + md5 + "'", 
+                    null, null);
+            ProfileUtil.end(TAG, "query historyEntries");
+
+            if (c == null) {
+                Log.d(TAG, "query database failed");
+                return false;
+            }
+
+            ProfileUtil.start(TAG, "read db result");
+            readHistoryEntryCursor(c, result);
+            ProfileUtil.end(TAG, "read db result");
+            
+            Log.d(TAG, "items loaded, count: " + result.size());
+            
+            return true;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+	}
 	
+    public static boolean insertHistoryEntry(Context context, OnyxHistoryEntry historyEntry)
+    {
+        Uri result = context.getContentResolver().insert(
+                HISTORY_ENTRY_CONTENT_URI,
+                OnyxHistoryEntry.Columns.createColumnData(historyEntry));
+        if (result == null) {
+            return false;
+        }
+
+        String id = result.getLastPathSegment();
+        if (id == null) {
+            return false;
+        }
+
+        historyEntry.setId(Long.parseLong(id));
+
+        return true;
+    }
+    
+    private static void readHistoryEntryCursor(Cursor c,
+            Collection<OnyxHistoryEntry> result)
+    {
+        if (c.moveToFirst()) {
+            result.add(OnyxHistoryEntry.Columns.readColumnsData(c));
+
+            while (c.moveToNext()) {
+                if (Thread.interrupted()) {
+                    return;
+                }
+
+                result.add(OnyxHistoryEntry.Columns.readColumnsData(c));
+            }
+        }
+    }
+    
 	public static boolean getAggregatedData(Context context, String isbn, OnyxCmsAggregatedData data)
 	{
 		if (isbn == null || "".equals(isbn)) {
@@ -360,39 +424,43 @@ public class OnyxSyncCenter {
 	
 	public static class CmsSync
 	{
-		private static boolean mergePosition(Context context, OnyxPosition position)
+		private static boolean mergePosition(Context context, String application, OnyxPosition position)
 		{
-			// TODO: NOT implement
-			Log.i(TAG, "Merge position");
-			return true;
+			if (position.getId() == -1) {
+				Log.i(TAG, "Insert position");
+				return OnyxCmsCenter.insertPosition(context, application, position);
+			} else {
+				Log.i(TAG, "Update position");
+				return OnyxCmsCenter.updatePosition(context, application, position);
+			}
 		}
 		
-		private static boolean mergeBookmarks(Context context, List<OnyxBookmark> bookmarks)
+		private static boolean mergeBookmarks(Context context, String application, List<OnyxBookmark> bookmarks)
 		{
 			for (OnyxBookmark bookmark : bookmarks) {
 				if (bookmark.getId() == -1) {
 					Log.i(TAG, "Insert bookmark");
-					OnyxCmsCenter.insertBookmark(context, bookmark);
+					OnyxCmsCenter.insertBookmark(context, application, bookmark);
 				} else {
 					Log.i(TAG, "Update bookmark");
-					OnyxCmsCenter.updateBookmark(context, bookmark);
+					OnyxCmsCenter.updateBookmark(context, application, bookmark);
 				}
 			}
 			
 			return true;
 		}
 		
-		private static boolean mergeAnnotations(Context context, List<OnyxAnnotation> annotations)
+		private static boolean mergeAnnotations(Context context, String application, List<OnyxAnnotation> annotations)
 		{
 			for (OnyxAnnotation annotation : annotations) {
 				Log.i(TAG, annotation.getQuote());
 				
 				if (annotation.getId() == -1) {
 					Log.i(TAG, "Insert annotation");
-					OnyxCmsCenter.insertAnnotation(context, annotation);
+					OnyxCmsCenter.insertAnnotation(context, application, annotation);
 				} else {
 					Log.i(TAG, "Update annotation");
-					OnyxCmsCenter.updateAnnotation(context, annotation);
+					OnyxCmsCenter.updateAnnotation(context, application, annotation);
 				}
 			}
 			
@@ -431,49 +499,52 @@ public class OnyxSyncCenter {
 			return false;
 		}
 		
+		private static boolean syncHistoryEnties(Context context, String application, String md5)
+		{
+			return OnyxCmsCenter.deleteHistoryByMD5(context, application, md5);
+		}
+		
 		public static boolean mergeDiff(Context context, OnyxCmsAggregatedData updates, OnyxCmsAggregatedData removes)
 		{
-			boolean updated = false;
+			return mergeDiff(context, context.getPackageName(), updates, removes);
+		}
+		
+		public static boolean mergeDiff(Context context, String application, OnyxCmsAggregatedData updates, OnyxCmsAggregatedData removes)
+		{
 			boolean result = true;
 			
 			if (updates.getPosition() != null) {
-				if (!mergePosition(context, updates.getPosition())) {
+				if (!mergePosition(context, application, updates.getPosition())) {
 					result = false;
 				}
-				updated = true;
 			}
 			
 			if (updates.getBookmarks() != null && updates.getBookmarks().size() > 0) {
-				if (!mergeBookmarks(context, updates.getBookmarks())) {
+				if (!mergeBookmarks(context, application, updates.getBookmarks())) {
 					result = false;
 				}
-				updated = true;
 			}
 			
 			if (updates.getAnnotations() != null && updates.getAnnotations().size() > 0) {
-				if (!mergeAnnotations(context, updates.getAnnotations())) {
+				if (!mergeAnnotations(context, application, updates.getAnnotations())) {
 					result = false;
 				}
-				updated = true;
 			}
 			
 			if (removes.getBookmarks() != null && removes.getBookmarks().size() > 0) {
 				if (!deleteBookmarks(context, removes.getBookmarks())) {
 					result = false;
 				}
-				updated = true;
 			}
 			
 			if (removes.getAnnotations() != null && removes.getAnnotations().size() > 0) {
 				if (!deleteAnnotations(context, removes.getAnnotations())) {
 					result = false;
 				}
-				updated = true;
 			}
 			
-			if (updated) {
-				updateTime(context, updates.getBook());
-			}
+			syncHistoryEnties(context, application, updates.getBook().getMD5());
+			updateTime(context, updates.getBook());
 			
 			return result;
 		}
