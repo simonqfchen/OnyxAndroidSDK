@@ -59,7 +59,7 @@ public class OnyxCmsCenter
             if (selection_args != null && selection_args.length > 0) {
                 selection = "type=?";
                 for(int i = 0; i < selection_args.length - 1; i++) {
-                    selection = selection.concat(" OR type=?");   
+                    selection = selection.concat(" OR type=?");
                 }
             }
         }
@@ -128,6 +128,32 @@ public class OnyxCmsCenter
         return getLibraryItems(context, SortOrder.None, AscDescOrder.Asc, null, -1, result);
     }
 
+    public static boolean insertLibraryItem(Context context, File file)
+    {
+        Log.d(TAG, "insert LibraryItem: " + file.getAbsolutePath());
+        
+        int n = context.getContentResolver().delete(OnyxLibraryItem.CONTENT_URI,
+                OnyxLibraryItem.Columns.PATH + "=?",
+                new String[] { file.getAbsolutePath() });
+        if (n > 0) {
+            Log.w(TAG, "delete obsolete library item: " + n);
+        }
+        
+        Uri result = context.getContentResolver().insert(
+                OnyxLibraryItem.CONTENT_URI,
+                OnyxLibraryItem.Columns.createColumnData(file));
+        if (result == null) {
+            return false;
+        }
+
+        String id = result.getLastPathSegment();
+        if (id == null) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean deleteLibraryItem(Context context , String path ) {
     	int result_code = context.getContentResolver().delete(
     			OnyxLibraryItem.CONTENT_URI , OnyxLibraryItem.Columns.PATH + " = ?" ,
@@ -146,12 +172,19 @@ public class OnyxCmsCenter
     {
         Cursor c = null;
         try {
-            c = context.getContentResolver().query(OnyxMetadata.CONTENT_URI,
-                    null,
-                    OnyxMetadata.Columns.NATIVE_ABSOLUTE_PATH + "=?" + " AND " +
-                            OnyxMetadata.Columns.SIZE + "=" + data.getSize() + " AND " +
-                            OnyxMetadata.Columns.LAST_MODIFIED + "=" + data.getLastModified().getTime(),
-                    new String[] { data.getNativeAbsolutePath() }, null);
+        	if (data.getISBN() != null) {
+                c = context.getContentResolver().query(OnyxMetadata.CONTENT_URI,
+                        null,
+                        OnyxMetadata.Columns.ISBN + "=?",
+                        new String[] { data.getISBN() }, null);
+        	} else {
+                c = context.getContentResolver().query(OnyxMetadata.CONTENT_URI,
+                        null,
+                        OnyxMetadata.Columns.NATIVE_ABSOLUTE_PATH + "=?" + " AND " +
+                                OnyxMetadata.Columns.SIZE + "=" + data.getSize() + " AND " +
+                                OnyxMetadata.Columns.LAST_MODIFIED + "=" + data.getLastModified().getTime(),
+                        new String[] { data.getNativeAbsolutePath() }, null);
+        	}
             if (c == null) {
                 Log.d(TAG, "query database failed");
                 return false;
@@ -364,13 +397,19 @@ public class OnyxCmsCenter
         }
     }
     
-    public static boolean getBookmarks(Context context, String md5, ArrayList<OnyxBookmark> result)
+    public static boolean getBookmarks(Context context, String md5, List<OnyxBookmark> result)
+    {
+    	return getBookmarks(context, context.getPackageName(), md5, result);
+    }
+    
+    public static boolean getBookmarks(Context context, String application, String md5, List<OnyxBookmark> result)
     {
         Cursor c = null;
         try {
             ProfileUtil.start(TAG, "query bookmarks");
             c = context.getContentResolver().query(OnyxBookmark.CONTENT_URI,
                     null,
+                    OnyxBookmark.Columns.APPLICATION + "='" + application + "' AND " +
                     OnyxBookmark.Columns.MD5 + "='" + md5 + "'", 
                     null, null);
             ProfileUtil.end(TAG, "query bookmarks");
@@ -393,9 +432,16 @@ public class OnyxCmsCenter
             }
         }
     }
-    
+
     public static boolean insertBookmark(Context context, OnyxBookmark bookmark)
     {
+    	return insertBookmark(context, context.getPackageName(), bookmark);
+    }
+    
+    public static boolean insertBookmark(Context context, String application, OnyxBookmark bookmark)
+    {
+    	bookmark.setApplication(application);
+    	
         Uri result = context.getContentResolver().insert(
                 OnyxBookmark.CONTENT_URI,
                 OnyxBookmark.Columns.createColumnData(bookmark));
@@ -425,13 +471,39 @@ public class OnyxCmsCenter
         return true;
     }
     
-    public static boolean getAnnotations(Context context, String md5, ArrayList<OnyxAnnotation> result)
+    public static boolean updateBookmark(Context context, OnyxBookmark bookmark)
+    {
+    	return updateBookmark(context, context.getPackageName(), bookmark);
+    }
+
+    public static boolean updateBookmark(Context context, String application, OnyxBookmark bookmark)
+    {
+    	bookmark.setApplication(application);
+    	
+        Uri row = Uri.withAppendedPath(OnyxBookmark.CONTENT_URI, String.valueOf(bookmark.getId()));
+        int count = context.getContentResolver().update(row,
+                OnyxBookmark.Columns.createColumnData(bookmark), null, null);
+        if (count <= 0) {
+            return false;
+        }
+
+        assert (count == 1);
+        return true;
+    }
+    
+    public static boolean getAnnotations(Context context, String md5, List<OnyxAnnotation> result)
+    {
+    	return getAnnotations(context, context.getPackageName(), md5, result);
+    }
+    
+    public static boolean getAnnotations(Context context, String application, String md5, List<OnyxAnnotation> result)
     {
         Cursor c = null;
         try {
             ProfileUtil.start(TAG, "query annotations");
             c = context.getContentResolver().query(OnyxAnnotation.CONTENT_URI,
                     null, 
+                    OnyxAnnotation.Columns.APPLICATION + "='" + application + "' AND " +
                     OnyxAnnotation.Columns.MD5 + "='" + md5 + "'", 
                     null, null);
             ProfileUtil.end(TAG, "query annotations");
@@ -457,6 +529,13 @@ public class OnyxCmsCenter
     
     public static boolean insertAnnotation(Context context, OnyxAnnotation annotation)
     {
+    	return insertAnnotation(context, context.getPackageName(), annotation);
+    }
+    
+    public static boolean insertAnnotation(Context context, String application, OnyxAnnotation annotation)
+    {
+    	annotation.setApplication(application);
+    	
         Uri result = context.getContentResolver().insert(
                 OnyxAnnotation.CONTENT_URI,
                 OnyxAnnotation.Columns.createColumnData(annotation));
@@ -476,7 +555,14 @@ public class OnyxCmsCenter
     
     public static boolean updateAnnotation(Context context, OnyxAnnotation annotation)
     {
-        Uri row = Uri.withAppendedPath(OnyxAnnotation.CONTENT_URI, String.valueOf(annotation.getId()));
+    	return updateAnnotation(context, context.getPackageName(), annotation);
+    }
+
+    public static boolean updateAnnotation(Context context, String application, OnyxAnnotation annotation)
+    {
+    	annotation.setApplication(application);
+
+    	Uri row = Uri.withAppendedPath(OnyxAnnotation.CONTENT_URI, String.valueOf(annotation.getId()));
         int count = context.getContentResolver().update(row,
                 OnyxAnnotation.Columns.createColumnData(annotation), null, null);
         if (count <= 0) {
@@ -501,6 +587,13 @@ public class OnyxCmsCenter
 
     public static boolean insertHistory(Context context, OnyxHistoryEntry historyEntry)
     {
+    	return insertHistory(context, context.getPackageName(), historyEntry);
+    }
+    
+    public static boolean insertHistory(Context context, String application, OnyxHistoryEntry historyEntry)
+    {
+    	historyEntry.setApplication(application);
+    	
         Uri result = context.getContentResolver().insert(
         		OnyxHistoryEntry.CONTENT_URI,
         		OnyxHistoryEntry.Columns.createColumnData(historyEntry));
@@ -519,6 +612,13 @@ public class OnyxCmsCenter
     
     public static boolean updateHistory(Context context, OnyxHistoryEntry onyxHistoryEntry)
     {
+    	return updateHistory(context, context.getPackageName(), onyxHistoryEntry);
+    }
+    
+    public static boolean updateHistory(Context context, String application, OnyxHistoryEntry onyxHistoryEntry)
+    {
+    	onyxHistoryEntry.setApplication(application);
+    	
         Uri row = Uri.withAppendedPath(OnyxHistoryEntry.CONTENT_URI,
                 String.valueOf(onyxHistoryEntry.getId()));
         int count = context.getContentResolver().update(row,
@@ -532,12 +632,18 @@ public class OnyxCmsCenter
     
     public static List<OnyxHistoryEntry> getHistorysByMD5(Context context, String md5)
     {
+    	return getHistorysByMD5(context, context.getPackageName(), md5);
+    }
+    
+    public static List<OnyxHistoryEntry> getHistorysByMD5(Context context, String application, String md5)
+    {
         Cursor c = null;
         List<OnyxHistoryEntry> historyEntries = new ArrayList<OnyxHistoryEntry>();
         try {
             ProfileUtil.start(TAG, "query historyentry");
             c = context.getContentResolver().query(OnyxHistoryEntry.CONTENT_URI,
-                    null, OnyxHistoryEntry.Columns.MD5 + "= ?", new String[]{md5}, null);
+                    null, OnyxHistoryEntry.Columns.APPLICATION + "= ? AND " 
+                    		+ OnyxHistoryEntry.Columns.MD5 + "= ?", new String[]{application, md5}, null);
             ProfileUtil.end(TAG, "query historyentry");
 
             if (c == null) {
@@ -558,9 +664,15 @@ public class OnyxCmsCenter
     }
     
     public static boolean deleteHistoryByMD5(Context context, String md5) {
+    	return deleteHistoryByMD5(context, context.getPackageName(), md5);
+    }
+    
+    public static boolean deleteHistoryByMD5(Context context, String application, String md5) {
     	int result_code = context.getContentResolver().delete(
-    			OnyxHistoryEntry.CONTENT_URI , OnyxHistoryEntry.Columns.MD5 + " = ?" ,
-    			new String[]{md5});
+    			OnyxHistoryEntry.CONTENT_URI , 
+    			OnyxHistoryEntry.Columns.APPLICATION + " = ? AND "
+    			+ OnyxHistoryEntry.Columns.MD5 + " = ?" ,
+    			new String[] { application, md5 });
     	return result_code > 0 ? true : false;
 	}
 
@@ -857,4 +969,99 @@ public class OnyxCmsCenter
             }
         }
     }
+    
+    public static boolean getPosition(Context context, String md5, OnyxPosition result)
+    {
+    	return getPosition(context, context.getPackageName(), md5, result);
+    }
+    
+	public static boolean getPosition(Context context, String application, String md5, OnyxPosition result)
+	{
+        Cursor c = null;
+        try {
+            ProfileUtil.start(TAG, "query annotations");
+            c = context.getContentResolver().query(OnyxPosition.CONTENT_URI, 
+                    null, 
+                    OnyxPosition.Columns.APPLICATION + "='" + application + "' AND " +
+                    OnyxPosition.Columns.MD5 + "='" + md5 + "'", 
+                    null, null);
+            ProfileUtil.end(TAG, "query annotations");
+
+            if (c == null) {
+                Log.d(TAG, "query database failed");
+                return false;
+            }
+
+            if (c.moveToFirst()) {
+                OnyxPosition.Columns.readColumnData(c, result);
+                return true;
+            } else {
+            	return false;
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+	}
+
+    public static boolean insertPosition(Context context, OnyxPosition location)
+    {
+    	return insertPosition(context, context.getPackageName(), location);
+    }
+    
+	public static boolean insertPosition(Context context, String application, OnyxPosition location)
+	{
+		location.setApplication(application);
+		
+        Uri result = context.getContentResolver().insert(
+                OnyxPosition.CONTENT_URI,
+                OnyxPosition.Columns.createColumnData(location));
+        if (result == null) {
+            return false;
+        }
+
+        String id = result.getLastPathSegment();
+        if (id == null) {
+            return false;
+        }
+
+        location.setId(Long.parseLong(id));
+
+        return true;
+	}
+
+	public static boolean updatePosition(Context context, OnyxPosition location)
+	{
+		return updatePosition(context, context.getPackageName(), location);
+	}
+	
+	
+	public static boolean updatePosition(Context context, String application, OnyxPosition location)
+	{
+		location.setApplication(application);
+
+    	Uri row = Uri.withAppendedPath(OnyxPosition.CONTENT_URI, String.valueOf(location.getId()));
+        int count = context.getContentResolver().update(row,
+                OnyxPosition.Columns.createColumnData(location), null, null);
+        if (count <= 0) {
+            return false;
+        }
+
+        assert (count == 1);
+        return true;
+	}
+	
+    public static boolean deletePosition(Context context, OnyxPosition location)
+    {
+        Uri row = Uri.withAppendedPath(OnyxPosition.CONTENT_URI, String.valueOf(location.getId()));
+        int count = context.getContentResolver().delete(row, null, null);
+        if (count <= 0) {
+            return false;
+        }
+        
+        assert(count == 1);
+        return true;
+    }
+
 }

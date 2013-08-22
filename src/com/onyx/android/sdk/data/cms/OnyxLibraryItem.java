@@ -4,11 +4,15 @@
 package com.onyx.android.sdk.data.cms;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.onyx.android.sdk.data.util.FileUtil;
 import com.onyx.android.sdk.data.util.NotImplementedException;
@@ -19,6 +23,8 @@ import com.onyx.android.sdk.data.util.NotImplementedException;
  */
 public class OnyxLibraryItem
 {
+    private final static String TAG = "OnyxLibraryItem";
+
     public static final String DB_TABLE_NAME = "library_item";
     public static final Uri CONTENT_URI = Uri.parse("content://" + OnyxCmsCenter.PROVIDER_AUTHORITY + "/" + DB_TABLE_NAME);
     
@@ -171,4 +177,5 @@ public class OnyxLibraryItem
     {
         return mLastChange;
     }
+    
 }
