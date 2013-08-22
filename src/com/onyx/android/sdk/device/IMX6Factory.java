@@ -508,9 +508,7 @@ public class IMX6Factory implements IDeviceFactory
     @Override
     public boolean isPresent()
     {
-        return Build.MANUFACTURER.contentEquals("ONYX") &&
-                Build.MODEL.contentEquals("ONYX_BOOX") &&
-                Build.DEVICE.contentEquals("M96");
+        return Build.DEVICE.contentEquals("M96");
     }
 
     /* (non-Javadoc)
