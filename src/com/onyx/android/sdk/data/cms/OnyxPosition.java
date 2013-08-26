@@ -158,7 +158,7 @@ public class OnyxPosition implements Parcelable
 			return ((mMD5 == position.getMD5() || mMD5.equals(position.getMD5()))
 					&& (mLocation == position.getLocation() || mLocation.equals(position.getLocation()))
 					&& (mUpdateTime == position.getUpdateTime() || mUpdateTime.equals(position.getUpdateTime()))
-					&& (mApplication == position.getApplication() || mApplication.equals(position.getApplication()))
+//					&& (mApplication == position.getApplication() || mApplication.equals(position.getApplication()))
 					);
 		} catch (Exception e) {
 			return false;

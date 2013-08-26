@@ -179,7 +179,7 @@ public class OnyxAnnotation implements Parcelable
 					&& (mLocationBegin == annotation.getLocationBegin() || mLocationBegin.equals(annotation.getLocationBegin()))
 					&& (mLocationEnd == annotation.getLocationEnd() || mLocationEnd.equals(annotation.getLocationEnd()))
 					&& (mUpdateTime == annotation.getUpdateTime() || mUpdateTime.equals(annotation.getUpdateTime()))
-					&& (mApplication == annotation.getApplication() || mApplication.equals(annotation.getApplication()))
+//					&& (mApplication == annotation.getApplication() || mApplication.equals(annotation.getApplication()))
 					);
 		} catch (Exception e) {
 			e.printStackTrace();
