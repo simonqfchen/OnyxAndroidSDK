@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="#000000" >
+
+        <TextView
+            android:id="@+id/textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/go_to_page"
+            android:textColor="#FFFFFF"
+            android:gravity="center_vertical"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/title"
+            android:src="@drawable/close_dialog" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textview_page_num"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/textview_bg"
+        android:gravity="right"
+        android:textColor="#000000"
+        android:textSize="25sp" />
+
+    <com.onyx.android.sdk.ui.OnyxGridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/button_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="#FFFFFF"
+        android:columnWidth="110dp"
+        android:horizontalSpacing="5dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp" >
+    </com.onyx.android.sdk.ui.OnyxGridView>
+
+</LinearLayout>

@@ -67,4 +67,28 @@ public abstract class EpdController
         return DeviceInfo.singleton().getDeviceController().setEpdMode(context, mode);
     }
     
+    public static UpdateMode getViewDefaultUpdateMode(View view)
+    {
+        return DeviceInfo.singleton().getDeviceController().getViewDefaultUpdateMode(view);
+        
+    }
+    public static boolean setViewDefaultUpdateMode(View view, EpdController.UpdateMode mode)
+    {
+        DeviceInfo.singleton().getDeviceController().setViewDefaultUpdateMode(view, mode);;
+        return false;
+        
+    }
+
+    public static EpdController.UpdateMode getSystemDefaultUpdateMode()
+    {
+        return DeviceInfo.singleton().getDeviceController().getSystemDefaultUpdateMode();
+        
+    }
+    public static boolean setSystemDefaultUpdateMode(EpdController.UpdateMode mode)
+    {
+        DeviceInfo.singleton().getDeviceController().setSystemDefaultUpdateMode(mode);;
+        return false;
+        
+    }
+    
 }

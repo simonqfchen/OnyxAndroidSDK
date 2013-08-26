@@ -3,6 +3,7 @@ package com.onyx.android.sdk.ui.dialog;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.onyx.android.sdk.R;
 import com.onyx.android.sdk.device.DeviceInfo;
 import com.onyx.android.sdk.device.EpdController;
 import com.onyx.android.sdk.device.EpdController.EPDMode;
+import com.onyx.android.sdk.device.EpdController.UpdateMode;
 import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
 import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler;
 import com.onyx.android.sdk.ui.dialog.data.IReaderMenuHandler.LineSpacingProperty;
@@ -132,6 +135,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
         mLayoutRotation_90 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_90);
         mLayoutRotation_180 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_180);
         mLayoutRotation_270 = (LinearLayout) mRotationView.findViewById(R.id.linearlayout_rotation_270);
+        
 
         mMenuHandler = menuHandler;
 
@@ -793,6 +797,17 @@ public class DialogReaderMenu extends DialogBaseOnyx
         mParams.width = mWindow.getWindowManager().getDefaultDisplay().getWidth();
         mParams.y = mWindow.getWindowManager().getDefaultDisplay().getHeight();
         mWindow.setAttributes(mParams);
+        
+        this.setOnDismissListener(new OnDismissListener()
+        {
+            
+            @Override
+            public void onDismiss(DialogInterface dialog)
+            {
+//                EpdController.invalidate(mActivity.getWindow().getDecorView(), UpdateMode.GC);
+                
+            }
+        });
     }
 
     @Override
@@ -864,6 +879,8 @@ public class DialogReaderMenu extends DialogBaseOnyx
         }
         super.dismiss();
     }
+    
+    
 
     /**
      * dirty hacking for DJVU's menu, must be called before menu dialog is shown
@@ -1263,4 +1280,12 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
         return orientation;
     }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        EpdController.invalidate(DialogReaderMenu.this.getWindow().getDecorView(), UpdateMode.DW);
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

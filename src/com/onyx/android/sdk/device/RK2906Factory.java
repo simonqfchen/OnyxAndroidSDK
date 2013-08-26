@@ -405,6 +405,34 @@ public class RK2906Factory implements IDeviceFactory
 
             view.postInvalidate();
         }
+
+        @Override
+        public UpdateMode getViewDefaultUpdateMode(View view)
+        {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean setViewDefaultUpdateMode(View view, UpdateMode mode)
+        {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public UpdateMode getSystemDefaultUpdateMode()
+        {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public boolean setSystemDefaultUpdateMode(UpdateMode mode)
+        {
+            // TODO Auto-generated method stub
+            return false;
+        }
     }
 
     @Override
