@@ -1063,5 +1063,48 @@ public class OnyxCmsCenter
         assert(count == 1);
         return true;
     }
+    
+    public static boolean deleteBook(Context context, String isbn)
+    {
+    	// Delete library Item, Metadata, Bookmark, Annotation, Position, 
+    	// 		Thumbnail and History Entry of the book
+    	OnyxMetadata metadata = new OnyxMetadata();
+    	metadata.setISBN(isbn);
+    	
+    	if (!OnyxCmsCenter.getMetadata(context, metadata))
+    	{
+    		return false;
+    	}
+
+    	String md5 = metadata.getMD5();
+    	
+    	OnyxCmsCenter.deleteLibraryItem(context, metadata.getLocation());
+    	
+    	context.getContentResolver().delete(
+    			OnyxMetadata.CONTENT_URI, OnyxMetadata.Columns.MD5 + " = ?" ,
+    			new String[] { md5 });
+
+    	context.getContentResolver().delete(
+    			OnyxBookmark.CONTENT_URI, OnyxBookmark.Columns.MD5 + " = ?" ,
+    			new String[] { md5 });
+
+    	context.getContentResolver().delete(
+    			OnyxAnnotation.CONTENT_URI, OnyxAnnotation.Columns.MD5 + " = ?" ,
+    			new String[] { md5 });
+
+    	context.getContentResolver().delete(
+    			OnyxPosition.CONTENT_URI, OnyxPosition.Columns.MD5 + " = ?" ,
+    			new String[] { md5 });
+
+    	context.getContentResolver().delete(
+    			OnyxThumbnail.CONTENT_URI, OnyxThumbnail.Columns.SOURCE_MD5 + " = ?" ,
+    			new String[] { md5 });
+    	
+    	context.getContentResolver().delete(
+    			OnyxHistoryEntry.CONTENT_URI, OnyxHistoryEntry.Columns.MD5 + " = ?" ,
+    			new String[] { md5 });
+    	
+    	return true;
+    }
 
 }
