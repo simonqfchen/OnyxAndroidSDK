@@ -391,6 +391,16 @@ public class OnyxSyncCenter {
 		if (getPosition(context, md5, position)) {
 			data.setPosition(position);
 		}
+		
+		List<OnyxHistoryEntry> history = new LinkedList<OnyxHistoryEntry>();
+		long readTime = 0;
+		if (OnyxSyncCenter.getHistoryEntries(context, md5, history)) {
+			for (OnyxHistoryEntry entry : history) {
+				readTime += ((entry.getEndTime().getTime() - entry.getStartTime().getTime()) / 1000);
+			}
+		}
+		
+		data.setReadTime(readTime);
 
 		return true;
 	}
@@ -415,6 +425,11 @@ public class OnyxSyncCenter {
         }
         
         count = context.getContentResolver().delete(ANNOTATION_CONTENT_URI, null, null);
+        if (count < 0) {
+            return false;
+        }
+
+        count = context.getContentResolver().delete(HISTORY_ENTRY_CONTENT_URI, null, null);
         if (count < 0) {
             return false;
         }

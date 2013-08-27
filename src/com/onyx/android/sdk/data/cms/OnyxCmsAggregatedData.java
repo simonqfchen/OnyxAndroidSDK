@@ -3,6 +3,9 @@
  */
 package com.onyx.android.sdk.data.cms;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,16 +25,17 @@ public class OnyxCmsAggregatedData implements Parcelable
 	private OnyxMetadata mBook = null;
 	//private OnyxBookProgress mProgress = null;
 	private OnyxPosition mPosition = null;
-	private List<OnyxHistoryEntry> mHistoryEntries = null;
+	//private List<OnyxHistoryEntry> mHistoryEntries = null;
+	private long mReadTime = 0;
 	private List<OnyxBookmark> mBookmarks = null;
 	private List<OnyxAnnotation> mAnnotations = null;
 	
-	public OnyxCmsAggregatedData(OnyxMetadata book, OnyxPosition position, List<OnyxHistoryEntry> historyEntries,
+	public OnyxCmsAggregatedData(OnyxMetadata book, OnyxPosition position, long readTime,
 		List<OnyxBookmark> bookmarks, List<OnyxAnnotation> annotations)
 	{
 		mBook = book;
 		mPosition = position;
-		mHistoryEntries = historyEntries;
+		mReadTime = readTime;
 		mBookmarks = bookmarks;
 		mAnnotations = annotations;
 	}
@@ -79,14 +83,14 @@ public class OnyxCmsAggregatedData implements Parcelable
 		mPosition = position;
 	}
 	
-	public List<OnyxHistoryEntry> getHistoryEntry()
+	public long getReadTime()
 	{
-		return mHistoryEntries;
+		return mReadTime;
 	}
 	
-	public void setHistoryEntry(List<OnyxHistoryEntry> historyEntries)
+	public void setReadTime(long readTime)
 	{
-		mHistoryEntries = historyEntries;
+		mReadTime = readTime;
 	}
 	
 	/**
@@ -128,7 +132,7 @@ public class OnyxCmsAggregatedData implements Parcelable
 	{
 		dest.writeParcelable(mBook, flags);
 		dest.writeParcelable(mPosition, flags);
-		dest.writeTypedList(mHistoryEntries);
+		dest.writeLong(mReadTime);
 		dest.writeTypedList(mBookmarks);
 		dest.writeTypedList(mAnnotations);
 	}
@@ -137,8 +141,7 @@ public class OnyxCmsAggregatedData implements Parcelable
 	{
 		mBook = source.readParcelable(OnyxMetadata.class.getClassLoader());
 		mPosition = source.readParcelable(OnyxPosition.class.getClassLoader());
-		mHistoryEntries = new LinkedList<OnyxHistoryEntry>();
-		source.readTypedList(mHistoryEntries, OnyxHistoryEntry.CREATOR);
+		mReadTime = source.readLong();
 		mBookmarks = new LinkedList<OnyxBookmark>();
 		source.readTypedList(mBookmarks, OnyxBookmark.CREATOR);
 		mAnnotations = new LinkedList<OnyxAnnotation>();
@@ -194,8 +197,29 @@ public class OnyxCmsAggregatedData implements Parcelable
 			mBookmarks = null;
 		}
 		
-		mHistoryEntries = OnyxCmsCenter.getHistorysByMD5(context, application, md5);
+		long lastUpdateTime = 0;
 
+		Date lastUpdate = dateFromString(metadata.getExtraAttributes());
+		if (lastUpdate != null) {
+			lastUpdateTime = lastUpdate.getTime();
+		}
+		
+		List<OnyxHistoryEntry> history = OnyxCmsCenter.getHistorysByMD5(context, application, md5);
+		if (history != null) {
+			for (OnyxHistoryEntry entry : history) {
+				long startTime = entry.getStartTime().getTime();
+				long endTime = entry.getEndTime().getTime();
+				
+				if (lastUpdateTime <= startTime) {
+					mReadTime += (endTime - startTime);
+				} else if (lastUpdateTime < endTime) {
+					mReadTime += (endTime - lastUpdateTime);
+				}
+			}
+		}
+		
+		mReadTime /= 1000;
+		
 		OnyxPosition position = new OnyxPosition();
 		if (OnyxCmsCenter.getPosition(context, application, md5, position)) {
 			mPosition = position;
@@ -206,4 +230,20 @@ public class OnyxCmsAggregatedData implements Parcelable
 		return true;
 	}
 	
+    private static Date dateFromString(String str)
+    {
+    	if (str == null || "null".equals(str)) {
+    		return null;
+    	} else {
+            try {
+                return SimpleDateFormat.getDateTimeInstance().parse(str);
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
+            
+            return null;
+    	}
+    }
+
 }

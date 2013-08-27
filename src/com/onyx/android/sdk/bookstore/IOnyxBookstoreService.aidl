@@ -29,5 +29,5 @@ interface IOnyxBookstoreService {
      * the service.
      */
     boolean uploadLocalData(in OnyxCmsAggregatedData updates, in OnyxCmsAggregatedData removes);
-    boolean downloadRemoteData();
+    long downloadRemoteData();
 }

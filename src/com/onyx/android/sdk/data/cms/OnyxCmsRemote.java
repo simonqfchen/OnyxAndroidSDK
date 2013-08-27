@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.DeadObjectException;
 import android.os.IBinder;
-import android.os.RemoteException;
+import android.util.Log;
 
 /**
  * @author joy
@@ -20,6 +20,10 @@ public class OnyxCmsRemote
 {
     private static IOnyxSyncService mService = null;
     
+    public static final String ACTION_SYNC_FINISHED = "com.onyx.android.sync.syncfinished";
+    public static final String PARAM_SYNC_ID = "sync_id";
+    public static final String PARAM_SYNC_RESULT = "result";
+    
     /**
      * Class for interacting with the main interface of the service.
      */
@@ -28,11 +32,13 @@ public class OnyxCmsRemote
         public void onServiceConnected(ComponentName className,
                 IBinder service)
         {
+        	Log.i("Remote", "Connected");
             mService = IOnyxSyncService.Stub.asInterface(service);
         }
 
         public void onServiceDisconnected(ComponentName className)
         {
+        	Log.i("Remote", "Disconnected");
             mService = null;
         }
     };
@@ -51,7 +57,7 @@ public class OnyxCmsRemote
 					break;
 				}
 				try {
-					Thread.sleep(100);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -61,36 +67,31 @@ public class OnyxCmsRemote
 		}
 	}
 	
-	public static boolean syncAll(Context context)
-	{
-		return sync(context, context.getPackageName());
-	}
-	
-	public static boolean syncAll(Context context, String application)
-	{
-		initSyncService(context);
-
-		try {
-			try {
-				return mService.syncAll(application);
-			} catch (DeadObjectException ex) {
-				mService = null;
-				initSyncService(context);
-				return mService.syncAll(application);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
-	
-	public static boolean sync(Context context, String isbn)
+	/**
+	 * Sync a book by ISBN
+	 * 
+	 * NOTE: cannot call this method in message loop thread
+	 * 
+	 * @param context
+	 * @param isbn
+	 * @return the sync id
+	 */
+	public static int sync(Context context, String isbn)
 	{
 		return sync(context, context.getPackageName(), isbn);
 	}
 	
-	public static boolean sync(Context context, String application, String isbn)
+	/**
+	 * Sync a book by ISBN
+	 * 
+	 * NOTE: cannot call this method in message loop thread
+	 * 
+	 * @param context
+	 * @param application
+	 * @param isbn
+	 * @return the sync id
+	 */
+	public static int sync(Context context, String application, String isbn)
 	{
 		initSyncService(context);
 
@@ -106,8 +107,35 @@ public class OnyxCmsRemote
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 	
+	/**
+	 * Cancel a sync task
+	 * 
+	 * NOTE: cannot call this method in message loop thread
+	 * 
+	 * @param context
+	 * @param syncId
+	 * @return true if the sync canceled
+	 */
+	public static boolean cancel(Context context, int syncId)
+	{
+		initSyncService(context);
+
+		try {
+			try {
+				return mService.cancel(syncId);
+			} catch (DeadObjectException ex) {
+				mService = null;
+				initSyncService(context);
+				return mService.cancel(syncId);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 	
 }

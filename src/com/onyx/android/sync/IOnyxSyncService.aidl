@@ -32,6 +32,6 @@ interface IOnyxSyncService {
      * This shows how to do so, by registering a callback interface with
      * the service.
      */
-	boolean syncAll(String application);
-	boolean sync(String application, String isbn);
+	int sync(String application, String isbn);
+	boolean cancel(int syncId);
 }
