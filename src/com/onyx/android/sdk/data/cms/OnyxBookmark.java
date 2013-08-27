@@ -164,9 +164,9 @@ public class OnyxBookmark implements Parcelable
 		
 		try {
 			return ((mMD5 == bookmark.getMD5() || mMD5.equals(bookmark.getMD5()))
-					&& (mQuote == bookmark.getQuote() || mQuote.equals(bookmark.getQuote()))
+//					&& (mQuote == bookmark.getQuote() || mQuote.equals(bookmark.getQuote()))
 					&& (mLocation == bookmark.getLocation() || mLocation.equals(bookmark.getLocation()))
-					&& (mUpdateTime == bookmark.getUpdateTime() || mUpdateTime.equals(bookmark.getUpdateTime()))
+//					&& (mUpdateTime == bookmark.getUpdateTime() || mUpdateTime.equals(bookmark.getUpdateTime()))
 //					&& (mApplication == bookmark.getApplication() || mApplication.equals(bookmark.getApplication()))
 					);
 		} catch (Exception e) {
