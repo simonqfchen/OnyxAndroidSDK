@@ -13,7 +13,8 @@ import android.util.Log;
  */
 public class GridViewPaginator
 {
-    private static final String TAG = "OnyxPagedAdapter";
+    private static final String TAG = "GridViewPaginator";
+    private static final boolean VERBOSE_LOG = false;
 
     public interface OnStateChangedListener
     {
@@ -86,7 +87,7 @@ public class GridViewPaginator
     }
     public void setPageSize(int value)
     {
-        Log.d(TAG, "setPageSize: " + value);
+        if (VERBOSE_LOG) Log.d(TAG, "setPageSize: " + value);
         if (value < 0) {
             throw new IllegalArgumentException();
         }
