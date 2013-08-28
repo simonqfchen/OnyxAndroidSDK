@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="OnyxReader" default="help">
+<project name="OnyxAndroidSDK" default="help">
 
     <condition property="properties_file" value="local.windows.properties">
         <os family="windows"/>
