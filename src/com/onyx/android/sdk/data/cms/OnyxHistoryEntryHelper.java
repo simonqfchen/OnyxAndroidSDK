@@ -16,6 +16,7 @@ import android.util.Log;
 public class OnyxHistoryEntryHelper 
 {
 	private static final String Tag = "OnyxHistoryEntryHelper";
+    private static final boolean VERBOSE_LOG = false;
 	
 	private static OnyxHistoryEntry sHistoryEntry = null;
 	
@@ -28,7 +29,7 @@ public class OnyxHistoryEntryHelper
 		sHistoryEntry.setProgress(bookProgress);
 		sHistoryEntry.setMD5(md5);
 		OnyxCmsCenter.insertHistory(context, sHistoryEntry);
-		Log.d(Tag, "insert: " + sHistoryEntry.getId() + ", " + sHistoryEntry.getMD5());
+		if (VERBOSE_LOG) Log.d(Tag, "insert: " + sHistoryEntry.getId() + ", " + sHistoryEntry.getMD5());
 	}
 	
 	public static void recordFinishReading(Context context, OnyxBookProgress bookProgress)
@@ -49,7 +50,7 @@ public class OnyxHistoryEntryHelper
 		sHistoryEntry.setEndTime(new_end_time);
 		sHistoryEntry.setProgress(bookProgress);
 		OnyxCmsCenter.updateHistory(context, sHistoryEntry);
-		Log.d(Tag, "update: " + sHistoryEntry.getId() + ", " + sHistoryEntry.getMD5());
+		if (VERBOSE_LOG) Log.d(Tag, "update: " + sHistoryEntry.getId() + ", " + sHistoryEntry.getMD5());
 	}
 	
 	public static List<OnyxHistoryEntry> getHistorysByMD5(Context context, String md5)

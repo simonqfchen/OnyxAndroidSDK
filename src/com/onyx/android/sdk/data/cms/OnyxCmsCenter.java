@@ -33,6 +33,7 @@ import com.onyx.android.sdk.data.util.RefValue;
 public class OnyxCmsCenter
 {
     private static final String TAG = "OnyxCMSCenter";
+    private static final boolean VERBOSE_LOG = false;
     private static final boolean VERBOSE_PROFILE = false;
 
     public static final String PROVIDER_AUTHORITY = "com.onyx.android.sdk.OnyxCmsProvider";
@@ -251,7 +252,7 @@ public class OnyxCmsCenter
 
     public static boolean updateMetadata(Context context, OnyxMetadata data)
     {
-        Log.d(TAG, "update metadata: " + data.getNativeAbsolutePath());
+        if (VERBOSE_LOG) Log.d(TAG, "update metadata: " + data.getNativeAbsolutePath());
         
         Uri row = Uri.withAppendedPath(OnyxMetadata.CONTENT_URI,
                 String.valueOf(data.getId()));
