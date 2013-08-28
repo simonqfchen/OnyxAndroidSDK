@@ -36,6 +36,7 @@ import com.onyx.android.sdk.ui.util.OnyxFocusFinder;
 public class OnyxGridView extends GridView implements IBoundaryItemLocator, GestureDetector.OnGestureListener
 {
     private static final String TAG = "OnyxGridView";
+    private static final boolean VERBOSE_LOG = false;
 
     public interface OnAdapterChangedListener
     {
@@ -181,7 +182,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     @Override
     public void setSelection(int position)
     {
-        Log.d(TAG, "setSelection: " + position);
+        if (VERBOSE_LOG) Log.d(TAG, "setSelection: " + position);
         this.requestFocus();
         super.setSelection(position);
     }
@@ -383,14 +384,14 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     @Override
     public boolean onDown(MotionEvent e)
     {
-        Log.v(TAG, "onDown");
+        if (VERBOSE_LOG) Log.v(TAG, "onDown");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent e)
     {
-        Log.v(TAG, "onShowPress");
+        if (VERBOSE_LOG) Log.v(TAG, "onShowPress");
         Rect r = new Rect();
         for (int i = 0; i < this.getChildCount(); i++) {
             View v = this.getChildAt(i);
@@ -408,7 +409,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     @Override
     public boolean onSingleTapUp(MotionEvent e)
     {
-        Log.v(TAG, "onSingleTapUp");
+        if (VERBOSE_LOG) Log.v(TAG, "onSingleTapUp");
         if (mIsClickEvent) {
         Rect r = new Rect();
         for (int i = 0; i < this.getChildCount(); i++) {
@@ -417,7 +418,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
             if (r.contains((int)e.getX(), (int)e.getY())) {
                 if (this.getSelectedView() == v) {
                     // if onShowPress() happens, it will be before onSingleTapUp(), and view may has already been selected in it
-                    Log.d(TAG, "child view is already selected");
+                    Log.w(TAG, "child view is already selected");
                     return false;
                 }
 
@@ -437,13 +438,13 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
             float distanceY)
     {
-        Log.v(TAG, "onScroll");
+        if (VERBOSE_LOG) Log.v(TAG, "onScroll");
         return false;
     }
     @Override
     public void onLongPress(MotionEvent e)
     {
-        Log.v(TAG, "onLongPress");
+        if (VERBOSE_LOG) Log.v(TAG, "onLongPress");
         for (OnLongPressListener l : mOnLongPressListenerList) {
             l.onLongPress();
         }
@@ -452,7 +453,7 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY)
     {
-        Log.v(TAG, "onFling");
+        if (VERBOSE_LOG) Log.v(TAG, "onFling");
     	if(enableOnFling){
     	    if (e1.getX() - e2.getX() > sMinFlingLength) {
     	        if (mAdapter.getPaginator().canNextPage()) {
@@ -543,14 +544,14 @@ public class OnyxGridView extends GridView implements IBoundaryItemLocator, Gest
     @Override
     protected void onCreateContextMenu(ContextMenu menu)
     {
-        Log.d(TAG, "create context menu");
+        if (VERBOSE_LOG) Log.d(TAG, "create context menu");
         super.onCreateContextMenu(menu);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
-        Log.d(TAG, "onSizeChanged: from " + oldw + ", " + oldh + " to " + w + ", " + h);
+        if (VERBOSE_LOG) Log.d(TAG, "onSizeChanged: from " + oldw + ", " + oldh + " to " + w + ", " + h);
         super.onSizeChanged(w, h, oldw, oldh);
 
         for (OnSizeChangedListener l : mOnSizeChangedListenerList) {

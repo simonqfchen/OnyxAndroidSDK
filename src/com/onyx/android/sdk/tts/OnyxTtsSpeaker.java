@@ -25,6 +25,7 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
 {
 
     private static final String TAG = "OnyxTtsSpeaker";
+    private static final boolean VERBOSE_PROFILE = false;
     
     public static interface OnSpeakerCompletionListener
     {
@@ -229,9 +230,9 @@ public class OnyxTtsSpeaker implements TextToSpeech.OnUtteranceCompletedListener
 
             String wave_file = this.getTempWaveFile().getAbsolutePath();
 
-            ProfileUtil.start(TAG, "synthesizeToFile");
+            if (VERBOSE_PROFILE) ProfileUtil.start(TAG, "synthesizeToFile");
             int res = mTtsService.synthesizeToFile(text, callbackMap, wave_file);
-            ProfileUtil.end(TAG, "synthesizeToFile");
+            if (VERBOSE_PROFILE) ProfileUtil.end(TAG, "synthesizeToFile");
 
             if (res == TextToSpeech.ERROR) {
                 Log.w(TAG, "TTS synthesize failed");
