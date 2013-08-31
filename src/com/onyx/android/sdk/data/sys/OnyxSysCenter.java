@@ -33,7 +33,7 @@ public class OnyxSysCenter
     private static final String KEY_DICT = "sys.dict";
     private static final String KEY_DICT_RESOURCES_PATH = "sys.dict_resources_path";
     private static final String KEY_OPEN_LAST_READING_DOCUMENT = "sys.open_last_reading";
-    private static final String KEY_STARTUP_CONFIGURATION_DONE = "sys.startup_configuraton_done";
+    private static final String KEY_STARTUP_CONFIGURATION_FLAG = "sys.startup_configuraton_flag";
 
     private static boolean sInitialized = false;
     private static Map<String, OnyxKeyValueItem> sItemMap = new HashMap<String, OnyxKeyValueItem>();
@@ -98,10 +98,10 @@ public class OnyxSysCenter
 
         return getIntValue(KEY_SCREEN_UPDATE_GC_INTERVAL);
     }
-    
+
     /**
      * if getScreenUpdateGCInterval() failed, return defaultValue instead
-     * 
+     *
      * @param defaultValue
      * @return
      */
@@ -111,10 +111,10 @@ public class OnyxSysCenter
         if (value == -1) {
             value = defaultValue;
         }
-        
+
         return value;
     }
-    
+
     public static boolean setScreenUpdateGCInterval(Context context, int interval)
     {
         if (!sInitialized) {
@@ -283,12 +283,12 @@ public class OnyxSysCenter
         return getStringValue(KEY_OPEN_LAST_READING_DOCUMENT);
     }
 
-    public static void setIsStartupConfigurationDone(Context context, boolean b) {
-        setIntValue(context, KEY_STARTUP_CONFIGURATION_DONE, b? 1: 0);
+    public static void setStartupConfigurationFlag(Context context, int flag) {
+        setIntValue(context, KEY_STARTUP_CONFIGURATION_FLAG, flag);
     }
 
-    public static boolean isStartupConfigurationDone() {
-        return getIntValue(KEY_STARTUP_CONFIGURATION_DONE) == 1;
+    public static int getStartupConfigurationFlag() {
+        return getIntValue(KEY_STARTUP_CONFIGURATION_FLAG);
     }
 
     /**
