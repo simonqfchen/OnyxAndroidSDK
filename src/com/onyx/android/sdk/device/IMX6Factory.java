@@ -3,40 +3,48 @@
  */
 package com.onyx.android.sdk.device;
 
+import com.onyx.android.sdk.device.EpdController.EPDMode;
 import com.onyx.android.sdk.device.EpdController.UpdateMode;
+import com.onyx.android.sdk.device.IDeviceFactory.TouchType;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import org.apache.http.cookie.SM;
 
+import android.R.integer;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
- * singleton class
- * 
- * @author joy
+ * @author dxw
  *
  */
-public final class IMX508Factory  implements IDeviceFactory
+public class IMX6Factory implements IDeviceFactory
 {
-    private static String TAG = "IMX508Factory";
-    
-    public static class IMX508Controller implements IDeviceController 
-    {
-        private static IMX508Controller sInstance = null;
 
+    
+    private static String TAG = "IMX6Factory";
+    
+    
+    public static class IMX6Controller implements IDeviceController
+    {
+
+        private static IMX6Controller sInstance = null;
+        
         private static int sPolicyAutomatic = 0;
         private static int sPolicyGUIntervally = 0;
 
         private static int sModeDW = 0;
         private static int sModeGU = 0;
         private static int sModeGC = 0;
-
+        
+        
         /**
          * static int View.getWindowRotation()
          */
@@ -58,10 +66,36 @@ public final class IMX508Factory  implements IDeviceFactory
          */
         private static Method sMethodInvalidate = null;
         
-        private IMX508Controller()
+        /**
+         * View.getDefaultUpdateMode()
+         */
+        private static Method sMethodGetViewDefaultUpdateMode = null;
+        
+        /**
+         * View.setDefaultUpdateMode(int updateMode)
+         */
+        private static Method sMethodSetViewDefaultUpdateMode = null;
+        
+        /**
+         * View.getGlobalUpdateMode()
+         */
+        private static Method sMethodGetSystemDefaultUpdateMode = null;
+        
+        /**
+         * View.setGlobalUpdateMode(int updateMode)
+         */
+        private static Method sMethodSetSystemDefaultUpdateMode = null;
+        
+        /**
+         * View.setFirstDrawUpdateMode(int updateMode)
+         */
+        private static Method sMethodSetFirstDrawUpdateMode = null;
+        
+        
+        private IMX6Controller()
         {
         }
-
+        
         public int getWindowRotation()
         {
             if (sMethodGetWindowRotation != null) {
@@ -138,48 +172,51 @@ public final class IMX508Factory  implements IDeviceFactory
         {
             return file.getAbsolutePath().startsWith(getRemovableSDCardDirectory().getAbsolutePath());
         }
-        
+
         @Override
         public TouchType getTouchType(Context context)
         {
             return TouchType.IR;
         }
-        
+
         @Override
         public boolean hasWifi(Context context)
         {
+            // TODO Auto-generated method stub
             return true;
         }
-        
+
         @Override
         public boolean hasAudio(Context context)
         {
             // TODO Auto-generated method stub
-            return false;
+            return true;
         }
-        
+
         @Override
         public boolean hasFrontLight(Context context)
         {
             // TODO Auto-generated method stub
             return false;
         }
-        
+
         @Override
         public boolean isEInkScreen()
         {
+            // TODO Auto-generated method stub
             return true;
         }
-        
+
         @Override
         public EpdController.EPDMode getEpdMode()
         {
             return EpdController.EPDMode.AUTO;
         }
-        
+
         @Override
-        public boolean setEpdMode(Context context, EpdController.EPDMode mode)
+        public boolean setEpdMode(Context context, EPDMode mode)
         {
+            // TODO Auto-generated method stub
             return false;
         }
 
@@ -218,8 +255,8 @@ public final class IMX508Factory  implements IDeviceFactory
 
             view.postInvalidate();
         }
-
-        public static IMX508Controller createController()
+        
+        public static IMX6Controller createController()
         {
             if (sInstance == null) {
                 Class<View> cls = View.class;
@@ -262,6 +299,7 @@ public final class IMX508Factory  implements IDeviceFactory
                     sModeDW = value_mode_regional | value_mode_nowait | value_mode_waveform_du | value_mode_update_partial;
                     sModeGU = value_mode_regional | value_mode_nowait | value_mode_waveform_gc16 | value_mode_update_partial;
                     sModeGC = value_mode_regional | value_mode_wait | value_mode_waveform_gc16 | value_mode_update_full;
+                    
 
                     // signature of "public void setUpdatePolicy(int updatePolicy, int guInterval)"
                     sMethodSetUpdatePolicy = cls.getMethod("setUpdatePolicy", int.class, int.class);
@@ -269,10 +307,19 @@ public final class IMX508Factory  implements IDeviceFactory
                     sMethodPostInvalidate = cls.getMethod("postInvalidate", int.class);
                     // signature of "public void invalidate(int updateMode)"
                     sMethodInvalidate = cls.getMethod("invalidate", int.class);
-
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodSetViewDefaultUpdateMode = cls.getMethod("setDefaultUpdateMode", int.class);
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodGetViewDefaultUpdateMode = cls.getMethod("getDefaultUpdateMode");
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodGetSystemDefaultUpdateMode = cls.getMethod("getGlobalUpdateMode");
+                    // signature of "public void invalidate(int updateMode)"
+                    sMethodSetSystemDefaultUpdateMode = cls.getMethod("setGlobalUpdateMode", int.class);
+                    // signature of "public void setFirstDrawUpdateMode(int updateMode)"
+                    sMethodSetFirstDrawUpdateMode = cls.getMethod("setFirstDrawUpdateMode", int.class);
                     Log.d(TAG, "init device ok.");
 
-                    sInstance = new IMX508Controller();
+                    sInstance = new IMX6Controller();
                     return sInstance;
                 } catch (SecurityException e) {
                     Log.w(TAG, e);
@@ -300,6 +347,7 @@ public final class IMX508Factory  implements IDeviceFactory
             int dst_mode = sModeGC;
 
             switch (mode) {
+            case GU_FAST:
             case DW:
                 dst_mode = sModeDW;
                 break;
@@ -314,9 +362,23 @@ public final class IMX508Factory  implements IDeviceFactory
                 break;
             }
 
+            Log.i("########################", "value to framework: "+ dst_mode);
             return dst_mode;
         }
 
+        private EpdController.UpdateMode updateModeFromValue(int value)
+        {
+            Log.i("########################", "value from framework: "+ value);
+            if (value == sModeDW) {
+                return UpdateMode.DW;
+            } else if (value == sModeGU) {
+                return UpdateMode.GU;
+            } else if (value == sModeGC) {
+                return UpdateMode.GC;
+            }
+            return UpdateMode.GC;
+        }        
+        
         private static int getPolicyValue(EpdController.UpdatePolicy policy)
         {
             int dst_value = sModeGU;
@@ -338,50 +400,124 @@ public final class IMX508Factory  implements IDeviceFactory
         @Override
         public UpdateMode getViewDefaultUpdateMode(View view)
         {
-            // TODO Auto-generated method stub
-            return null;
+            if (sMethodGetViewDefaultUpdateMode != null && view != null) {
+                try {
+                    int index = (Integer) sMethodGetViewDefaultUpdateMode.invoke(view);
+                    return updateModeFromValue(index);
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            return UpdateMode.GU;
         }
 
         @Override
         public boolean setViewDefaultUpdateMode(View view, UpdateMode mode)
         {
-            // TODO Auto-generated method stub
+            if (sMethodSetViewDefaultUpdateMode != null && view != null) {
+                try {
+                    sMethodSetViewDefaultUpdateMode.invoke(view, getUpdateMode(mode));
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
             return false;
         }
 
         @Override
         public UpdateMode getSystemDefaultUpdateMode()
         {
-            // TODO Auto-generated method stub
-            return null;
+            if (sMethodGetSystemDefaultUpdateMode != null) {
+                try {
+                    return updateModeFromValue((Integer) sMethodGetSystemDefaultUpdateMode.invoke(null));
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            return UpdateMode.GU;
         }
 
         @Override
         public boolean setSystemDefaultUpdateMode(UpdateMode mode)
         {
-            // TODO Auto-generated method stub
+            if (sMethodSetSystemDefaultUpdateMode != null) {
+                try {
+                    sMethodSetSystemDefaultUpdateMode.invoke(null, getUpdateMode(mode));
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
             return false;
         }
+        
+        private boolean setFirstDrawUpdateMode(UpdateMode mode)
+        {
+            if (sMethodSetFirstDrawUpdateMode != null) {
+                try {
+                    sMethodSetFirstDrawUpdateMode.invoke(null, getUpdateMode(mode));
+                    return true;
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, e);
+                } catch (IllegalAccessException e) {
+                    Log.w(TAG, e);
+                } catch (InvocationTargetException e) {
+                    Log.w(TAG, e);
+                }
+            }
+            return false;
+        }
+        
+        
 
+        
     }
-
+    
+    /* (non-Javadoc)
+     * @see com.onyx.android.sdk.device.IDeviceFactory#name()
+     */
     @Override
     public String name()
     {
-        return "IMX508";
+        return "IMX6";
     }
 
+    /* (non-Javadoc)
+     * @see com.onyx.android.sdk.device.IDeviceFactory#isPresent()
+     */
     @Override
     public boolean isPresent()
     {
-        return Build.MANUFACTURER.contentEquals("unknown") &&
-                Build.MODEL.contentEquals("imx50_rdp") &&
-                Build.DEVICE.contentEquals("imx50_rdp");
+        return Build.DEVICE.contentEquals("M96");
     }
 
+    /* (non-Javadoc)
+     * @see com.onyx.android.sdk.device.IDeviceFactory#createController()
+     */
     @Override
     public IDeviceController createController()
     {
-        return IMX508Controller.createController();
+        return IMX6Controller.createController();
     }
+
 }

@@ -98,6 +98,23 @@ public class OnyxSysCenter
 
         return getIntValue(KEY_SCREEN_UPDATE_GC_INTERVAL);
     }
+    
+    /**
+     * if getScreenUpdateGCInterval() failed, return defaultValue instead
+     * 
+     * @param defaultValue
+     * @return
+     */
+    public static int getScreenUpdateGCInterval(int defaultValue)
+    {
+        int value = getScreenUpdateGCInterval();
+        if (value == -1) {
+            value = defaultValue;
+        }
+        
+        return value;
+    }
+    
     public static boolean setScreenUpdateGCInterval(Context context, int interval)
     {
         if (!sInitialized) {

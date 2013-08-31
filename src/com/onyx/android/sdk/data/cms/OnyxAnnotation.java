@@ -316,4 +316,15 @@ public class OnyxAnnotation implements Parcelable
 	
 	};
 
+    public void copyFrom(OnyxAnnotation annotation)
+    {
+        mId = annotation.mId;
+        mMD5 = annotation.mMD5;
+        mQuote = annotation.mQuote;
+        mLocationBegin = annotation.mLocationBegin;
+        mLocationEnd = annotation.mLocationEnd;
+        mNote = annotation.mNote;
+        mUpdateTime = annotation.mUpdateTime;
+    }
+    
 }

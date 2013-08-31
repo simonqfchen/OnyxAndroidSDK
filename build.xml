@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="OnyxAndroidSDK" default="help">
 
+    <condition property="properties_file" value="local.windows.properties">
+        <os family="windows"/>
+    </condition>
+    <condition property="properties_file" value="local.properties">
+        <os family="unix"/>
+    </condition>
+
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
-    <property file="local.properties" />
+    <property file="${properties_file}"/>
 
     <!-- The ant.properties file can be created by you. It is only edited by the
          'android' tool to add properties to it.
@@ -89,12 +96,21 @@
     <!-- version-tag: 1 -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
+    <condition property="ndk_build_cmd" value="ndk-build.cmd">
+        <os family="windows"/>
+    </condition>
+    <condition property="ndk_build_cmd" value="ndk-build">
+        <os family="unix"/>
+    </condition>
+
     <target name="-pre-build">
-        <exec executable="${ndk.dir}/ndk-build" failonerror="true"/>
+        <exec executable="${ndk.dir}/${ndk_build_cmd}" failonerror="true">
+            <arg value="-j10"/>
+        </exec>
     </target>
 
     <target name="clean" depends="android_rules.clean">
-        <exec executable="${ndk.dir}/ndk-build" failonerror="true">
+        <exec executable="${ndk.dir}/${ndk_build_cmd}" failonerror="true">
             <arg value="clean"/>
         </exec>
     </target>

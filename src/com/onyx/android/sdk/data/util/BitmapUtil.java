@@ -21,12 +21,13 @@ import android.util.Log;
 public class BitmapUtil
 {
     private static final String TAG = "BitmapUtil";
+    private static final boolean VERBOSE_PROFILE = false;
     
     public static byte[] getByteArray(Bitmap bmp)
     {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            ProfileUtil.start(TAG, "compress bitmap");
+            if (VERBOSE_PROFILE) ProfileUtil.start(TAG, "compress bitmap");
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, os);
             return os.toByteArray();
         }
@@ -37,7 +38,7 @@ public class BitmapUtil
             catch (IOException e) {
                 Log.e(TAG, "exception", e);
             }
-            ProfileUtil.end(TAG, "compress bitmap");
+            if (VERBOSE_PROFILE) ProfileUtil.end(TAG, "compress bitmap");
         }
     }
     
@@ -83,14 +84,14 @@ public class BitmapUtil
             mf = new MemoryFile(null, pixels.length);
             mf.allowPurging(false);
 
-            ProfileUtil.start(TAG, "write MemoryFile");
+            if (VERBOSE_PROFILE) ProfileUtil.start(TAG, "write MemoryFile");
             OutputStream os = null;
             try {
                 os = mf.getOutputStream();
                 os.write(pixels);
             }
             finally {
-                ProfileUtil.end(TAG, "write MemoryFile");
+                if (VERBOSE_PROFILE) ProfileUtil.end(TAG, "write MemoryFile");
                 if (os != null) {
                     os.close();
                 }
@@ -108,12 +109,12 @@ public class BitmapUtil
     
     public static Bitmap readMemoryFile(ParcelFileDescriptor pfd)
     {
-        ProfileUtil.start(TAG, "readMemoryFile");
+        if (VERBOSE_PROFILE) ProfileUtil.start(TAG, "readMemoryFile");
         try {
             return BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
         }
         finally {
-            ProfileUtil.end(TAG, "readMemoryFile");
+            if (VERBOSE_PROFILE) ProfileUtil.end(TAG, "readMemoryFile");
         }
     }
 }

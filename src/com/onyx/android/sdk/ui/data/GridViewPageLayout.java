@@ -17,6 +17,7 @@ import com.onyx.android.sdk.ui.OnyxGridView;
 public class GridViewPageLayout
 {
     private static final String TAG = "GridViewPageLayout";
+    private static final boolean VERBOSE_LOG = false;
     
     /**
      * assuming just two Mode, be careful while adding new one 
@@ -255,12 +256,12 @@ public class GridViewPageLayout
         gridView.setHorizontalSpacing(mHorizontalSpacing);
         gridView.setColumnWidth(mItemCurrentWidth);
 
-        Log.d(TAG, "gridView: (" + gridView.getWidth() + ", " + gridView.getHeight() + 
+        if (VERBOSE_LOG) Log.d(TAG, "gridView: (" + gridView.getWidth() + ", " + gridView.getHeight() + 
                 "), region: (" + items_region_width + ", " + items_region_height +
                 "), page row: " + mLayoutRowCount + ", column:" + mLayoutColumnCount);
-        Log.d(TAG, "current min width: " + mItemMinWidth + ", column width: " + mItemCurrentWidth + 
+        if (VERBOSE_LOG) Log.d(TAG, "current min width: " + mItemMinWidth + ", column width: " + mItemCurrentWidth + 
                 ", horizontal spacing: " + mHorizontalSpacing);
-        Log.d(TAG, "current min height: " + mItemMinHeight + ", row height: " + mItemCurrentHeight + 
+        if (VERBOSE_LOG) Log.d(TAG, "current min height: " + mItemMinHeight + ", row height: " + mItemCurrentHeight + 
                 ", horizontal spacing: " + mVerticalSpacing);
 
         this.notifyStateChanged();
