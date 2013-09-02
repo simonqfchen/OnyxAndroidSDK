@@ -99,4 +99,6 @@
     <string name="hour_symbol">H</string>
     <string name="minute_symbol">M</string>
     <string name="second_symbol">S</string>
+    <string name="sync">Sync</string>
+    <string name="brightness">Brightness</string>
 </resources>
