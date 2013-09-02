@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/menu_background" >
+
+    <LinearLayout android:id="@+id/top_bar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:focusable="true"
+        android:background="@drawable/reader_menu_item_background"
+        android:orientation="vertical" >
+
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hint"
+            android:src="@drawable/back_in_header" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/top_bar_shop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/top_bar_back"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:focusable="true"
+        android:background="@drawable/reader_menu_item_background"
+        android:orientation="vertical" >
+
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hint"
+            android:src="@drawable/shop_in_header" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/top_bar_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/top_bar_shop"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:focusable="true"
+        android:background="@drawable/reader_menu_item_background"
+        android:orientation="vertical"
+        android:visibility="invisible" >
+
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hint"
+            android:src="@drawable/light_in_header" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/top_bar_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="18dp"
+        android:focusable="true"
+        android:background="@drawable/reader_menu_item_background"
+        android:orientation="vertical" >
+
+        <ImageView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/hint"
+            android:src="@drawable/sync_in_header" />
+    </LinearLayout>
+
+</RelativeLayout>

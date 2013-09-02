@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
@@ -45,13 +46,18 @@ public class DialogReaderMenu extends DialogBaseOnyx
 {
     private final static String TAG = "DialogReaderMenu";
 
+    public final static String BOOKSHOP_PACKAGE_NAME = "com.onyx.android.bookstore";
+    public final static String BOOKSHOP_MAIN_ACTIVITY = "com.onyx.android.bookstore.ui.BookStoreActivity";
+
     private long mThreadId = -1;
     private Handler mHandler = new Handler();
 
     private TextView mTextViewChildLines = null;
     private TextView mTextViewLines = null;
+    private TextView mTopViewLine = null;
     private RelativeLayout mLayoutMainMenu = null;
     private LinearLayout mLayoutSecondaryMenu = null;
+    private RelativeLayout mLayoutTopBar = null;
     private LinearLayout mLayoutChild = null;
     private LayoutInflater mInflater = null;
     private View mMoreView = null;
@@ -105,6 +111,28 @@ public class DialogReaderMenu extends DialogBaseOnyx
     private AudioManager mAudioManager;
     private int mMaxVolume;
 
+    private TopBarController mTopBarControllerListener = new TopBarController() {
+        @Override
+        public void onSyncClick() {
+        }
+        @Override
+        public void onBackClick() {
+        }
+    };
+
+    public void setTopBarControllerListener (TopBarController l) {
+        mTopBarControllerListener = l;
+        if (mLayoutTopBar != null) {
+            mLayoutTopBar.setVisibility(View.VISIBLE);
+            mTopViewLine.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public interface TopBarController{
+        public void onSyncClick();
+        public void onBackClick();
+    }
+
     public DialogReaderMenu(Activity activity, final IReaderMenuHandler menuHandler)
     {
         super(activity, R.style.dialog_menu);
@@ -115,6 +143,10 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
         mLayoutMainMenu = (RelativeLayout) findViewById(R.id.layout_main_menu);
         mLayoutSecondaryMenu = (LinearLayout) findViewById(R.id.layout_secondary_menu);
+        LinearLayout mLayoutOther = (LinearLayout) findViewById(R.id.layout_background);
+        mLayoutTopBar = (RelativeLayout) findViewById(R.id.layout_top_menu);
+        mTopViewLine = (TextView) findViewById(R.id.menu_line1);
+        
         mLayoutChild = (LinearLayout) mLayoutSecondaryMenu.findViewById(R.id.layout_child);
         mTextViewChildLines = (TextView) mLayoutSecondaryMenu.findViewById(R.id.textview_child_lines);
         mTextViewLines = (TextView) mLayoutMainMenu.findViewById(R.id.textview_line);
@@ -138,6 +170,14 @@ public class DialogReaderMenu extends DialogBaseOnyx
         
 
         mMenuHandler = menuHandler;
+
+        mLayoutOther.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                DialogReaderMenu.this.dismiss();
+            }
+        });
 
         mLayoutRotation_0.setOnClickListener(new View.OnClickListener()
         {
@@ -374,14 +414,14 @@ public class DialogReaderMenu extends DialogBaseOnyx
         if (DeviceInfo.singleton().getDeviceController().getTouchType(activity) == TouchType.None) {
         	mZoomSettings.findViewById(R.id.layout_cutting_edge).setVisibility(View.GONE);
         } else {
-			RelativeLayout layout_cuttingEdge = (RelativeLayout) mZoomSettings.findViewById(R.id.layout_cutting_edge);
-			layout_cuttingEdge.setOnClickListener(new View.OnClickListener() {
+            RelativeLayout layout_cuttingEdge = (RelativeLayout) mZoomSettings.findViewById(R.id.layout_cutting_edge);
+            layout_cuttingEdge.setOnClickListener(new View.OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					mMenuHandler.zoomBySelection();
-				}
-			});
+                @Override
+                public void onClick(View v) {
+                     mMenuHandler.zoomBySelection();
+                }
+            });
         }
 
         Button increaseFontButton = (Button)findViewById(R.id.button_font_size_increase);
@@ -751,6 +791,48 @@ public class DialogReaderMenu extends DialogBaseOnyx
             public void onClick(View v)
             {
                 menuHandler.showGoToPageDialog();
+            }
+        });
+
+        LinearLayout top_bar_back = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_back);
+        top_bar_back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                mTopBarControllerListener.onBackClick();
+            }
+        });
+
+        LinearLayout top_bar_shop = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_shop);
+        top_bar_shop.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent();
+                intent.setClassName(BOOKSHOP_PACKAGE_NAME,
+                        BOOKSHOP_MAIN_ACTIVITY);
+                mActivity.startActivity(intent);
+            }
+        });
+
+        LinearLayout top_bar_light = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_light);
+        top_bar_light.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                new BrightnessDialog(mActivity).show();
+            }
+        });
+        if (DeviceInfo.singleton().getDeviceController().hasFrontLight(mActivity)) {
+            top_bar_light.setVisibility(View.VISIBLE);
+        }
+
+        LinearLayout top_bar_sync = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_sync);
+        top_bar_sync.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                mTopBarControllerListener.onSyncClick();
             }
         });
 
