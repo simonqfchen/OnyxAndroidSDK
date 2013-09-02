@@ -16,7 +16,7 @@ public class OnyxQuickSort<T extends DirectoryItem>
             {
                 double pa = Double.valueOf(a.getPage());
                 double pb = Double.valueOf(b.getPage());
-                if (NumericUtil.equals(pa, pb)) {
+                if (NumericUtil.equalsAlmost(pa, pb)) {
                     return 0;
                 }
                 else if (pa < pb) {
