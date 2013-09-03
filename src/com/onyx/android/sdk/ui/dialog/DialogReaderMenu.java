@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
@@ -45,9 +44,6 @@ import com.onyx.android.sdk.ui.util.WindowUtil;
 public class DialogReaderMenu extends DialogBaseOnyx
 {
     private final static String TAG = "DialogReaderMenu";
-
-    public final static String BOOKSHOP_PACKAGE_NAME = "com.onyx.android.bookstore";
-    public final static String BOOKSHOP_MAIN_ACTIVITY = "com.onyx.android.bookstore.ui.BookStoreActivity";
 
     private long mThreadId = -1;
     private Handler mHandler = new Handler();
@@ -116,6 +112,9 @@ public class DialogReaderMenu extends DialogBaseOnyx
         public void onSyncClick() {
         }
         @Override
+        public void onShopClick() {
+        }
+        @Override
         public void onBackClick() {
         }
     };
@@ -130,6 +129,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
     public interface TopBarController{
         public void onSyncClick();
+        public void onShopClick();
         public void onBackClick();
     }
 
@@ -808,10 +808,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent();
-                intent.setClassName(BOOKSHOP_PACKAGE_NAME,
-                        BOOKSHOP_MAIN_ACTIVITY);
-                mActivity.startActivity(intent);
+                mTopBarControllerListener.onShopClick();
             }
         });
 
