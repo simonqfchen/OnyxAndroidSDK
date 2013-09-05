@@ -360,6 +360,31 @@ public class OnyxCmsCenter
         }
     }
     
+    /**
+     * 
+     * @param context
+     * @param metadata
+     * @return
+     */
+    public static boolean updateRecentReading(Context context, OnyxMetadata metadata) 
+    {
+        Date last_access = new Date();
+        
+        if (OnyxCmsCenter.getMetadata(context, metadata)) {
+            metadata.setLastAccess(last_access);
+            if (!OnyxCmsCenter.updateMetadata(context, metadata)) {
+                return false;
+            }
+        } else {
+            metadata.setLastAccess(last_access);
+            if (!OnyxCmsCenter.insertMetadata(context, metadata)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public static boolean getBookmarks(Context context, String md5, ArrayList<OnyxBookmark> result)
     {
         Cursor c = null;
