@@ -79,7 +79,6 @@
     <string name="file_already_exists">Файл уже существует</string>
     <string name="replace_file_failed">Замещение файла не удалось</string>
     <string name="menu_item_font_type">Тип</string>
-    <string name="Copy">Копировать</string>
     <string name="Dictionary">Словарь</string>
     <string name="Annotation">Аннотация</string>
     <string name="Cancel">Отмена</string>

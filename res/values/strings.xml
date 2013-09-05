@@ -82,10 +82,16 @@
     <string name="file_already_exists">File already exists</string>
     <string name="replace_file_failed">Replace file failed</string>
     <string name="menu_item_font_type">Type</string>
-    <string name="Copy">Copy</string>
+    <string name="Highlight">Highlight</string>
+    <string name="Share">Share</string>
     <string name="Dictionary">Dictionary</string>
     <string name="Annotation">Annotation</string>
+    <string name="lookup_others">Look up others</string>
+    <string name="lookup">Look up</string>
     <string name="Cancel">Cancel</string>
+    <string name="dialog_dictionary_title">No Explanation</string>
+    <string name="dialog_dictionary_page">1/1</string>
+    <string name="dialog_dictionary_text_legal">RAE Dictionary Legal Agreement</string>
     <string name="menu_item_fonts">Fonts</string>
     <string name="always">Always</string>
     <string name="every_3_pages">Every 3 pages</string>

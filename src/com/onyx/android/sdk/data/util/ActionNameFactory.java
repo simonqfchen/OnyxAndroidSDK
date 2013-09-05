@@ -14,4 +14,5 @@ public class ActionNameFactory
     public static final String CUT = "com.onyx.CUT";
     public static final String MULTI = "com.onyx.MULTI";
     public static final String DELETE = "com.onyx.DELETE";
+    public static final String ACTION_STATUS_BAR_CHANGE = "action_status_bar_change";
 }

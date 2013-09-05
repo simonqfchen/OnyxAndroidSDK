@@ -82,7 +82,6 @@
     <string name="file_already_exists">El archivo ya exite</string>
     <string name="replace_file_failed">Ha fallado el replazo del archivo</string>
     <string name="menu_item_font_type">Tipo</string>
-    <string name="Copy">Copiar</string>
     <string name="Dictionary">Diccionario</string>
     <string name="Annotation">Anotación</string>
     <string name="Cancel">Cancelar</string>
