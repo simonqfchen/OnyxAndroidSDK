@@ -398,6 +398,31 @@ public class OnyxCmsCenter
     	return getBookmarks(context, context.getPackageName(), md5, result);
     }
     
+    /**
+     * 
+     * @param context
+     * @param metadata
+     * @return
+     */
+    public static boolean updateRecentReading(Context context, OnyxMetadata metadata) 
+    {
+        Date last_access = new Date();
+        
+        if (OnyxCmsCenter.getMetadata(context, metadata)) {
+            metadata.setLastAccess(last_access);
+            if (!OnyxCmsCenter.updateMetadata(context, metadata)) {
+                return false;
+            }
+        } else {
+            metadata.setLastAccess(last_access);
+            if (!OnyxCmsCenter.insertMetadata(context, metadata)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public static boolean getBookmarks(Context context, String application, String md5, List<OnyxBookmark> result)
     {
         Cursor c = null;
