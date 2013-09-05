@@ -79,7 +79,6 @@
     <string name="file_already_exists">Plik już istnieje</string>
     <string name="replace_file_failed">Nie udało się zastąpić pliku</string>
     <string name="menu_item_font_type">Typ Czcionki</string>
-    <string name="Copy">Kopiuj</string>
     <string name="Dictionary">Słownik</string>
     <string name="Annotation">Adnotacja</string>
     <string name="Cancel">Anuluj</string>
