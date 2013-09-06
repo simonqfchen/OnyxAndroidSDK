@@ -103,7 +103,7 @@ public class SocialNetwork implements Parcelable
         }
     };
     
-	private static void initSyncService(Context context)
+	private static void initService(Context context)
 	{
 		if (mService == null) {
 			context.startService(new Intent("com.onyx.android.sdk.bookstore.SocialShareService"));
@@ -128,14 +128,14 @@ public class SocialNetwork implements Parcelable
 	
 	public static boolean getNetworks(Context context, List<SocialNetwork> networks)
 	{
-		initSyncService(context);
+		initService(context);
 
 		try {
 			try {
 				return mService.getSocialNetworks(networks);
 			} catch (DeadObjectException ex) {
 				mService = null;
-				initSyncService(context);
+				initService(context);
 				return mService.getSocialNetworks(networks);
 			}
 		} catch (Exception e) {
@@ -145,17 +145,17 @@ public class SocialNetwork implements Parcelable
 		return false;
 	}
 	
-	public static boolean socialShare(Context context, String isbn, int socialId)
+	public static boolean socialShare(Context context, String isbn, int socialId, String selectText, String note)
 	{
-		initSyncService(context);
+		initService(context);
 
 		try {
 			try {
-				return mService.socialShare(isbn, socialId);
+				return mService.socialShare(isbn, socialId, selectText, note);
 			} catch (DeadObjectException ex) {
 				mService = null;
-				initSyncService(context);
-				return mService.socialShare(isbn, socialId);
+				initService(context);
+				return mService.socialShare(isbn, socialId, selectText, note);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

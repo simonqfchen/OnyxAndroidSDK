@@ -29,5 +29,5 @@ interface ISocialShareService {
      * the service.
      */
     boolean getSocialNetworks(out List<SocialNetwork> networks);
-    boolean socialShare(String isbn, int socialId);
+    boolean socialShare(String isbn, int socialId, String selectText, String note);
 }
