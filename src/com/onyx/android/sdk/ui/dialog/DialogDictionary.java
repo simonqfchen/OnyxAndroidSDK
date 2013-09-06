@@ -76,7 +76,8 @@ public class DialogDictionary extends Dialog implements OnClickListener
     {
 
         if (v == dictionary) {
-            Intent intent = new Intent("com.onyx.android.dict.ui.OnyxDictActivity");
+            Intent intent = new Intent();
+            intent.setClassName("com.onyx.android.dict", "com.onyx.android.dict.ui.DictActivity");
             intent.putExtra("token", tokenString);
             mContext.startActivity(intent);
             dismiss();
