@@ -2,7 +2,7 @@
 <resources>
     <string name="title">título</string>
     <string name="previous">anterior</string>
-    <string name="paged_init_text">1-Jan</string>
+    <string name="paged_init_text">1/1</string>
     <string name="next">siguiente</string>
     <string name="set">Ajustar</string>
     <string name="cancel">Cancelar</string>
@@ -82,9 +82,16 @@
     <string name="file_already_exists">El archivo ya exite</string>
     <string name="replace_file_failed">Ha fallado el replazo del archivo</string>
     <string name="menu_item_font_type">Tipo</string>
+    <string name="Highlight">Resaltado</string>
+    <string name="Share">Compartir</string>
     <string name="Dictionary">Diccionario</string>
     <string name="Annotation">Anotación</string>
+    <string name="lookup_others">Buscar otros</string>
+    <string name="lookup">Buscar</string>
     <string name="Cancel">Cancelar</string>
+    <string name="dialog_dictionary_title">Sin definición</string>
+    <string name="dialog_dictionary_page">1/1</string>
+    <string name="dialog_dictionary_text_legal">Acuerdo legal diccionario RAE</string>
     <string name="menu_item_fonts">Fuentes</string>
     <string name="always">SiempreAlways</string>
     <string name="every_3_pages">Cada 3 páginas</string>
@@ -98,5 +105,7 @@
     <string name="hour_symbol">H</string>
     <string name="minute_symbol">M</string>
     <string name="second_symbol">S</string>
+    <string name="sync">Sincronizando</string>
+    <string name="brightness">Brillo</string>
 </resources>
 
