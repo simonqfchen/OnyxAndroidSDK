@@ -88,4 +88,6 @@ public interface IReaderMenuHandler
     void ttsSpeak();
     void ttsPause();
     void ttsStop();
+
+    boolean hideSync();
 }
