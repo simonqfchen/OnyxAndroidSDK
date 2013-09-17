@@ -825,6 +825,9 @@ public class DialogReaderMenu extends DialogBaseOnyx
         }
 
         LinearLayout top_bar_sync = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_sync);
+        if (menuHandler.hideSync()) {
+            top_bar_sync.setVisibility(View.GONE);
+        }
         top_bar_sync.setOnClickListener(new View.OnClickListener() {
 
             @Override
