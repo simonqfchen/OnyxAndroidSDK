@@ -1,5 +1,5 @@
 /**
- *
+ * 
  */
 package com.onyx.android.sdk.data.util;
 
@@ -8,9 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -28,17 +26,17 @@ import com.onyx.android.sdk.R;
 public class FileUtil
 {
     private final static String TAG = "FileUtil";
-
+    
     public static class FileOperation {
         public static enum ReplacePolicy { Ask, Replace, ReplaceAll, Skip, SkipAll, Cancel }
-        public static enum ErrorPolicy { Retry, Skip, SkipAll, Cancel }
-
+        public static enum ErrorPolicy { Retry, Skip, SkipAll, Cancel } 
+        
         public static interface OnPreOperationListener { void onPreOperation(File file); }
         public static interface OnPostOperationListener { void onPostOperation(File file, boolean succ, String errMsg); }
         public static interface OnProgressListener { void onProgress(File file, long total, long current); }
         public static interface OnErrorListener { void onError(File file, String errMsg, boolean canRetry, RefValue<ErrorPolicy> errorPolicy); }
         public static interface OnPreReplaceListener { void onPreReplace(File src, File dst, RefValue<ReplacePolicy> replacePolicy); }
-
+        
         private OnPreOperationListener mOnPreOperationListener = null;
         public void setOnPreOperationListener(OnPreOperationListener l) { mOnPreOperationListener = l; }
         private void notifyOnPreOperation(File file)
@@ -47,7 +45,7 @@ public class FileUtil
                 mOnPreOperationListener.onPreOperation(file);
             }
         }
-
+        
         private OnPostOperationListener mOnPostOperationListener = null;
         public void setOnPostOperationListener(OnPostOperationListener l) { mOnPostOperationListener = l; }
         private void notifyOnPostOperationListener(File file, boolean succ, String errMsg)
@@ -56,7 +54,7 @@ public class FileUtil
                 mOnPostOperationListener.onPostOperation(file, succ, errMsg);
             }
         }
-
+        
         private OnProgressListener mOnProgressListener = null;
         public void setOnProgressListener(OnProgressListener l) { mOnProgressListener = l; }
         private void notifyOnProgressListener(File file, long total, long offset)
@@ -65,7 +63,7 @@ public class FileUtil
                 mOnProgressListener.onProgress(file, total, offset);
             }
         }
-
+        
         private OnErrorListener mOnErrorListener = null;
         public void setOnErrorListener(OnErrorListener l) { mOnErrorListener = l; }
         private void notifyOnErrorListener(File file, String errMsg, boolean canRetry, RefValue<ErrorPolicy> errorPolicy)
@@ -77,7 +75,7 @@ public class FileUtil
                 errorPolicy.setValue(ErrorPolicy.Skip);
             }
         }
-
+        
         private OnPreReplaceListener mOnPreReplaceListener = null;
         public void setOnPreReplaceListener(OnPreReplaceListener l) { mOnPreReplaceListener = l; }
         private void notifyOnPreReplaceListener(File src, File dst, RefValue<ReplacePolicy> replacePolicy)
@@ -89,21 +87,21 @@ public class FileUtil
                 replacePolicy.setValue(ReplacePolicy.SkipAll);
             }
         }
-
+        
         private Context mContext = null;
         private boolean mCanContinue = true;
-
+        
         public FileOperation(Context context)
         {
             mContext = context;
         }
-
+    
         public boolean removeFile(File file, RefValue<ErrorPolicy> errorPolicy)
         {
             RefValue<String> err_msg = new RefValue<String>();
             return this.removeFileCore(file, errorPolicy, err_msg);
         }
-
+        
         public boolean copyFile(File src, File dst, boolean isCut,
                 RefValue<ErrorPolicy> errorPolicy, RefValue<ReplacePolicy> replacePolicy)
         {
@@ -119,53 +117,53 @@ public class FileUtil
         {
             mCanContinue = false;
         }
-
+        
         private boolean removeFileCore(File file, RefValue<ErrorPolicy> errorPolicy, RefValue<String> errMsg)
         {
             if (!file.exists()) {
                 return true;
             }
-
+            
             if (file.isFile()) {
                 return this.removeFileWithRetry(file, errorPolicy, errMsg);
             }
             else if (file.isDirectory()) {
                 boolean succ = true;
-
+            
                 for (File f : file.listFiles()) {
                     if (!mCanContinue) {
                         return false;
                     }
-
+                    
                     if (!this.removeFileCore(f, errorPolicy, errMsg)) {
                         succ = false;
                     }
                 }
-
+                
                 if (!succ) {
                     return false;
                 }
-
+                
                 return this.removeFileWithRetry(file, errorPolicy, errMsg);
             }
-
+            
             return false;
         }
-
+        
         private boolean removeFileWithRetry(File file, RefValue<ErrorPolicy> errorPolicy, RefValue<String> errMsg)
         {
             boolean succ = false;
-
+            
             try {
                 this.notifyOnPreOperation(file);
-
+            
                 final int RETRY_LIMIT = 10;
                 int retry_count = 0;
                 while (true) {
                     if (!mCanContinue) {
                         return false;
                     }
-
+                    
                     Thread.sleep(50);
 
                     try {
@@ -176,7 +174,7 @@ public class FileUtil
                     }
                     catch (SecurityException e) {
                     }
-
+                    
                     errMsg.setValue(mContext.getString(R.string.delete_file_failed));
 
                     if (errorPolicy.getValue() == ErrorPolicy.SkipAll) {
@@ -184,10 +182,10 @@ public class FileUtil
                     }
 
                     boolean can_retry = retry_count < RETRY_LIMIT;
-                    this.notifyOnErrorListener(file,
+                    this.notifyOnErrorListener(file, 
                             mContext.getString(R.string.delete_file_failed) + ": " + file.getAbsolutePath(),
                             can_retry, errorPolicy);
-
+                    
                     switch (errorPolicy.getValue()) {
                     case Retry:
                         retry_count++;
@@ -214,15 +212,15 @@ public class FileUtil
                 this.notifyOnPostOperationListener(file, succ, errMsg.getValue());
             }
         }
-
+        
         private boolean copyFileCore(File src, File dst, boolean isCut,
                 RefValue<ErrorPolicy> errorPolicy, RefValue<ReplacePolicy> replacePolicy, RefValue<String> errMsg)
         {
             boolean succ = false;
-
+            
             try {
                 this.notifyOnPreOperation(src);
-
+                
                 while (!src.exists()) {
                     if (!mCanContinue || errorPolicy.getValue() == ErrorPolicy.SkipAll) {
                         return false;
@@ -230,8 +228,8 @@ public class FileUtil
 
                     Thread.sleep(50);
 
-                    this.notifyOnErrorListener(src,
-                            mContext.getString(R.string.file_not_exist) + ": " + src.getAbsolutePath(),
+                    this.notifyOnErrorListener(src, 
+                            mContext.getString(R.string.file_not_exist) + ": " + src.getAbsolutePath(), 
                             true, errorPolicy);
                     switch (errorPolicy.getValue()) {
                     case Retry:
@@ -271,7 +269,7 @@ public class FileUtil
                         assert(false);
                         return false;
                     }
-
+                    
                     while (dst.exists() ||
                             !this.removeFileQuitely(dst)) {
                         if (!mCanContinue || errorPolicy.getValue() == ErrorPolicy.SkipAll) {
@@ -280,8 +278,8 @@ public class FileUtil
 
                         Thread.sleep(50);
 
-                        this.notifyOnErrorListener(src,
-                                mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(),
+                        this.notifyOnErrorListener(src, 
+                                mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(), 
                                 true, errorPolicy);
                         switch (errorPolicy.getValue()) {
                         case Retry:
@@ -300,17 +298,17 @@ public class FileUtil
                         }
                     }
                 }
-
+                
                 if (src.isFile()) {
                     while (!this.copySingleFile(src, dst, errMsg)) {
                         if (!mCanContinue || errorPolicy.getValue() == ErrorPolicy.SkipAll) {
                             return false;
                         }
-
+                        
                         Thread.sleep(50);
 
-                        this.notifyOnErrorListener(src,
-                                mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(),
+                        this.notifyOnErrorListener(src, 
+                                mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(), 
                                 true, errorPolicy);
                         switch (errorPolicy.getValue()) {
                         case Retry:
@@ -328,7 +326,7 @@ public class FileUtil
                             return false;
                         }
                     }
-
+                    
                     if (isCut) {
                         while (!src.delete()) {
                             if (!mCanContinue || errorPolicy.getValue() == ErrorPolicy.SkipAll) {
@@ -337,8 +335,8 @@ public class FileUtil
 
                             Thread.sleep(50);
 
-                            this.notifyOnErrorListener(src,
-                                    mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(),
+                            this.notifyOnErrorListener(src, 
+                                    mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(), 
                                     true, errorPolicy);
                             switch (errorPolicy.getValue()) {
                             case Retry:
@@ -357,7 +355,7 @@ public class FileUtil
                             }
                         }
                     }
-
+                    
                     return true;
                 }
                 else if (src.isDirectory()) {
@@ -365,11 +363,11 @@ public class FileUtil
                         if (!mCanContinue || errorPolicy.getValue() == ErrorPolicy.SkipAll) {
                             return false;
                         }
-
+                        
                         Thread.sleep(50);
 
-                        this.notifyOnErrorListener(src,
-                                mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(),
+                        this.notifyOnErrorListener(src, 
+                                mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(), 
                                 true, errorPolicy);
                         switch (errorPolicy.getValue()) {
                         case Retry:
@@ -387,29 +385,29 @@ public class FileUtil
                             return false;
                         }
                     }
-
+                    
                     succ = true;
                     for (File f : src.listFiles()) {
                         if (!mCanContinue) {
                             return false;
                         }
-
+                        
                         File sub_dst = new File(dst, f.getName());
                         if (!this.copyFileCore(f, sub_dst, isCut, errorPolicy, replacePolicy, errMsg)) {
                             succ = false;
                         }
                     }
-
+                    
                     if (succ && isCut) {
                         while (!src.delete()) {
                             if (!mCanContinue || errorPolicy.getValue() == ErrorPolicy.SkipAll) {
                                 return false;
                             }
-
+                            
                             Thread.sleep(50);
 
-                            this.notifyOnErrorListener(src,
-                                    mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(),
+                            this.notifyOnErrorListener(src, 
+                                    mContext.getString(R.string.replace_file_failed) + ": " + src.getAbsolutePath() + " -> " + dst.getAbsolutePath(), 
                                     true, errorPolicy);
                             switch (errorPolicy.getValue()) {
                             case Retry:
@@ -428,10 +426,10 @@ public class FileUtil
                             }
                         }
                     }
-
+                    
                     return succ;
                 }
-
+                
                 return false;
             }
             catch (InterruptedException e) {
@@ -442,13 +440,13 @@ public class FileUtil
                 this.notifyOnPostOperationListener(src, succ, errMsg.getValue());
             }
         }
-
+        
         private boolean removeFileQuitely(File file)
         {
             if (!file.exists()) {
                 return true;
             }
-
+            
             if (file.isFile()) {
                 return file.delete();
             }
@@ -458,13 +456,13 @@ public class FileUtil
                         return false;
                     }
                 }
-
+                
                 return file.delete();
             }
-
+            
             return false;
         }
-
+        
         private boolean copySingleFile(File src, File dst, RefValue<String> errMsg)
         {
             FileInputStream is_src = null;
@@ -473,7 +471,7 @@ public class FileUtil
                 if (this.isCancelled()) {
                     return false;
                 }
-
+                
                 is_src = new FileInputStream(src);
                 os_dst = new FileOutputStream(dst);
 
@@ -487,10 +485,10 @@ public class FileUtil
                     }
                     os_dst.write(b, 0, i);
                     offset += i;
-
+                    
                     this.notifyOnProgressListener(src, total, offset);
                 }
-
+                
                 return true;
             }
             catch (FileNotFoundException e) {
@@ -522,10 +520,10 @@ public class FileUtil
             }
         }
     }
-
+    
     /**
      * return file extension without heading dot
-     *
+     * 
      * @param fileName
      * @return
      */
@@ -535,34 +533,34 @@ public class FileUtil
         if (0 <= dot_pos) {
             return fileName.substring(dot_pos + 1).toLowerCase(Locale.getDefault());
         }
-
+        
         return "";
     }
     public static String getFileExtension(File file)
     {
         return getFileExtension(file.getName());
     }
-
+    
     public static String getFileNameWithoutExtension(String fileName)
     {
         int dot_pos = fileName.lastIndexOf('.');
         if (dot_pos < 0) {
             return fileName;
         }
-
+        
         return fileName.substring(0, dot_pos);
     }
-
+    
     public static String getFilePathFromUri(String uri)
     {
         final String PREFIX = "file://";
         return uri.substring(PREFIX.length());
     }
-
+    
     /**
      * File.lastModified() can only get last modified time, this method will also check the creation time,
      * and return the larger one of these two
-     *
+     * 
      * @param file
      * @param result
      * @return
@@ -571,46 +569,57 @@ public class FileUtil
     {
         long ct = 0;
         long mt = file.lastModified();
-
+        
         try {
             ct = NativeFileUtil.getChangeTimestamp(file.getAbsolutePath()) * 1000;
             if (ct == -1) {
                 return mt;
             }
-
+            
             return Math.max(ct, mt);
         }
         catch (Throwable tr) {
             Log.e(TAG, "exception", tr);
         }
-
+        
         return mt;
     }
-
+    
     public static String computeMD5(File file) throws IOException, NoSuchAlgorithmException
     {
         if (!file.exists()) {
             throw new FileNotFoundException();
         }
-
+        
         if (!file.isFile()) {
             throw new IllegalArgumentException();
         }
-
+        
+        byte[] digest_buffer = getDigestBuffer(file);
+        
         MessageDigest md = MessageDigest.getInstance("MD5");
-        InputStream is = new FileInputStream(file);
-        DigestInputStream dis = new DigestInputStream(is, md);
-        byte[] buffer = new byte[8192];
-        while (dis.read(buffer) != -1)
-            ;
-        byte[] digest = md.digest();
-
-        return HexStringUtil.getHexString(digest);
+        md.update(digest_buffer);
+        byte[] out = md.digest();
+        
+        final char hex_digits[] = {
+                '0', '1', '2', '3', 
+                '4', '5', '6', '7',
+                '8', '9', 'a', 'b', 
+                'c', 'd', 'e', 'f' }; 
+        
+        char str[] = new char[out.length * 2];
+        for (int i = 0; i < out.length; i++) {
+            int j = i << 1;
+            str[j] = hex_digits[(out[i] >> 4) & 0x0F];
+            str[j + 1] = hex_digits[out[i] & 0x0F];
+        }
+        
+        return String.valueOf(str);
     }
-
+    
     /**
      * never return null
-     *
+     * 
      * @param file
      * @return
      * @throws IOException
@@ -620,24 +629,24 @@ public class FileUtil
         final int digest_block_length = 512;
 
         byte[] digest_buffer = null;
-
+        
         RandomAccessFile rf = null;
-
+        
         try {
         rf = new RandomAccessFile(file, "r");
-
+        
         long file_size = rf.length();
-
+        
         // TODO: what about an empty file?
-        if (file_size <= (digest_block_length * 3)) {
+        if (file_size <= (digest_block_length * 3)) { 
             digest_buffer = new byte[(int)file_size];
             rf.read(digest_buffer);
-        }
+        } 
         else {
             // 3 digest blocks, head, mid, end
             digest_buffer = new byte[3 * digest_block_length];
             rf.seek(0);
-            rf.read(digest_buffer, 0, digest_block_length);
+            rf.read(digest_buffer, 0, digest_block_length); 
             rf.seek((file_size / 2) - (digest_block_length / 2));
             rf.read(digest_buffer, digest_block_length, digest_block_length);
             rf.seek(file_size - digest_block_length);
@@ -649,7 +658,7 @@ public class FileUtil
                 rf.close();
             }
         }
-
+        
         assert(digest_buffer != null);
         return digest_buffer;
     }
