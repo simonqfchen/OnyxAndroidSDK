@@ -178,15 +178,10 @@ public class OnyxCmsCenter
                         OnyxMetadata.Columns.ISBN + "=?",
                         new String[] { data.getISBN() }, null);
             } else {
-                String tagLastModified = OnyxMetadata.Columns.LAST_MODIFIED;
-                long lastModified = data.getLastModified().getTime();
-
                 c = context.getContentResolver().query(OnyxMetadata.CONTENT_URI,
                         null,
                         OnyxMetadata.Columns.NATIVE_ABSOLUTE_PATH + "=?" + " AND " +
-                                OnyxMetadata.Columns.SIZE + "=" + data.getSize() + " AND " +
-                                tagLastModified + ">" + (lastModified-5000) + " AND " +
-                                tagLastModified + "<" + (lastModified+5000),
+                                OnyxMetadata.Columns.SIZE + "=" + data.getSize(),
                         new String[] { data.getNativeAbsolutePath() }, null);
         	}
             if (c == null) {
