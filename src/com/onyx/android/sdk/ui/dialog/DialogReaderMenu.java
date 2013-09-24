@@ -1175,8 +1175,11 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
         if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
             layout_spacing.setVisibility(View.GONE);
-            this.findViewById(R.id.layout_search_footer).setVisibility(View.VISIBLE);
-            mMoreView.findViewById(R.id.layout_search).setVisibility(View.GONE);
+            this.findViewById(R.id.layout_search_footer).setVisibility(View.GONE);
+            mMoreView.findViewById(R.id.layout_search).setVisibility(View.VISIBLE);
+            mMoreView.findViewById(R.id.layout_dictionary).setVisibility(View.GONE);
+            mMoreView.findViewById(R.id.layout_reading_mode).setVisibility(View.GONE);
+            this.findViewById(R.id.layout_dictionary_footer).setVisibility(View.VISIBLE);
         }
         else {
             ImageView imageView = (ImageView) mLayoutSecondaryMenu.findViewById(R.id.imageview_line_spacing);
