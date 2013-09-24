@@ -70,36 +70,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_search"
-        android:layout_width="115dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/reader_menu_item_background"
-        android:focusable="true"
-        android:gravity="center" >
-
-        <TextView
-            android:id="@+id/textview_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_horizontal"
-            android:text="@string/menu_item_search"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/imageview_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/textview_search"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@drawable/search"
-            android:background="@color/read_menu_item_background_color"
-            android:scaleType="fitCenter"
-            android:src="@drawable/search" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/layout_refresh"
         android:layout_width="115dp"
         android:layout_height="match_parent"
@@ -191,4 +161,34 @@
             android:src="@drawable/settings" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/layout_search"
+        android:layout_width="115dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/reader_menu_item_background"
+        android:focusable="true"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/textview_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:text="@string/menu_item_search"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imageview_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textview_search"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@drawable/search"
+            android:background="@color/read_menu_item_background_color"
+            android:scaleType="fitCenter"
+            android:src="@drawable/search" />
+    </RelativeLayout>
+    
 </LinearLayout>

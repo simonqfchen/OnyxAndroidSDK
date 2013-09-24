@@ -117,13 +117,22 @@ public class DialogReaderMenu extends DialogBaseOnyx
         @Override
         public void onBackClick() {
         }
+        @Override
+        public boolean onBookMarkClick() {
+            return false;
+        }
     };
 
-    public void setTopBarControllerListener (TopBarController l) {
+    public void setTopBarControllerListener (TopBarController l, boolean bookmarkState) {
         mTopBarControllerListener = l;
         if (mLayoutTopBar != null) {
             mLayoutTopBar.setVisibility(View.VISIBLE);
             mTopViewLine.setVisibility(View.VISIBLE);
+        }
+        if (bookmarkState) {
+            ((ImageView)(mLayoutTopBar.findViewById(R.id.image_view_bookmark))).setImageResource(R.drawable.menu_remove_bookmark);
+        } else {
+            ((ImageView)(mLayoutTopBar.findViewById(R.id.image_view_bookmark))).setImageResource(R.drawable.menu_add_bookmark);
         }
     }
 
@@ -131,6 +140,7 @@ public class DialogReaderMenu extends DialogBaseOnyx
         public void onSyncClick();
         public void onShopClick();
         public void onBackClick();
+        public boolean onBookMarkClick();
     }
 
     public DialogReaderMenu(Activity activity, final IReaderMenuHandler menuHandler)
@@ -824,10 +834,20 @@ public class DialogReaderMenu extends DialogBaseOnyx
             top_bar_light.setVisibility(View.VISIBLE);
         }
 
+        LinearLayout top_bar_add_bookmark = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_add_bookmark);
+        top_bar_add_bookmark.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mTopBarControllerListener.onBookMarkClick()) {
+                    ((ImageView)(mLayoutTopBar.findViewById(R.id.image_view_bookmark))).setImageResource(R.drawable.menu_remove_bookmark);
+                } else {
+                    ((ImageView)(mLayoutTopBar.findViewById(R.id.image_view_bookmark))).setImageResource(R.drawable.menu_add_bookmark);
+                }
+            }
+        });
+
         LinearLayout top_bar_sync = (LinearLayout) mLayoutTopBar.findViewById(R.id.top_bar_sync);
-        if (menuHandler.hideSync()) {
-            top_bar_sync.setVisibility(View.GONE);
-        }
         top_bar_sync.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -835,6 +855,14 @@ public class DialogReaderMenu extends DialogBaseOnyx
                 mTopBarControllerListener.onSyncClick();
             }
         });
+        if (menuHandler.hideSync()) {
+            top_bar_sync.setVisibility(View.GONE);
+            android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params.setMargins(0, 3, 18, 3);
+            top_bar_add_bookmark.setLayoutParams(params);
+        }
 
         Configuration conf = activity.getResources().getConfiguration();
         String currentLanguage = conf.locale.toString();
@@ -1175,8 +1203,11 @@ public class DialogReaderMenu extends DialogBaseOnyx
 
         if (!mMenuHandler.showZoomSettings() && !mMenuHandler.showSpacingSettings()) {
             layout_spacing.setVisibility(View.GONE);
-            this.findViewById(R.id.layout_search_footer).setVisibility(View.VISIBLE);
-            mMoreView.findViewById(R.id.layout_search).setVisibility(View.GONE);
+            this.findViewById(R.id.layout_search_footer).setVisibility(View.GONE);
+            mMoreView.findViewById(R.id.layout_search).setVisibility(View.VISIBLE);
+            mMoreView.findViewById(R.id.layout_dictionary).setVisibility(View.GONE);
+            mMoreView.findViewById(R.id.layout_reading_mode).setVisibility(View.GONE);
+            this.findViewById(R.id.layout_dictionary_footer).setVisibility(View.VISIBLE);
         }
         else {
             ImageView imageView = (ImageView) mLayoutSecondaryMenu.findViewById(R.id.imageview_line_spacing);
