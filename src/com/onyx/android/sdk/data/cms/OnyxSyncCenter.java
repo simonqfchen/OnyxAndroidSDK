@@ -558,7 +558,7 @@ public class OnyxSyncCenter {
 				}
 			}
 			
-			syncHistoryEnties(context, application, updates.getBook().getMD5());
+			//syncHistoryEnties(context, application, updates.getBook().getMD5());
 			updateTime(context, updates.getBook());
 			
 			return result;
