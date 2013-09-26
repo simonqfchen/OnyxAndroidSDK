@@ -110,7 +110,7 @@ public class SocialNetwork implements Parcelable
 			context.bindService(new Intent("com.onyx.android.sdk.bookstore.SocialShareService"), 
 					mConnection, Context.BIND_AUTO_CREATE);
 			
-			int count = 30;
+			int count = 300;
 			
 			while (count-- > 0) {
 				if (mService != null) {

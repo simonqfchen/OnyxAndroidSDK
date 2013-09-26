@@ -50,7 +50,7 @@ public class OnyxCmsRemote
 			context.bindService(new Intent("com.onyx.android.sync.OnyxSyncService"), 
 					mConnection, Context.BIND_AUTO_CREATE);
 			
-			int count = 30;
+			int count = 300;
 			
 			while (count-- > 0) {
 				if (mService != null) {
