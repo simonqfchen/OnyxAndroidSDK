@@ -3,8 +3,6 @@ package com.onyx.android.sdk.data.cms;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -253,18 +251,19 @@ public class OnyxMetadata implements Parcelable
         	if (d == null) {
         		return "null";
         	} else {
-        		return SimpleDateFormat.getDateTimeInstance().format(d);
+        		return d.getTime() + "";
         	}
         }
+        
         public static Date dateFromString(String str)
         {
         	if ("null".equals(str)) {
         		return null;
         	} else {
 	            try {
-	                return SimpleDateFormat.getDateTimeInstance().parse(str);
+	            	return new Date(Long.parseLong(str));
 	            }
-	            catch (ParseException e) {
+	            catch (NumberFormatException e) {
 	                Log.w(TAG, e);
 	            }
 	            return null;

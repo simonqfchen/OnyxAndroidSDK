@@ -3,8 +3,6 @@
  */
 package com.onyx.android.sdk.data.cms;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -230,20 +228,20 @@ public class OnyxCmsAggregatedData implements Parcelable
 		return true;
 	}
 	
-    private static Date dateFromString(String str)
+    public static Date dateFromString(String str)
     {
     	if (str == null || "null".equals(str)) {
     		return null;
     	} else {
             try {
-                return SimpleDateFormat.getDateTimeInstance().parse(str);
+            	return new Date(Long.parseLong(str));
             }
-            catch (ParseException e) {
-                e.printStackTrace();
+            catch (NumberFormatException e) {
+                Log.w(TAG, e);
             }
-            
             return null;
     	}
     }
+
 
 }

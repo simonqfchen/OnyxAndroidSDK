@@ -3,8 +3,6 @@
  */
 package com.onyx.android.sdk.data.cms;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.ContentValues;
@@ -100,7 +98,7 @@ public class OnyxPosition implements Parcelable
         	if (d == null) {
         		return "null";
         	} else {
-        		return SimpleDateFormat.getDateTimeInstance().format(d);
+        		return d.getTime() + "";
         	}
         }
         public static Date dateFromString(String str)
@@ -109,9 +107,9 @@ public class OnyxPosition implements Parcelable
         		return null;
         	} else {
 	            try {
-	                return SimpleDateFormat.getDateTimeInstance().parse(str);
+	            	return new Date(Long.parseLong(str));
 	            }
-	            catch (ParseException e) {
+	            catch (NumberFormatException e) {
 	                Log.w(TAG, e);
 	            }
 	            return null;
